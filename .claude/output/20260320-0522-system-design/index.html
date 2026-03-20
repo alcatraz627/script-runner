@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>System Design: Versable Scripts — Pipeline Management Platform</title>
+<meta property="og:title" content="System Design: Versable Scripts — Pipeline Management Platform">
+<meta property="og:description" content="A local-first data pipeline platform for processing JEGS eBay product listings">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="System Design: Versable Scripts — Pipeline Management Platform">
+<meta name="twitter:description" content="A local-first data pipeline platform for processing JEGS eBay product listings">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { darkMode: "class", corePlugins: { preflight: false } };</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700&family=Source+Sans+3:ital,wght@0,400;0,600&family=Merriweather:ital,wght@0,400;0,700&family=Roboto:wght@400;500;700&family=Open+Sans:wght@400;600;700&family=Nunito:wght@400;600;700&family=DM+Sans:wght@400;500;700&family=Work+Sans:wght@400;500;700&family=Lora:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="fixed inset-x-0 top-0 z-50 flex items-center gap-3 px-5
+               bg-[var(--surface)] border-b border-[var(--border)]"
+        style="height:var(--header-h)">
+
+  <span class="hdr-badge">Report</span>
+
+  <div class="flex-1 min-w-0 flex flex-col">
+    <div class="hdr-title">System Design: Versable Scripts — Pipeline Management Platform</div>
+    <div class="hdr-subtitle">A local-first data pipeline platform for processing JEGS eBay product listings</div>
+  </div>
+
+  <div class="search-wrap">
+    <span class="search-icon">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+    </span>
+    <input type="text" id="search" placeholder="Search… (⌘K)" autocomplete="off" spellcheck="false">
+    <span id="search-count"></span>
+  </div>
+
+  <div class="flex items-center gap-1 shrink-0 toolbar">
+    <div class="font-picker">
+      <button id="font-btn" class="tool-btn">
+        Aa <span class="font-label btn-label">System</span>
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div id="font-menu" class="font-menu">
+        <div class="font-group-label">Sans-serif</div>
+        <button class="font-opt" data-font="system">System UI <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="inter">Inter <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="roboto">Roboto <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="opensans">Open Sans <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="source">Source Sans <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="nunito">Nunito <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="dmsans">DM Sans <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="worksans">Work Sans <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="helvetica">Helvetica Neue <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="verdana">Verdana <span class="font-preview">Aa</span></button>
+        <div class="font-group-label">Serif</div>
+        <button class="font-opt" data-font="georgia">Georgia <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="lora">Lora <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="merriweather">Merriweather <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="playfair">Playfair Display <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="palatino">Palatino <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="crimson">Crimson Pro <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="garamond">EB Garamond <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="libre">Libre Baskerville <span class="font-preview">Aa</span></button>
+        <div class="font-group-label">Modern</div>
+        <button class="font-opt" data-font="jakarta">Plus Jakarta Sans <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="spacegrotesk">Space Grotesk <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="ibmplex">IBM Plex Sans <span class="font-preview">Aa</span></button>
+        <div class="font-group-label">Monospace</div>
+        <button class="font-opt" data-font="mono">JetBrains Mono <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="ibmplexmono">IBM Plex Mono <span class="font-preview">Aa</span></button>
+      </div>
+    </div>
+    <button id="theme-btn" class="tool-btn"></button>
+    <div class="color-picker">
+      <button id="color-btn" class="tool-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/>
+          <circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/>
+          <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
+        </svg>
+        <span class="btn-label">Color</span>
+      </button>
+      <div id="color-menu" class="color-menu">
+        <div class="font-group-label">Accent Color</div>
+        <div class="color-swatches">
+          <button class="color-swatch" data-accent="indigo"  style="--swatch:#6366f1" title="Indigo"></button>
+          <button class="color-swatch" data-accent="violet"  style="--swatch:#8b5cf6" title="Violet"></button>
+          <button class="color-swatch" data-accent="purple"  style="--swatch:#a855f7" title="Purple"></button>
+          <button class="color-swatch" data-accent="fuchsia" style="--swatch:#d946ef" title="Fuchsia"></button>
+          <button class="color-swatch" data-accent="pink"    style="--swatch:#ec4899" title="Pink"></button>
+          <button class="color-swatch" data-accent="rose"    style="--swatch:#f43f5e" title="Rose"></button>
+          <button class="color-swatch" data-accent="red"     style="--swatch:#ef4444" title="Red"></button>
+          <button class="color-swatch" data-accent="orange"  style="--swatch:#f97316" title="Orange"></button>
+          <button class="color-swatch" data-accent="amber"   style="--swatch:#f59e0b" title="Amber"></button>
+          <button class="color-swatch" data-accent="yellow"  style="--swatch:#eab308" title="Yellow"></button>
+          <button class="color-swatch" data-accent="lime"    style="--swatch:#84cc16" title="Lime"></button>
+          <button class="color-swatch" data-accent="emerald" style="--swatch:#10b981" title="Emerald"></button>
+          <button class="color-swatch" data-accent="teal"    style="--swatch:#14b8a6" title="Teal"></button>
+          <button class="color-swatch" data-accent="cyan"    style="--swatch:#06b6d4" title="Cyan"></button>
+          <button class="color-swatch" data-accent="sky"     style="--swatch:#0ea5e9" title="Sky"></button>
+          <button class="color-swatch" data-accent="blue"    style="--swatch:#3b82f6" title="Blue"></button>
+        </div>
+      </div>
+    </div>
+    <button id="print-btn" class="tool-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <polyline points="6 9 6 2 18 2 18 9"/>
+        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+        <rect x="6" y="14" width="12" height="8"/>
+      </svg>
+      <span class="btn-label">Print</span>
+    </button>
+  </div>
+
+  <span class="hdr-gen">Generated 2026-03-20 · 9 sections · 3 code blocks · 2 tables</span>
+</header>
+
+<!-- Layout -->
+<div class="flex" style="margin-top:var(--header-h);min-height:calc(100vh - var(--header-h))">
+
+  <nav class="sidebar shrink-0 bg-[var(--surface)] border-r border-[var(--border)]"
+       style="position:sticky;top:var(--header-h);height:calc(100vh - var(--header-h));overflow-y:auto;padding:12px 0 24px;width:var(--sidebar-w)">
+    <ul><li class="nav-group">Sections</li><li class="nav-section nav-h2"><a href="#overview">Overview</a></li><li class="nav-section nav-h2"><a href="#architecture">Architecture</a></li><li class="nav-section nav-h2"><a href="#data-model">Data Model</a><ul><li class="nav-section nav-h3"><a href="#run-configuration">Run Configuration</a></li><li class="nav-section nav-h3"><a href="#run-manifest">Run Manifest</a></li><li class="nav-section nav-h3"><a href="#standard-row-schema">Standard Row Schema</a></li></ul></li><li class="nav-section nav-h2"><a href="#key-subsystems">Key Subsystems</a><ul><li class="nav-section nav-h3"><a href="#job-queue">1. Job Queue</a></li><li class="nav-section nav-h3"><a href="#sse-real-time-events">2. SSE Real-Time Events</a></li><li class="nav-section nav-h3"><a href="#manifest-manager">3. Manifest Manager</a></li><li class="nav-section nav-h3"><a href="#io-layer">4. IO Layer</a></li><li class="nav-section nav-h3"><a href="#agent-slice-mode">5. Agent-Slice Mode</a></li><li class="nav-section nav-h3"><a href="#preview-dashboard">6. Preview Dashboard</a></li></ul></li><li class="nav-section nav-h2"><a href="#frontend-architecture">Frontend Architecture</a><ul><li class="nav-section nav-h3"><a href="#framework">Framework</a></li><li class="nav-section nav-h3"><a href="#key-pages">Key Pages</a></li><li class="nav-section nav-h3"><a href="#component-library">Component Library</a></li><li class="nav-section nav-h3"><a href="#state-management">State Management</a></li><li class="nav-section nav-h3"><a href="#build-deploy">Build &amp; Deploy</a></li></ul></li><li class="nav-section nav-h2"><a href="#api-design">API Design</a></li><li class="nav-section nav-h2"><a href="#persistence-model">Persistence Model</a></li><li class="nav-section nav-h2"><a href="#security-operational-notes">Security &amp; Operational Notes</a></li><li class="nav-section nav-h2"><a href="#known-issues">Known Issues</a></li></ul>
+  </nav>
+
+  <main class="content grow min-w-0" style="padding:48px 64px;max-width:960px">
+    <section data-section-id="overview">
+  <h2 id="overview">Overview</h2>
+<p>A local-first data pipeline platform for processing JEGS eBay product listings. Ingests raw Excel/CSV exports, runs them through configurable transform chains (normalization, LLM-powered cleaning, image generation), and produces final output files. Includes a SvelteKit dashboard for managing runs, viewing data, and monitoring execution in real time.</p>
+<p><strong>Stack:</strong> Node.js (CommonJS) + Express 5 backend, SvelteKit 5 frontend (Svelte 5 runes), file-system-based persistence (no database).</p>
+</section>
+<section data-section-id="architecture">
+  <h2 id="architecture">Architecture</h2>
+<div class="code-wrap">
+  <div class="code-header">
+    <span class="code-lang">text</span>
+    <div class="code-actions">
+      <button class="code-expand" aria-label="Expand">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/>
+          <line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
+        </svg> Expand
+      </button>
+      <button class="copy-btn">Copy</button>
+    </div>
+  </div>
+  <pre><code>┌──────────────────────────────────────────────────────────────┐
+│                        SvelteKit UI                          │
+│              (Svelte 5 + Tailwind, port 5173)                │
+│                                                              │
+│  /runs          Run list + status overview                   │
+│  /runs/[id]     Run detail: execute, monitor SSE, view data  │
+│  /runs/new      Create new run                               │
+│  /runs/compare  Side-by-side run diffs                       │
+│  /files         File browser across all runs                 │
+│  /transforms    Transform catalog + source viewer            │
+│  /docs          Embedded markdown documentation              │
+│                                                              │
+│  lib/api.ts     Typed fetch wrapper for all endpoints        │
+│  lib/types.ts   Shared TypeScript interfaces                 │
+└──────────────────┬───────────────────────────────────────────┘
+                   │ HTTP (JSON) + SSE
+                   ▼
+┌──────────────────────────────────────────────────────────────┐
+│                    Express API Server                         │
+│                     (port 3460)                               │
+│                                                              │
+│  /api/runs/*          CRUD + execute + SSE events            │
+│  /api/transforms/*    List, read source, get defaults        │
+│  /api/files/*         Upload, preview, symlink               │
+│  /api/jobs/*          Job queue status + cancel              │
+│  /api/docs/*          Serve markdown docs                    │
+│  /api/schema          Endpoint metadata                      │
+│  /api/openapi.json    Generated OpenAPI 3.1 spec             │
+│  /api/docs            Scalar interactive API browser         │
+│                                                              │
+│  Also serves production UI build as SPA fallback             │
+└──────────────────┬───────────────────────────────────────────┘
+                   │
+          ┌────────┴─────────┐
+          ▼                  ▼
+┌──────────────────┐  ┌──────────────────────────────────────┐
+│   Job Queue      │  │         File System (runs/)           │
+│ (in-process,     │  │                                      │
+│  EventEmitter)   │  │  runs/&lt;run-id&gt;/                      │
+│                  │  │    run.config.js    ← pipeline def    │
+│  Max concurrency │  │    run.manifest.json ← execution state│
+│  = 2             │  │    raw/             ← input files     │
+│                  │  │    data/            ← step outputs    │
+│  Buffers events  │  │      raw.json      (imported input)   │
+│  in job.events[] │  │      &lt;step-id&gt;.json (each step)       │
+│                  │  │      final.json    (last step alias)   │
+│  Supports abort  │  │    logs/           ← JSONL event logs │
+│  via AbortSignal │  │    output/         ← final xlsx/csv   │
+└──────────────────┘  │    posters/        ← generated images │
+                      └──────────────────────────────────────┘
+          │
+          ▼
+┌──────────────────────────────────────────────────────────────┐
+│                   Pipeline Engine                             │
+│               (pipeline/engine.js)                            │
+│                                                              │
+│  1. Import raw input file → data/raw.json                    │
+│  2. For each step in config.steps[]:                         │
+│     a. Load previous step output (or raw.json)               │
+│     b. Apply optional columnMap                              │
+│     c. Load &amp; execute transforms/&lt;fn&gt;.js                     │
+│     d. Save output → data/&lt;step-id&gt;.json                     │
+│     e. Update manifest, persist JSONL log                    │
+│  3. Copy last step → data/final.json                         │
+│  4. Write output xlsx if configured                          │
+│                                                              │
+│  Events: import, step-start, step-progress,                  │
+│          step-complete, step-error, interrupted, done         │
+└──────────────────────────────────────────────────────────────┘
+          │
+          ▼
+┌──────────────────────────────────────────────────────────────┐
+│                     Transforms                                │
+│                (transforms/*.js)                              │
+│                                                              │
+│  jegs-normalize.js          Raw → standard schema            │
+│  jegs-export-normalize.js   Newer export format → standard   │
+│  split-description-features.js  Split desc+features column   │
+│  clean-attributes.js        LLM-powered spec cleaning        │
+│  data-corrections.js        Manual per-SKU patches           │
+│  download-posters.js        Generate poster PNGs via API     │
+│                                                              │
+│  Contract: async (rows, config, context) =&gt; rows             │
+│  May export SYSTEM_PROMPT for agent mode                     │
+│  May export helper functions for reuse                       │
+└──────────────────────────────────────────────────────────────┘</code></pre>
+</div>
+</section>
+<section data-section-id="data-model">
+  <h2 id="data-model">Data Model</h2>
+<h3 id="run-configuration">Run Configuration (run.config.js)</h3><div class="code-wrap">
+  <div class="code-header">
+    <span class="code-lang">js</span>
+    <div class="code-actions">
+      <button class="code-expand" aria-label="Expand">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/>
+          <line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
+        </svg> Expand
+      </button>
+      <button class="copy-btn">Copy</button>
+    </div>
+  </div>
+  <pre><code>module.exports = {
+  name: <span class="nm">1</span>,
+  description: <span class="nm">2</span>,
+  input: {
+    file: <span class="nm">3</span>,
+    sheet: <span class="nm">4</span>,
+  },
+  steps: [
+    { id: <span class="nm">5</span>, fn: <span class="nm">6</span>, config: { brand: <span class="nm">7</span> } },
+    { id: <span class="nm">8</span>, fn: <span class="nm">9</span>, config: { mode: <span class="nm">10</span>, batchSize: <span class="nm">20</span> } },
+    { id: <span class="nm">11</span>, fn: <span class="nm">12</span>, config: { apiUrl: <span class="nm">13</span>./output/final.xlsx',
+};</code></pre>
+</div>
+<h3 id="run-manifest">Run Manifest (run.manifest.json)</h3><p>Sidecar file tracking execution state. Bootstrapped from config on first access, updated in-place during execution.</p><p><strong>Statuses:</strong></p><ul><li>Run: <code>draft | running | completed | partial | error | interrupted</code></li><li>Step: <code>pending | running | completed | error | skipped | interrupted</code></li></ul><p>Steps are marked <code>stale: true</code> when upstream config or input changes (cascade propagation).</p>
+<h3 id="standard-row-schema">Standard Row Schema (between transforms)</h3><div class="code-wrap">
+  <div class="code-header">
+    <span class="code-lang">json</span>
+    <div class="code-actions">
+      <button class="code-expand" aria-label="Expand">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/>
+          <line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
+        </svg> Expand
+      </button>
+      <button class="copy-btn">Copy</button>
+    </div>
+  </div>
+  <pre><code>{
+  &quot;Part Number&quot;: &quot;555-11140&quot;,
+  &quot;Part Type&quot;: &quot;Headlight Switch&quot;,
+  &quot;Description&quot;: &quot;...&quot;,
+  &quot;Title&quot;: &quot;JEGS ...&quot;,
+  &quot;Attributes Small&quot;: [[&quot;Color&quot;, &quot;Black&quot;]],
+  &quot;Attributes Full&quot;: [[&quot;Color&quot;, &quot;Black&quot;], [&quot;Material&quot;, &quot;Steel&quot;]],
+  &quot;Features &amp; Benefits&quot;: [&quot;Feature 1&quot;, &quot;Feature 2&quot;],
+  &quot;Images&quot;: &quot;https://i.ebayimg.com/...&quot;,
+  &quot;Brand&quot;: &quot;JEGS&quot;
+}</code></pre>
+</div>
+</section>
+<section data-section-id="key-subsystems">
+  <h2 id="key-subsystems">Key Subsystems</h2>
+<h3 id="job-queue">1. Job Queue (pipeline/job-queue.js)</h3><ul><li>In-process singleton extending <code>EventEmitter</code></li><li>Max 2 concurrent jobs</li><li>Each job gets an <code>AbortController</code> for cancellation</li><li>All events buffered in <code>job.events[]</code> for replay (used by SSE and active-job API)</li><li>Jobs are never persisted to disk; they exist only while the server process is alive</li></ul>
+<h3 id="sse-real-time-events">2. SSE Real-Time Events (server.js lines 311-340)</h3><ul><li><code>GET /api/runs/:id/events</code> opens an SSE connection</li><li>Server registers an EventEmitter listener scoped to the run ID</li><li>Events forwarded as <code>data: {json}\n\n</code></li><li>Connection closed after <code>done</code> or <code>step-error</code> events</li><li><strong>Known issue:</strong> Race condition where early events are lost before SSE connects. Fix documented in <code>sse-event-race-condition.md</code>.</li></ul>
+<h3 id="manifest-manager">3. Manifest Manager (pipeline/manifest.js)</h3><ul><li><code>getOrCreate(runDir)</code>: Reads existing manifest or bootstraps from config + data file timestamps</li><li><code>updateStep(manifest, stepId, fields)</code>: Partial-update a step's metadata</li><li><code>markStepStale(manifest, stepId)</code>: Marks step and all downstream steps stale</li><li><code>save(manifest, runDir)</code>: Writes manifest JSON to disk</li></ul>
+<h3 id="io-layer">4. IO Layer (pipeline/io.js)</h3><ul><li>Universal read/write for JSON, XLSX, XLS, CSV</li><li>Uses <code>xlsx</code> library for spreadsheet support</li><li>Supports <code>--limit</code>, <code>--slice</code>, <code>--sheet</code> options</li><li>Handles NaN values in JSON gracefully</li><li>Also usable as CLI: <code>node pipeline/io.js --from &lt;file&gt; --to &lt;file&gt;</code></li></ul>
+<h3 id="agent-slice-mode">5. Agent-Slice Mode</h3><p>For LLM transforms too large for a single API call:</p><ol><li><code>run.js --step &lt;id&gt; --agent-slices N</code> splits input into N files in <code>/tmp/</code></li><li>Exports the transform's <code>SYSTEM_PROMPT</code> to a text file</li><li>N Claude sub-agents process slices in parallel</li><li><code>merge-slices.js</code> recombines results by matching on Part Number</li></ol>
+<h3 id="preview-dashboard">6. Preview Dashboard (preview-dashboard/)</h3><p>Static HTML dashboard for reviewing pipeline output data. Auto-maps any JSON row schema to a standard display format. Used in two contexts:</p><ul><li><code>pipeline/preview.js</code>: local HTTP server for on-the-fly preview</li><li><code>pipeline/deploy-preview.js</code>: bakes data into static files and deploys to Vercel</li></ul>
+</section>
+<section data-section-id="frontend-architecture">
+  <h2 id="frontend-architecture">Frontend Architecture</h2>
+<h3 id="framework">Framework</h3><p>SvelteKit 5 with Svelte 5 runes (<code>$state</code>, <code>$derived</code>, <code>$effect</code>). Single-page app with client-side routing. During development, Vite serves on port 5173 with proxy to the Express API on port 3460.</p>
+<h3 id="key-pages">Key Pages</h3><div class="table-wrap"><table><thead><tr><th>Route</th><th>Purpose</th></tr></thead><tbody><tr><td>/</td><td>Dashboard home</td></tr><tr><td>/runs</td><td>List all runs with status badges</td></tr><tr><td>/runs/new</td><td>Create a new run</td></tr><tr><td>/runs/[id]</td><td>Run detail: config editing, execute, SSE log, step data tables</td></tr><tr><td>/runs/compare</td><td>Side-by-side run comparison</td></tr><tr><td>/files</td><td>Browse uploaded files across all runs</td></tr><tr><td>/transforms</td><td>List transforms with descriptions, view/edit source</td></tr><tr><td>/docs</td><td>Embedded markdown documentation viewer</td></tr></tbody></table></div>
+<h3 id="component-library">Component Library</h3><ul><li><code>StatusBadge.svelte</code> — Status chip with color coding</li><li><code>DataTable.svelte</code> — Paginated data viewer with column headers</li><li><code>PipelineFlow.svelte</code> — Visual step flow diagram</li><li><code>RunConfig.svelte</code> — Config editor panel</li><li><code>Breadcrumb.svelte</code> — Navigation breadcrumbs</li><li><code>ThemeToggle.svelte</code> — Dark/light mode switch</li><li><code>ToastContainer.svelte</code> — Toast notification system</li></ul>
+<h3 id="state-management">State Management</h3><ul><li>Local component state via Svelte 5 runes (<code>$state</code>, <code>$derived</code>)</li><li>Global toast notifications via <code>stores/toast.svelte.ts</code></li><li>Theme preference via CSS custom properties + localStorage</li><li>No global stores for run data; each page fetches its own data</li></ul>
+<h3 id="build-deploy">Build &amp; Deploy</h3><ul><li><code>npm run build</code> in <code>ui/</code> produces static SPA in <code>ui/build/</code></li><li>Express serves the built UI via <code>express.static</code> with SPA fallback</li><li><code>start-dev.sh</code> runs both Express API and Vite dev server concurrently</li></ul>
+</section>
+<section data-section-id="api-design">
+  <h2 id="api-design">API Design</h2>
+<p>RESTful JSON API with ~30 endpoints organized into 6 groups:</p>
+<div class="table-wrap"><table><thead><tr><th>Group</th><th>Endpoints</th><th>Purpose</th></tr></thead><tbody><tr><td><strong>Runs</strong></td><td>CRUD + fork</td><td>Manage pipeline run instances</td></tr><tr><td><strong>Config</strong></td><td>GET/PATCH</td><td>Read and update <code>run.config.js</code></td></tr><tr><td><strong>Execution</strong></td><td>POST execute, GET events, GET active-job</td><td>Start pipelines, SSE monitoring</td></tr><tr><td><strong>Data</strong></td><td>GET paginated, GET download, POST open</td><td>Access step output data</td></tr><tr><td><strong>Files</strong></td><td>POST upload, GET list, POST link, GET preview</td><td>Manage input files</td></tr><tr><td><strong>Transforms</strong></td><td>GET list/source/helpers/defaults, PUT source</td><td>Browse and edit transforms</td></tr></tbody></table></div>
+<p>Full interactive docs available at <code>GET /api/docs</code> (Scalar) and machine-readable spec at <code>GET /api/openapi.json</code>.</p>
+</section>
+<section data-section-id="persistence-model">
+  <h2 id="persistence-model">Persistence Model</h2>
+<p>All state lives on the file system. No database.</p>
+<div class="tree-wrap"><details open class="tree-node">
+  <summary><span class="tree-label tree-dir-label">scripts/</span> <span class="tree-desc">Project root</span></summary>
+  <div class="tree-children"><details class="tree-node">
+  <summary><span class="tree-label tree-dir-label">runs/</span> <span class="tree-desc">One directory per run</span></summary>
+  <div class="tree-children"><details class="tree-node">
+  <summary><span class="tree-label tree-dir-label">&lt;run-id&gt;/</span> <span class="tree-desc">Individual run directory</span></summary>
+  <div class="tree-children"><div class="tree-leaf"><span class="tree-label tree-file-label" data-ext="js">run.config.js</span> <span class="tree-desc">Pipeline definition (source of truth)</span></div><div class="tree-leaf"><span class="tree-label tree-file-label" data-ext="json">run.manifest.json</span> <span class="tree-desc">Execution state (derived, can be rebuilt)</span></div><div class="tree-leaf"><span class="tree-label tree-file-label">raw/</span> <span class="tree-desc">Input files (uploaded or symlinked)</span></div><div class="tree-leaf"><span class="tree-label tree-file-label">data/</span> <span class="tree-desc">JSON outputs (raw.json, &lt;step-id&gt;.json, final.json)</span></div><div class="tree-leaf"><span class="tree-label tree-file-label">logs/</span> <span class="tree-desc">JSONL event logs per step</span></div><div class="tree-leaf"><span class="tree-label tree-file-label">output/</span> <span class="tree-desc">Final xlsx/csv exports</span></div><div class="tree-leaf"><span class="tree-label tree-file-label">posters/</span> <span class="tree-desc">Generated poster images</span></div></div>
+</details></div>
+</details><div class="tree-leaf"><span class="tree-label tree-file-label">transforms/</span> <span class="tree-desc">Reusable transform functions</span></div><div class="tree-leaf"><span class="tree-label tree-file-label" data-ext="js">server.js</span> <span class="tree-desc">API server entry point</span></div></div>
+</details></div>
+<p><strong>Startup recovery:</strong> On boot, the server scans all runs for <code>status: 'running'</code> and resets them to <code>interrupted</code>, preventing stale running-state from previous crashes.</p>
+</section>
+<section data-section-id="security-operational-notes">
+  <h2 id="security-operational-notes">Security &amp; Operational Notes</h2>
+<ul><li><strong>Local-only:</strong> No authentication. Designed to run on a developer's machine.</li><li><strong>File system trust:</strong> <code>run.config.js</code> is loaded via <code>require()</code> — it can execute arbitrary code. This is intentional for developer flexibility.</li><li><strong>No persistence of secrets:</strong> <code>ANTHROPIC_API_KEY</code> read from <code>.env</code> at runtime, never stored in config or manifests.</li><li><strong>Symlink support:</strong> Files can be shared across runs via symlinks, avoiding data duplication.</li><li><strong>macOS integration:</strong> <code>POST /api/runs/:id/data/:fileId/open</code> calls <code>open</code> to launch files in the default macOS application.</li></ul>
+</section>
+<section data-section-id="known-issues">
+  <h2 id="known-issues">Known Issues</h2>
+<ol><li><strong>SSE Event Race Condition</strong> — Early pipeline events lost before SSE connects. Fix documented in <code>sse-event-race-condition.md</code>.</li><li><strong>eBay Poster Download Hanging</strong> — <code>download-posters.js</code> timeouts when sending real product payloads to the Next.js <code>ImageResponse</code> endpoint. Server completes generation but response never reaches client.</li><li><strong>Job memory growth</strong> — Completed jobs remain in the in-memory job map indefinitely. Long-running servers will accumulate job entries.</li></ol>
+</section>
+    <div id="no-results">No sections match your search — try different terms.</div>
+  </main>
+
+</div>
+
+<!-- Code preview dialog -->
+<dialog id="code-dialog">
+  <div class="dlg-header">
+    <span class="dlg-lang"></span>
+    <span class="dlg-title"></span>
+    <div class="dlg-actions">
+      <span class="dlg-lines"></span>
+      <button class="dlg-copy">Copy</button>
+      <button class="dlg-close" aria-label="Close">✕</button>
+    </div>
+  </div>
+  <div class="dlg-body"></div>
+</dialog>
+
+<script src="./report.js" defer></script>
+</body>
+</html>

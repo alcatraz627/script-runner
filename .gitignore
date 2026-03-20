@@ -1,0 +1,49 @@
+# Project files
+runs/*
+
+# Dependencies
+node_modules/
+
+# Environment
+.env
+.env.local
+
+# Run data (large files, user-specific)
+runs/*/data/
+runs/*/posters/
+runs/*/posters_*/
+runs/*/output/
+runs/*/logs/
+runs/*/run.manifest.json
+
+# Keep run configs and raw inputs
+!runs/*/run.config.js
+!runs/*/raw/
+
+# Build artifacts
+ui/build/
+ui/.svelte-kit/
+_deploy/
+
+# Archive (large files)
+archive/
+
+# Parsed data
+parse-excel/output/
+parse-excel/.venv/
+parse_excel/
+
+# Misc
+.DS_Store
+*.zip
+.download-failures.json
+_checkpoint.claude.md
+.folderinfo
+
+# Stale clones
+script-runner/
+
+# Editor
+.vscode/
+*.swp
+*.swo
