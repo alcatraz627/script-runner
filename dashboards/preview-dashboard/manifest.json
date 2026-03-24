@@ -1,0 +1,17 @@
+{
+  "name": "Product Preview",
+  "description": "Card-grid preview of JEGS eBay product listings — browse images, titles, descriptions, and attributes for all 456 items. Selections saved to preview-dashboard/selections.json.",
+  "version": "1.0.0",
+  "author": "legacy",
+
+  "keyField": "Part Number",
+
+  "pipeline": null,
+
+  "ui": {
+    "itemLabel": "product",
+    "itemLabelPlural": "products",
+    "selectionLabel": "Selection",
+    "standalone": true
+  }
+}

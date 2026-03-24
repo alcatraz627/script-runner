@@ -1,0 +1,17 @@
+{
+  "name": "Attribute Review",
+  "description": "Tabular review of all 602 JEGS product attributes — inspect, flag, approve, and export. Data is embedded in the page (no server needed).",
+  "version": "1.0.0",
+  "author": "legacy",
+
+  "keyField": "sku",
+
+  "pipeline": null,
+
+  "ui": {
+    "itemLabel": "product",
+    "itemLabelPlural": "products",
+    "selectionLabel": "Review Status",
+    "standalone": true
+  }
+}

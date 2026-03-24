@@ -1,0 +1,17 @@
+{
+  "name": "Image Selector",
+  "description": "Multi-dataset image selection tool — browse, compare, and select product images from JEGS CDN datasets. Selections saved per-dataset to image-selector/datasets/{id}/selections.json.",
+  "version": "1.0.0",
+  "author": "legacy",
+
+  "keyField": "sku",
+
+  "pipeline": null,
+
+  "ui": {
+    "itemLabel": "product",
+    "itemLabelPlural": "products",
+    "selectionLabel": "Image Selection",
+    "standalone": true
+  }
+}

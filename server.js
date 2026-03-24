@@ -1489,6 +1489,69 @@ app.post('/api/runs/:runId/dashboard-selections/:dashboardId', (req, res) => {
 });
 
 // ═══════════════════════════════════════════════════════════════════════════════
+//  LEGACY DASHBOARD COMPAT APIS
+//  These support old standalone dashboards (preview-dashboard, image-selector)
+//  that have been moved into dashboards/ and now run through this server.
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// GET/POST /api/selections — preview-dashboard selections compat
+// (preview-dashboard/index.html fetches /api/selections)
+const PREVIEW_SELECTIONS_FILE = path.join(__dirname, 'preview-dashboard', 'selections.json');
+app.get('/api/selections', (req, res) => {
+  try {
+    const data = fs.existsSync(PREVIEW_SELECTIONS_FILE)
+      ? JSON.parse(fs.readFileSync(PREVIEW_SELECTIONS_FILE, 'utf8'))
+      : {};
+    res.json(data);
+  } catch { res.json({}); }
+});
+app.post('/api/selections', (req, res) => {
+  try {
+    fs.writeFileSync(PREVIEW_SELECTIONS_FILE, JSON.stringify(req.body, null, 2));
+    res.json({ ok: true });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// GET /api/datasets — list image-selector datasets
+// GET /api/datasets/:id/data — dataset items
+// GET/POST /api/datasets/:id/selections — dataset selections
+const IMAGE_SELECTOR_DATASETS_DIR = path.join(__dirname, 'image-selector', 'datasets');
+app.get('/api/datasets', (req, res) => {
+  if (!fs.existsSync(IMAGE_SELECTOR_DATASETS_DIR)) return res.json([]);
+  const datasets = fs.readdirSync(IMAGE_SELECTOR_DATASETS_DIR, { withFileTypes: true })
+    .filter(d => d.isDirectory())
+    .map(d => {
+      const dataFile = path.join(IMAGE_SELECTOR_DATASETS_DIR, d.name, 'data.json');
+      let itemCount = 0;
+      try { const data = JSON.parse(fs.readFileSync(dataFile, 'utf8')); itemCount = Array.isArray(data) ? data.length : 0; } catch {}
+      return { id: d.name, name: d.name.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()), itemCount };
+    })
+    .filter(d => d.itemCount > 0);
+  res.json(datasets);
+});
+app.get('/api/datasets/:id/data', (req, res) => {
+  const file = path.join(IMAGE_SELECTOR_DATASETS_DIR, req.params.id, 'data.json');
+  if (!file.startsWith(IMAGE_SELECTOR_DATASETS_DIR) || !fs.existsSync(file))
+    return res.status(404).json({ error: 'Dataset not found' });
+  res.sendFile(file);
+});
+app.get('/api/datasets/:id/selections', (req, res) => {
+  const file = path.join(IMAGE_SELECTOR_DATASETS_DIR, req.params.id, 'selections.json');
+  if (!file.startsWith(IMAGE_SELECTOR_DATASETS_DIR)) return res.status(404).json({ error: 'Not found' });
+  try {
+    res.json(fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : {});
+  } catch { res.json({}); }
+});
+app.post('/api/datasets/:id/selections', (req, res) => {
+  const file = path.join(IMAGE_SELECTOR_DATASETS_DIR, req.params.id, 'selections.json');
+  if (!file.startsWith(IMAGE_SELECTOR_DATASETS_DIR)) return res.status(403).json({ error: 'Forbidden' });
+  try {
+    fs.writeFileSync(file, JSON.stringify(req.body, null, 2));
+    res.json({ ok: true });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
 //  STATIC / SPA FALLBACK
 // ═══════════════════════════════════════════════════════════════════════════════
 
