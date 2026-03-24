@@ -31,11 +31,12 @@ const MAX_CONCURRENT = 2;
  * @property {string} jobId
  * @property {string} runDir
  * @property {Object} executeOptions
- * @property {'queued'|'running'|'completed'|'failed'} status
+ * @property {'queued'|'running'|'awaiting'|'completed'|'failed'} status
  * @property {string} createdAt
  * @property {string|null} startedAt
  * @property {string|null} completedAt
  * @property {string|null} error
+ * @property {string|null} awaitingStepId - stepId currently suspended for approval
  * @property {Array} events - collected events from the run
  */
 
@@ -69,6 +70,7 @@ class JobQueue extends EventEmitter {
       startedAt: null,
       completedAt: null,
       error: null,
+      awaitingStepId: null,
       events: [],
     };
 
@@ -129,6 +131,25 @@ class JobQueue extends EventEmitter {
     }
   }
 
+  /**
+   * Approve a suspended manual step, allowing the pipeline to continue.
+   * @param {string} jobId
+   * @param {string} stepId
+   * @returns {boolean} true if approval was accepted
+   */
+  approve(jobId, stepId) {
+    const job = this.jobs.get(jobId);
+    if (!job || job.status !== 'awaiting') return false;
+    if (job.awaitingStepId !== stepId) return false;
+    const resolver = job._approvalResolver;
+    if (!resolver) return false;
+    job.status = 'running';
+    job.awaitingStepId = null;
+    delete job._approvalResolver;
+    resolver();
+    return true;
+  }
+
   /** @private */
   async _run(job) {
     this.running++;
@@ -143,12 +164,20 @@ class JobQueue extends EventEmitter {
       this.emit('event', { jobId: job.jobId, runDir: job.runDir, event });
     };
 
+    // Passed to engine so manual steps can suspend execution until approved
+    const waitForApproval = (stepId) => new Promise((resolve) => {
+      job.status = 'awaiting';
+      job.awaitingStepId = stepId;
+      job._approvalResolver = resolve;
+    });
+
     try {
       await execute({
         runDir: job.runDir,
         ...job.executeOptions,
         onEvent,
         signal: ac.signal,
+        waitForApproval,
       });
       job.status = ac.signal.aborted ? 'failed' : 'completed';
       if (ac.signal.aborted) job.error = 'Cancelled by user';

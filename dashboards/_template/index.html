@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<!--
+  ╔══════════════════════════════════════════════════════════════════════════╗
+  ║  DASHBOARD PLUGIN TEMPLATE                                               ║
+  ║  Versable Script Runner — Manual Review Step                             ║
+  ╠══════════════════════════════════════════════════════════════════════════╣
+  ║                                                                          ║
+  ║  HOW TO USE THIS TEMPLATE                                                ║
+  ║  ─────────────────────────────────────────────────────────────────────  ║
+  ║  1. Copy the entire _template/ folder to dashboards/<your-name>/         ║
+  ║  2. Edit manifest.json with your dashboard's name and config             ║
+  ║  3. Search for all "CUSTOMIZE:" comments in this file                    ║
+  ║  4. Implement the three sections marked CUSTOMIZE below:                 ║
+  ║     a) renderItem(item, index)  — how to display one item in the list    ║
+  ║     b) renderDetail(item)       — the right-panel detail view            ║
+  ║     c) getItemSummary(item)     — one-line summary shown in list rows    ║
+  ║                                                                          ║
+  ║  PIPELINE INTEGRATION                                                    ║
+  ║  ─────────────────────────────────────────────────────────────────────  ║
+  ║  Add a type: 'manual' step to your run.config.js:                        ║
+  ║                                                                          ║
+  ║    {                                                                     ║
+  ║      "id": "review",                                                     ║
+  ║      "name": "Manual Review",                                            ║
+  ║      "type": "manual",                                                   ║
+  ║      "dashboardId": "<your-dashboard-folder-name>"                       ║
+  ║    }                                                                     ║
+  ║                                                                          ║
+  ║  The Script Runner UI will show an "Open Dashboard" button on this step  ║
+  ║  and an "Approve & Continue" button. The dashboard URL is auto-built as: ║
+  ║    /dashboards/<id>/?runId=...&stepId=...&dataStep=...&dashboardId=...   ║
+  ║                                                                          ║
+  ║  STANDALONE MODE                                                         ║
+  ║  ─────────────────────────────────────────────────────────────────────  ║
+  ║  Open without URL params to use as a standalone viewer (no pipeline).    ║
+  ║  The Done button will still work but won't approve any pipeline step.    ║
+  ║                                                                          ║
+  ╚══════════════════════════════════════════════════════════════════════════╝
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- CUSTOMIZE: page title -->
+  <title>Review Dashboard</title>
+
+  <style>
+    /* ── Reset & Base ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* CUSTOMIZE: swap these to match your dashboard's theme */
+      --accent:       #2563eb;
+      --accent-light: #eff6ff;
+      --accent-text:  #1e40af;
+      --success:      #10b981;
+      --warning:      #f59e0b;
+      --danger:       #ef4444;
+
+      --bg:           #f8fafc;
+      --surface:      #ffffff;
+      --border:       #e2e8f0;
+      --border-light: #f1f5f9;
+      --text:         #0f172a;
+      --text-2:       #475569;
+      --text-3:       #94a3b8;
+
+      --sidebar-w:    340px;
+      --header-h:     52px;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 14px;
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    /* ── Layout ───────────────────────────────────────────── */
+    .layout {
+      display: grid;
+      grid-template-rows: var(--header-h) 1fr;
+      grid-template-columns: var(--sidebar-w) 1fr;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Header spans full width */
+    .header {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 16px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      z-index: 10;
+    }
+
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .main {
+      overflow-y: auto;
+      padding: 20px;
+    }
+
+    /* ── Header ───────────────────────────────────────────── */
+    .header-title {
+      font-size: 15px;
+      font-weight: 600;
+      flex: 1;
+    }
+
+    .header-meta {
+      font-size: 12px;
+      color: var(--text-3);
+      font-family: ui-monospace, monospace;
+    }
+
+    .status-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text-2);
+      min-width: 140px;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--text-3);
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+    .status-dot.saving  { background: var(--warning); animation: pulse 1s infinite; }
+    .status-dot.saved   { background: var(--success); }
+    .status-dot.error   { background: var(--danger); }
+    .status-dot.done    { background: var(--success); }
+
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.15s;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+    .btn-primary:hover:not(:disabled) { filter: brightness(1.08); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-2);
+      border-color: var(--border);
+    }
+    .btn-outline:hover:not(:disabled) { background: var(--bg); }
+
+    /* ── Sidebar search ──────────────────────────────────── */
+    .search-bar {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border-light);
+      flex-shrink: 0;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 13px;
+      outline: none;
+      background: var(--bg);
+    }
+    .search-bar input:focus { border-color: var(--accent); }
+
+    .list-header {
+      padding: 6px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-3);
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    /* ── Item list ─────────────────────────────────────────── */
+    .item-list {
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .item-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      cursor: pointer;
+      border-bottom: 1px solid var(--border-light);
+      transition: background 0.1s;
+    }
+    .item-row:hover { background: var(--bg); }
+    .item-row.active {
+      background: var(--accent-light);
+      border-left: 3px solid var(--accent);
+      padding-left: 9px;
+    }
+
+    .item-key {
+      font-family: ui-monospace, monospace;
+      font-size: 11px;
+      color: var(--text-3);
+      flex-shrink: 0;
+    }
+
+    .item-label {
+      flex: 1;
+      font-size: 13px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* CUSTOMIZE: add your own selection indicator classes */
+    .sel-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      flex-shrink: 0;
+    }
+    .sel-indicator.has-selection { background: var(--success); border-color: var(--success); }
+
+    /* ── Detail panel ─────────────────────────────────────── */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: var(--text-3);
+      gap: 8px;
+    }
+    .empty-state svg { opacity: 0.3; }
+    .empty-state p { font-size: 13px; }
+
+    .detail-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .detail-header {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .detail-header h2 {
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .detail-header .detail-key {
+      font-size: 12px;
+      font-family: ui-monospace, monospace;
+      color: var(--text-3);
+    }
+
+    .detail-body { padding: 16px; }
+
+    /* ── Selection controls ────────────────────────────────── */
+    /* CUSTOMIZE: style your selection controls here */
+    .selection-section {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-light);
+    }
+    .selection-section label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-3);
+      margin-bottom: 8px;
+    }
+
+    /* Loading skeleton */
+    .skeleton {
+      background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.2s infinite;
+      border-radius: 4px;
+      height: 14px;
+      margin: 6px 0;
+    }
+    @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+    /* Progress pill */
+    .progress-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 2px 8px;
+      border-radius: 99px;
+      font-size: 11px;
+      background: var(--accent-light);
+      color: var(--accent-text);
+      border: 1px solid #bfdbfe;
+    }
+  </style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- ── HEADER ──────────────────────────────────────────────── -->
+  <header class="header">
+    <!-- CUSTOMIZE: dashboard title and icon -->
+    <div class="header-title">
+      <!-- replace with your dashboard name -->
+      Review Dashboard
+    </div>
+
+    <span id="progress-pill" class="progress-pill" style="display:none"></span>
+
+    <div class="header-meta" id="ctx-label"></div>
+
+    <div class="status-bar">
+      <span class="status-dot" id="status-dot"></span>
+      <span id="status-msg">Loading…</span>
+    </div>
+
+    <button class="btn btn-outline" id="btn-save" onclick="onSaveClick()">Save</button>
+
+    <!-- CUSTOMIZE: change the Done button label if needed -->
+    <button class="btn btn-primary" id="btn-done" onclick="onDoneClick()">
+      ✓ Approve &amp; Continue
+    </button>
+  </header>
+
+  <!-- ── SIDEBAR (item list) ─────────────────────────────────── -->
+  <aside class="sidebar">
+    <div class="search-bar">
+      <input
+        type="text"
+        id="search-input"
+        placeholder="Search…"
+        oninput="onSearch(this.value)"
+      />
+    </div>
+    <div class="list-header">
+      <span id="list-count">0 items</span>
+      <!-- CUSTOMIZE: add filter/sort controls here if needed -->
+    </div>
+    <div class="item-list" id="item-list">
+      <!-- populated by renderList() -->
+    </div>
+  </aside>
+
+  <!-- ── MAIN (detail panel) ─────────────────────────────────── -->
+  <main class="main" id="main-panel">
+    <div class="empty-state" id="empty-state">
+      <svg width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z" />
+      </svg>
+      <p>Select an item from the list</p>
+    </div>
+    <div id="detail-panel" style="display:none"></div>
+  </main>
+
+</div>
+
+<!-- ── SCRIPTS ─────────────────────────────────────────────────── -->
+<script src="../dashboard-bridge.js"></script>
+<script>
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  INITIALIZE BRIDGE
+// ═══════════════════════════════════════════════════════════════════════════
+
+const bridge = new DashboardBridge({
+  // CUSTOMIZE: set keyField to the field that uniquely identifies each item
+  keyField: 'Part Number',
+});
+
+let filteredItems = [];
+let activeKey = null;
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  STATUS BAR
+// ═══════════════════════════════════════════════════════════════════════════
+
+bridge.onStatus(({ status, message }) => {
+  const dot = document.getElementById('status-dot');
+  const msg = document.getElementById('status-msg');
+  const btnDone = document.getElementById('btn-done');
+
+  dot.className = `status-dot ${status}`;
+  msg.textContent = message;
+
+  if (status === 'done') {
+    btnDone.disabled = true;
+    btnDone.textContent = '✓ Done';
+  }
+});
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  BOOT
+// ═══════════════════════════════════════════════════════════════════════════
+
+async function boot() {
+  // Show pipeline context in header
+  const ctx = bridge.context;
+  const ctxLabel = document.getElementById('ctx-label');
+  if (ctx.runId) {
+    ctxLabel.textContent = `${ctx.runId} › ${ctx.stepId || '?'}`;
+  } else {
+    ctxLabel.textContent = 'standalone mode';
+  }
+
+  try {
+    const { items } = await bridge.init();
+
+    // Update progress pill
+    const pill = document.getElementById('progress-pill');
+    const selected = Object.keys(bridge.selections).length;
+    pill.textContent = `${selected} / ${items.length} reviewed`;
+    pill.style.display = '';
+
+    filteredItems = items;
+    renderList(items);
+  } catch (err) {
+    document.getElementById('status-msg').textContent = `Error: ${err.message}`;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  LIST RENDERING
+// ═══════════════════════════════════════════════════════════════════════════
+
+function renderList(items) {
+  const el = document.getElementById('item-list');
+  const count = document.getElementById('list-count');
+  count.textContent = `${items.length} item${items.length !== 1 ? 's' : ''}`;
+
+  if (items.length === 0) {
+    el.innerHTML = '<div style="padding:20px;text-align:center;color:#94a3b8;font-size:13px">No results</div>';
+    return;
+  }
+
+  el.innerHTML = items.map((item, i) => {
+    const key = item[bridge.keyField] || String(i);
+    const hasSel = bridge.hasSelection(key);
+    const isActive = key === activeKey;
+    return `
+      <div class="item-row ${isActive ? 'active' : ''}" onclick="selectItem('${escapeAttr(key)}')" data-key="${escapeAttr(key)}">
+        <span class="sel-indicator ${hasSel ? 'has-selection' : ''}"></span>
+        <span class="item-key">${escapeHtml(key)}</span>
+        <span class="item-label">${escapeHtml(getItemSummary(item))}</span>
+      </div>
+    `;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  ITEM SELECTION
+// ═══════════════════════════════════════════════════════════════════════════
+
+function selectItem(key) {
+  activeKey = key;
+  const item = bridge.items.find(it => (it[bridge.keyField] || '') === key);
+
+  // Highlight active row
+  document.querySelectorAll('.item-row').forEach(row => {
+    row.classList.toggle('active', row.dataset.key === key);
+  });
+
+  // Show detail
+  const emptyState = document.getElementById('empty-state');
+  const detailPanel = document.getElementById('detail-panel');
+  emptyState.style.display = 'none';
+  detailPanel.style.display = '';
+  detailPanel.innerHTML = renderDetail(item);
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  SEARCH
+// ═══════════════════════════════════════════════════════════════════════════
+
+function onSearch(query) {
+  const q = query.toLowerCase().trim();
+  filteredItems = q
+    ? bridge.items.filter(item => {
+        const key = String(item[bridge.keyField] || '').toLowerCase();
+        const summary = getItemSummary(item).toLowerCase();
+        return key.includes(q) || summary.includes(q);
+      })
+    : bridge.items;
+  renderList(filteredItems);
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  SAVE / DONE HANDLERS
+// ═══════════════════════════════════════════════════════════════════════════
+
+async function onSaveClick() {
+  const btn = document.getElementById('btn-save');
+  btn.disabled = true;
+  try { await bridge.saveNow(); }
+  finally { btn.disabled = false; }
+}
+
+async function onDoneClick() {
+  const btn = document.getElementById('btn-done');
+  btn.disabled = true;
+  try {
+    await bridge.signalDone();
+  } catch {
+    btn.disabled = false;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  ██████████████████████████████████████████████████████████████████████
+//  CUSTOMIZE BELOW — three functions to implement for your use case
+//  ██████████████████████████████████████████████████████████████████████
+// ═══════════════════════════════════════════════════════════════════════════
+
+/**
+ * CUSTOMIZE: Return a one-line summary string for an item, shown in the list.
+ *
+ * @param {Object} item  one row from the pipeline data
+ * @returns {string}
+ *
+ * Examples:
+ *   return item['Title'] || item['Name'] || '';
+ *   return `${item['Category']} — ${item['Part Type']}`;
+ */
+function getItemSummary(item) {
+  // TODO(customize): return a meaningful label for list rows
+  return item['Title'] || item['Name'] || item['eBay Listing Title'] || '';
+}
+
+/**
+ * CUSTOMIZE: Return an HTML string for the full detail view of one item.
+ * This is rendered in the right panel when the user clicks a list row.
+ *
+ * Use bridge.getSelection(key) to read the current selection.
+ * Call bridge.select(key, value) from onclick handlers to save choices.
+ *
+ * @param {Object} item  one row from the pipeline data
+ * @returns {string} HTML
+ *
+ * Tip: use the .detail-card, .detail-header, .detail-body, .selection-section
+ *      CSS classes already defined above for a consistent look.
+ */
+function renderDetail(item) {
+  const key = item[bridge.keyField] || '?';
+  const currentSelection = bridge.getSelection(key);
+
+  // TODO(customize): replace the body with your item's fields + selection UI
+  return `
+    <div class="detail-card">
+      <div class="detail-header">
+        <h2>${escapeHtml(getItemSummary(item))}</h2>
+        <span class="detail-key">${escapeHtml(key)}</span>
+      </div>
+      <div class="detail-body">
+
+        <!-- CUSTOMIZE: show the fields that matter for this review -->
+        ${Object.entries(item).slice(0, 8).map(([k, v]) => `
+          <div style="display:flex;gap:8px;margin-bottom:8px;font-size:13px">
+            <span style="color:#94a3b8;min-width:120px;flex-shrink:0">${escapeHtml(k)}</span>
+            <span>${escapeHtml(String(v ?? ''))}</span>
+          </div>
+        `).join('')}
+
+        <!-- CUSTOMIZE: add your selection UI here -->
+        <div class="selection-section">
+          <label>Selection</label>
+
+          <!-- Example: a simple text input for a note -->
+          <textarea
+            style="width:100%;padding:8px;border:1px solid #e2e8f0;border-radius:6px;font-size:13px;resize:vertical;min-height:60px"
+            placeholder="Add a note…"
+            oninput="bridge.select('${escapeAttr(key)}', this.value || null)"
+          >${escapeHtml(currentSelection || '')}</textarea>
+
+          ${currentSelection
+            ? `<div style="margin-top:8px;font-size:12px;color:#10b981">✓ Selection saved</div>`
+            : ''
+          }
+        </div>
+
+      </div>
+    </div>
+  `;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  UTILITIES
+// ═══════════════════════════════════════════════════════════════════════════
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function escapeAttr(str) {
+  return String(str).replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  START
+// ═══════════════════════════════════════════════════════════════════════════
+
+boot();
+
+</script>
+</body>
+</html>

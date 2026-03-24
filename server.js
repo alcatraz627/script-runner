@@ -568,6 +568,16 @@ app.get('/api/runs/:id/posters/:filename', (req, res) => {
   res.sendFile(filePath);
 });
 
+// POST /api/runs/:id/open-posters — reveal posters folder in Finder (macOS only)
+app.post('/api/runs/:id/open-posters', (req, res) => {
+  const runDir = resolveRunDir(req.params.id);
+  if (!runDir) return res.status(404).json({ error: 'Run not found' });
+  const postersDir = path.join(runDir, 'posters');
+  if (!fs.existsSync(postersDir)) return res.status(404).json({ error: 'No posters directory found' });
+  require('child_process').exec(`open "${postersDir}"`);
+  res.json({ ok: true });
+});
+
 // GET /api/runs/:id/images/zip — zip all images (posters/ dir) and download
 app.get('/api/runs/:id/images/zip', (req, res) => {
   const runDir = resolveRunDir(req.params.id);
@@ -1395,6 +1405,88 @@ app.get(
     theme: 'default',
   }),
 );
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  MANUAL STEP APPROVAL
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// POST /api/runs/:id/approve — resume a pipeline suspended at a manual step.
+// Body: { stepId: string }
+app.post('/api/runs/:id/approve', (req, res) => {
+  const runDir = resolveRunDir(req.params.id);
+  if (!runDir) return res.status(404).json({ error: 'Run not found' });
+  const { stepId } = req.body;
+  if (!stepId) return res.status(400).json({ error: 'stepId required' });
+
+  // Find the active job for this run
+  const job = jobQueue.listJobs().find(j =>
+    j.runDir === runDir && j.status === 'awaiting'
+  );
+  if (!job) return res.status(409).json({ error: 'No awaiting job for this run' });
+
+  const ok = jobQueue.approve(job.jobId, stepId);
+  if (!ok) return res.status(409).json({ error: `Job not awaiting step "${stepId}"` });
+
+  res.json({ ok: true, jobId: job.jobId });
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  DASHBOARD PLUGIN API
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const DASHBOARDS_DIR = path.join(__dirname, 'dashboards');
+
+// Serve dashboard static files (HTML, JS, assets) under /dashboards/*
+app.use('/dashboards', express.static(DASHBOARDS_DIR));
+
+// GET /api/dashboards — list all registered dashboard plugins.
+// A dashboard plugin is any subdirectory in dashboards/ that contains a manifest.json.
+app.get('/api/dashboards', (req, res) => {
+  if (!fs.existsSync(DASHBOARDS_DIR)) return res.json([]);
+  const entries = fs.readdirSync(DASHBOARDS_DIR, { withFileTypes: true })
+    .filter(e => e.isDirectory() && !e.name.startsWith('_'))
+    .map(e => {
+      const manifestPath = path.join(DASHBOARDS_DIR, e.name, 'manifest.json');
+      if (!fs.existsSync(manifestPath)) return null;
+      try {
+        const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+        return { id: e.name, ...manifest };
+      } catch { return null; }
+    })
+    .filter(Boolean);
+  res.json(entries);
+});
+
+// GET /api/dashboards/:id — single dashboard manifest.
+app.get('/api/dashboards/:id', (req, res) => {
+  const manifestPath = path.join(DASHBOARDS_DIR, req.params.id, 'manifest.json');
+  if (!fs.existsSync(manifestPath)) return res.status(404).json({ error: 'Dashboard not found' });
+  try {
+    const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+    res.json({ id: req.params.id, ...manifest });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// GET /api/runs/:runId/dashboard-selections/:dashboardId — load saved selections.
+app.get('/api/runs/:runId/dashboard-selections/:dashboardId', (req, res) => {
+  const runDir = resolveRunDir(req.params.runId);
+  if (!runDir) return res.status(404).json({ error: 'Run not found' });
+  const filePath = path.join(runDir, 'data', `_selections-${req.params.dashboardId}.json`);
+  if (!fs.existsSync(filePath)) return res.json({});
+  try { res.json(JSON.parse(fs.readFileSync(filePath, 'utf8'))); }
+  catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// POST /api/runs/:runId/dashboard-selections/:dashboardId — save selections.
+app.post('/api/runs/:runId/dashboard-selections/:dashboardId', (req, res) => {
+  const runDir = resolveRunDir(req.params.runId);
+  if (!runDir) return res.status(404).json({ error: 'Run not found' });
+  const filePath = path.join(runDir, 'data', `_selections-${req.params.dashboardId}.json`);
+  try {
+    fs.writeFileSync(filePath, JSON.stringify(req.body, null, 2));
+    res.json({ ok: true });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //  STATIC / SPA FALLBACK

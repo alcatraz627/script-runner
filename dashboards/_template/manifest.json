@@ -1,0 +1,20 @@
+{
+  "name": "Dashboard Name",
+  "description": "One-line description of what this dashboard lets the user review or select.",
+  "version": "1.0.0",
+  "author": "agent",
+
+  "keyField": "Part Number",
+
+  "pipeline": {
+    "dataStep": null,
+    "stepId": null
+  },
+
+  "ui": {
+    "itemLabel": "item",
+    "itemLabelPlural": "items",
+    "selectionLabel": "Selection",
+    "doneLabel": "Approve & Continue Pipeline"
+  }
+}

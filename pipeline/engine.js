@@ -34,7 +34,7 @@ const createLogger = require('./logger');
  * @param {function} [opts.onEvent] - Event callback
  * @returns {Promise<void>}
  */
-async function execute({ runDir, step: onlyStep, fromStep, limit, slice, onEvent, signal }) {
+async function execute({ runDir, step: onlyStep, fromStep, limit, slice, onEvent, signal, waitForApproval }) {
   const log = createLogger('engine');
   const emit = onEvent || (() => {});
   log.info(`Execute: ${path.basename(runDir)}${onlyStep ? ` step=${onlyStep}` : ''}${fromStep ? ` from=${fromStep}` : ''}`);
@@ -176,6 +176,66 @@ async function execute({ runDir, step: onlyStep, fromStep, limit, slice, onEvent
 
     const stepStart = Date.now();
     const stepId = step.id;
+
+    // ── Manual (approval-gate) steps ──────────────────────────────────────────
+    // type: 'manual' steps are transparent data-wise — they pass the previous
+    // step's output through unchanged and suspend execution until the user
+    // approves via POST /api/runs/:id/approve. This is the hook for human-in-
+    // the-loop review steps: image selection, attribute review, content sign-off.
+    if (step.type === 'manual') {
+      const inputData = loadRows(currentInputId);
+      saveRows(stepId, inputData);
+
+      manifest.updateStep(mf, stepId, {
+        status: 'awaiting',
+        stale: false,
+        startedAt: new Date().toISOString(),
+        inputRowCount: inputData.length,
+        outputRowCount: inputData.length,
+        outputFile: `data/${stepId}.json`,
+        error: null,
+      });
+      manifest.save(mf, runDir);
+
+      persistAndEmit({
+        type: 'step-awaiting',
+        stepId,
+        message: `Awaiting approval: ${step.name || stepId}`,
+        dashboardId: step.dashboardId || null,
+      }, stepId);
+      log.info(`Step ${stepId} awaiting manual approval`);
+
+      if (waitForApproval) {
+        await waitForApproval(stepId);
+      }
+
+      // Re-check abort after waking up — user may have cancelled while waiting
+      if (signal?.aborted) {
+        manifest.updateStep(mf, stepId, { status: 'interrupted' });
+        manifest.save(mf, runDir);
+        return;
+      }
+
+      const durationMs = Date.now() - stepStart;
+      manifest.updateStep(mf, stepId, {
+        status: 'completed',
+        completedAt: new Date().toISOString(),
+        durationMs,
+      });
+      manifest.save(mf, runDir);
+
+      persistAndEmit({
+        type: 'step-complete',
+        stepId,
+        message: `Step ${stepId} approved — continuing`,
+        rowCount: inputData.length,
+        durationMs,
+      }, stepId);
+      log.info(`Step ${stepId} approved after ${durationMs}ms`);
+
+      currentInputId = stepId;
+      continue;
+    }
 
     // Update manifest: step starting
     manifest.updateStep(mf, stepId, {
