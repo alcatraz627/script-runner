@@ -9,7 +9,7 @@ export const APP = {
 	pollInterval: 5000,
 	pageSize: 50,
 	maxPreviewRows: 30,
-	buildTag: 'frost-pine-21',
+	buildTag: 'river-fox-12',
 } as const;
 
 export interface NavItem {
@@ -23,6 +23,7 @@ export interface NavItem {
 export const NAV_ITEMS: NavItem[] = [
 	{ label: 'Runs', href: '/runs', icon: 'play', desc: 'Pipeline executions' },
 	{ label: 'Compare', href: '/runs/compare', icon: 'compare', desc: 'Side-by-side diffs' },
+	{ label: 'Dashboards', href: '/dashboards', icon: 'dashboard', desc: 'Manual review plugins' },
 	{ label: 'Files', href: '/files', icon: 'file', desc: 'Manage input files' },
 	{ label: 'Transforms', href: '/transforms', icon: 'code', desc: 'Data functions' },
 	{ label: 'Docs', href: '/docs', icon: 'docs', desc: 'Project documentation' },

@@ -370,10 +370,36 @@
 		if (step.stale) return 'border-l-amber-400';
 		switch (step.status) {
 			case 'completed': return 'border-l-green-400';
-			case 'running': return 'border-l-blue-400';
-			case 'error': return 'border-l-red-400';
-			default: return 'border-l-[var(--color-border)]';
+			case 'running':   return 'border-l-blue-400';
+			case 'awaiting':  return 'border-l-purple-400';
+			case 'error':     return 'border-l-red-400';
+			default:          return 'border-l-[var(--color-border)]';
 		}
+	}
+
+	async function approveStep(stepId: string) {
+		try {
+			await api.runs.approve(runId, stepId);
+			await fetchManifest();
+		} catch (e) {
+			toast.error(e instanceof Error ? e.message : 'Approval failed');
+		}
+	}
+
+	function openDashboard(step: StepManifest) {
+		const dashboardId = (step as unknown as Record<string, unknown>).dashboardId as string | undefined;
+		if (!dashboardId) return;
+		const params = new URLSearchParams({
+			runId,
+			stepId: step.id,
+			dashboardId,
+			dataStep: manifest?.steps[manifest.steps.findIndex(s => s.id === step.id) - 1]?.id || '',
+		});
+		window.open(
+			`http://localhost:3460/dashboards/${dashboardId}/?${params}`,
+			`dashboard-${dashboardId}`,
+			'width=1280,height=900,menubar=no,toolbar=no'
+		);
 	}
 
 	let lastEvent = $derived.by(() => events.length > 0 ? events[events.length - 1] : null);
@@ -808,8 +834,35 @@
 									</div>
 								</div>
 								<div class="flex items-center gap-4">
+									<!-- Awaiting: open dashboard + approve buttons -->
+									{#if step.status === 'awaiting'}
+										{@const dashId = (step as unknown as Record<string,unknown>).dashboardId as string|undefined}
+										{#if dashId}
+											<span
+												role="button"
+												tabindex="0"
+												onclick={(e: MouseEvent) => { e.stopPropagation(); openDashboard(step); }}
+												onkeydown={(e: KeyboardEvent) => { if (e.key === 'Enter') { e.stopPropagation(); openDashboard(step); } }}
+												class="inline-flex items-center gap-1 px-2 py-1 text-xs text-purple-700 border border-purple-200 bg-purple-50 rounded hover:bg-purple-100 transition-colors active:scale-95 cursor-pointer select-none"
+												title="Open review dashboard"
+											>
+												<svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+												Open Dashboard
+											</span>
+										{/if}
+										<span
+											role="button"
+											tabindex="0"
+											onclick={(e: MouseEvent) => { e.stopPropagation(); approveStep(step.id); }}
+											onkeydown={(e: KeyboardEvent) => { if (e.key === 'Enter') { e.stopPropagation(); approveStep(step.id); } }}
+											class="inline-flex items-center gap-1 px-2 py-1 text-xs text-purple-700 border border-purple-300 bg-purple-100 rounded hover:bg-purple-200 transition-colors active:scale-95 cursor-pointer select-none font-medium"
+											title="Approve and continue pipeline"
+										>
+											✓ Approve
+										</span>
+									{/if}
 									<!-- Run single step -->
-									{#if !executing && step.status !== 'running'}
+									{#if !executing && step.status !== 'running' && step.status !== 'awaiting'}
 										<span
 											role="button"
 											tabindex="0"
@@ -820,6 +873,20 @@
 										>
 											<svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" /></svg>
 											Run
+										</span>
+									{/if}
+									<!-- Open posters folder (download-posters step only) -->
+									{#if step.fn === 'download-posters' && step.status === 'completed'}
+										<span
+											role="button"
+											tabindex="0"
+											onclick={(e: MouseEvent) => { e.stopPropagation(); api.runs.openPosters(runId); }}
+											onkeydown={(e: KeyboardEvent) => { if (e.key === 'Enter') { e.stopPropagation(); api.runs.openPosters(runId); } }}
+											class="inline-flex items-center gap-1 px-2 py-1 text-xs text-[var(--color-text-secondary)] border border-[var(--color-border)] rounded hover:bg-emerald-50 hover:text-emerald-700 hover:border-emerald-200 transition-colors active:scale-95 cursor-pointer select-none"
+											title="Open posters folder in Finder"
+										>
+											<svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" /></svg>
+											Open
 										</span>
 									{/if}
 									<!-- Step stats -->

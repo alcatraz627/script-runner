@@ -94,6 +94,23 @@ export const api = {
 		toggleArchive(id: string): Promise<{ archived: boolean }> {
 			return request(`/runs/${id}/archive`, { method: 'POST' });
 		},
+		openPosters(id: string): Promise<{ ok: boolean }> {
+			return request(`/runs/${id}/open-posters`, { method: 'POST' });
+		},
+		approve(id: string, stepId: string): Promise<{ ok: boolean; jobId: string }> {
+			return request(`/runs/${id}/approve`, {
+				method: 'POST',
+				body: JSON.stringify({ stepId }),
+			});
+		},
+	},
+	dashboards: {
+		list(): Promise<Array<{ id: string; name: string; description: string; [key: string]: unknown }>> {
+			return request('/dashboards');
+		},
+		get(id: string): Promise<{ id: string; name: string; description: string; [key: string]: unknown }> {
+			return request(`/dashboards/${id}`);
+		},
 	},
 	transforms: {
 		list(): Promise<TransformInfo[]> {
