@@ -6,20 +6,56 @@
  * from the source data — they can be re-included by removing or updating config.
  *
  * Config: {
- *   urlField: 'eBay Item URL',  // field to check (default: 'eBay Item URL')
- *   excludeUrls: [...],         // exclude all rows whose urlField matches any of these
- *   deduplicateByUrl: false,    // if true, also remove rows sharing a URL (keeps first)
+ *   urlField:          'eBay Item URL',    // field containing the listing URL
+ *   skuField:          'SKU',              // field containing the SKU
+ *   skuPrefix:         '555-',             // prefix to strip before matching SKU# in title
+ *   listingTitleField: 'eBay Listing Title', // field containing the eBay listing title
+ *
+ *   excludeUrls: [...],   // exclude ALL rows whose urlField matches any of these URLs
+ *                         // use for large corruption groups (>=4 SKUs sharing a URL)
+ *
+ *   dedupeUrls: [...],    // for each URL, keep the row whose SKU# appears in the listing
+ *                         // title; exclude the rest. If no row matches, exclude all.
+ *                         // use for small duplicate groups (<4 SKUs sharing a URL)
  * }
  */
 
 module.exports = async function filterItems(rows, config = {}) {
-  const urlField = config.urlField || 'eBay Item URL';
-  const excludeUrls = new Set(config.excludeUrls || []);
-  const deduplicateByUrl = config.deduplicateByUrl || false;
+  const urlField          = config.urlField          || 'eBay Item URL';
+  const skuField          = config.skuField          || 'SKU';
+  const skuPrefix         = config.skuPrefix         || '555-';
+  const listingTitleField = config.listingTitleField || 'eBay Listing Title';
+  const excludeUrls       = new Set(config.excludeUrls || []);
+  const dedupeUrls        = new Set(config.dedupeUrls  || []);
 
-  const seenUrls = new Set();
-  let excluded = 0;
-  let deduplicated = 0;
+  // Pre-pass: for each dedupeUrl, determine which SKU wins (first whose number
+  // appears in the eBay listing title). If none wins, all are excluded.
+  const dedupeKeep = new Set(); // Set of row references to keep
+  if (dedupeUrls.size > 0) {
+    const groups = {};
+    for (const row of rows) {
+      const url = row[urlField];
+      if (url && dedupeUrls.has(url)) {
+        if (!groups[url]) groups[url] = [];
+        groups[url].push(row);
+      }
+    }
+    for (const [url, group] of Object.entries(groups)) {
+      const winner = group.find(row => {
+        const skuNum = (row[skuField] || '').replace(skuPrefix, '');
+        const title  = row[listingTitleField] || '';
+        return skuNum && title.includes(skuNum);
+      });
+      if (winner) {
+        dedupeKeep.add(winner);
+      }
+      // If no winner found, all are excluded (dedupeKeep stays empty for this group)
+    }
+  }
+
+  let excluded    = 0;
+  let deduped     = 0;
+  let dedupeKept  = 0;
 
   const result = rows.filter(row => {
     const url = row[urlField];
@@ -29,19 +65,20 @@ module.exports = async function filterItems(rows, config = {}) {
       return false;
     }
 
-    if (deduplicateByUrl && url) {
-      if (seenUrls.has(url)) {
-        deduplicated++;
-        return false;
+    if (url && dedupeUrls.has(url)) {
+      if (dedupeKeep.has(row)) {
+        dedupeKept++;
+        return true;
       }
-      seenUrls.add(url);
+      deduped++;
+      return false;
     }
 
     return true;
   });
 
-  if (excluded > 0) console.log(`filter-items: excluded ${excluded} rows matching excludeUrls`);
-  if (deduplicated > 0) console.log(`filter-items: deduplicated ${deduplicated} rows with duplicate ${urlField}`);
+  if (excluded   > 0) console.log(`filter-items: excluded ${excluded} rows (excludeUrls)`);
+  if (deduped    > 0) console.log(`filter-items: deduped ${deduped} rows, kept ${dedupeKept} originals (dedupeUrls)`);
   console.log(`filter-items: ${result.length} rows remaining (of ${rows.length})`);
 
   return result;

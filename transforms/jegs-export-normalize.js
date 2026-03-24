@@ -56,9 +56,17 @@ function parseItemSpecifics(jsonStr) {
   }
 }
 
+// Attribute keys that are metadata/legal/packaging fields — never display attributes.
+const BLOCKED_ATTR_KEYS = new Set([
+  'Part Type', 'Part Number', 'Part Category', 'Part Fitment',
+  'Brand', 'Product Line',
+  'Package Depth', 'Package Height', 'Package Width', 'Shipping Weight',
+  'California Prop 65 Warning', 'Compliance',
+]);
+
 function transformRow(row, config = {}) {
   const brand = config.brand || 'JEGS';
-  const specs = parseItemSpecifics(row['Item Specifics (JSON)']);
+  const specs = parseItemSpecifics(row['Item Specifics (JSON)']).filter(([k]) => !BLOCKED_ATTR_KEYS.has(k));
 
   return {
     'Part Number':         row['SKU'] || '',
