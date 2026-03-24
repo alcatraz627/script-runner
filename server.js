@@ -1419,12 +1419,12 @@ app.post('/api/runs/:id/approve', (req, res) => {
   if (!stepId) return res.status(400).json({ error: 'stepId required' });
 
   // Find the active job for this run
-  const job = jobQueue.listJobs().find(j =>
+  const job = queue.listJobs().find(j =>
     j.runDir === runDir && j.status === 'awaiting'
   );
   if (!job) return res.status(409).json({ error: 'No awaiting job for this run' });
 
-  const ok = jobQueue.approve(job.jobId, stepId);
+  const ok = queue.approve(job.jobId, stepId);
   if (!ok) return res.status(409).json({ error: `Job not awaiting step "${stepId}"` });
 
   res.json({ ok: true, jobId: job.jobId });

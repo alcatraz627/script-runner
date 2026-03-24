@@ -314,9 +314,11 @@ class JegsScraper {
    *   return `${this.config.baseUrl}/search?q=${encodeURIComponent(row['Part Number'])}`;
    */
   buildUrl(row) {
-    // TODO(agent): implement URL construction for this scraping task
+    // JEGS product page URL: /i/JEGS/555/{part-number}/10002/-1
+    // SKU format is "555-{part-number}" (e.g. "555-92123" → part "92123")
     const sku = row['SKU'] || row['Part Number'] || '';
-    return `${this.config.baseUrl}/i/JEGS/555/${sku.replace('555-', '')}/-1`;
+    const partNum = sku.replace(/^555-/, '');
+    return `${this.config.baseUrl}/i/JEGS/555/${partNum}/10002/-1`;
   }
 
   /**
@@ -344,11 +346,35 @@ class JegsScraper {
    *   return { title, description, images: images.join('|'), specs, price };
    */
   async extractData(page, row) {
-    // TODO(agent): implement data extraction for this scraping task
-    throw new Error(
-      'extractData() not implemented. ' +
-      'Open transforms/jegs-scraper.js and implement this method.'
-    );
+    // Primary image: og:image meta tag — always present in HTML, not blocked
+    // by image request interception (meta tags are HTML, not image resources).
+    const ogImage = await this.getAttr('meta[property="og:image"]', 'content');
+
+    // Supplemental: JEGS CDN product gallery images (large format thumbnails)
+    // These are in <img> tags but intercepted/blocked; og:image is the fallback.
+    // We use evaluate() to read src attributes already present in the DOM.
+    const galleryImages = await this.evaluate(() => {
+      const imgs = Array.from(document.querySelectorAll('.product-image-gallery img, #product-image img, .main-image img'));
+      return imgs.map(el => el.getAttribute('data-zoom-image') || el.getAttribute('src')).filter(Boolean);
+    }).catch(() => []);
+
+    // Deduplicate, put og:image first
+    const seen = new Set();
+    const images = [];
+    for (const url of [ogImage, ...galleryImages]) {
+      if (url && !seen.has(url)) {
+        seen.add(url);
+        images.push(url);
+      }
+    }
+
+    return {
+      // Return pipe-separated images in the same format used by the pipeline.
+      // Falls back to null if no images found (row keeps existing empty value).
+      Images: images.length > 0 ? images[0] : null,
+      'Images (pipe-separated)': images.length > 0 ? images.join('|') : null,
+      '_scraped_image_count': images.length,
+    };
   }
 }
 
