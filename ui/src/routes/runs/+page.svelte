@@ -13,9 +13,13 @@
 	let interval: ReturnType<typeof setInterval>;
 	let search = $state('');
 	let statusFilter: 'all' | 'completed' | 'running' | 'error' | 'draft' = $state('all');
+	let showArchived = $state(false);
 
 	let filtered = $derived.by(() => {
 		let result = runs;
+		if (!showArchived) {
+			result = result.filter(r => !r.archived);
+		}
 		if (statusFilter !== 'all') {
 			result = result.filter(r => r.status === statusFilter);
 		}
@@ -29,6 +33,8 @@
 		}
 		return result;
 	});
+
+	let archivedCount = $derived(runs.filter(r => r.archived).length);
 
 	function dateLabel(iso: string | null): string {
 		if (!iso) return 'No activity';
@@ -85,6 +91,14 @@
 	function progressPercent(run: RunSummary): number {
 		if (run.stepsTotal === 0) return 0;
 		return Math.round((run.stepsCompleted / run.stepsTotal) * 100);
+	}
+
+	async function toggleArchive(run: RunSummary) {
+		try {
+			const result = await api.runs.toggleArchive(run.runId);
+			run.archived = result.archived;
+			runs = [...runs];
+		} catch { /* ignore */ }
 	}
 
 	onMount(() => {
@@ -151,11 +165,20 @@
 				{#each ['all', 'completed', 'running', 'error', 'draft'] as s (s)}
 					<button
 						onclick={() => { statusFilter = s as typeof statusFilter; }}
-						class="px-2.5 py-1 text-xs font-medium rounded-md transition-colors {statusFilter === s ? 'bg-blue-50 text-blue-700 border border-blue-200' : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-surface-hover)] border border-transparent'}"
+						class="px-2.5 py-1 text-xs font-medium rounded-md transition-colors {statusFilter === s ? 'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800' : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-surface-hover)] border border-transparent'}"
 					>
-						{s === 'all' ? `All (${runs.length})` : `${s[0].toUpperCase() + s.slice(1)} (${runs.filter(r => r.status === s).length})`}
+						{s === 'all' ? `All (${runs.filter(r => showArchived || !r.archived).length})` : `${s[0].toUpperCase() + s.slice(1)} (${runs.filter(r => r.status === s && (showArchived || !r.archived)).length})`}
 					</button>
 				{/each}
+				{#if archivedCount > 0}
+					<span class="mx-1 text-[var(--color-border)]">|</span>
+					<button
+						onclick={() => { showArchived = !showArchived; }}
+						class="px-2.5 py-1 text-xs font-medium rounded-md transition-colors {showArchived ? 'bg-amber-50 text-amber-700 border border-amber-200 dark:bg-amber-900/30 dark:text-amber-400 dark:border-amber-800' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-surface-hover)] border border-transparent'}"
+					>
+						{showArchived ? 'Hide' : 'Show'} Archived ({archivedCount})
+					</button>
+				{/if}
 			</div>
 		</div>
 
@@ -170,20 +193,27 @@
 				<h3 class="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)] px-1">{group.label}</h3>
 				<div class="grid gap-2">
 					{#each group.runs as run (run.runId)}
-						<button
-							onclick={() => goto(`/runs/${run.runId}`)}
-							class="bg-[var(--color-bg-surface)] rounded-lg border border-[var(--color-border)] p-4 hover:border-blue-200 hover:shadow-sm transition-all text-left w-full group"
+						<!-- svelte-ignore a11y_no_static_element_interactions -->
+						<div
+							onclick={(e) => { if ((e.target as HTMLElement).closest('[data-no-nav]')) return; goto(`/runs/${run.runId}`); }}
+							onkeydown={(e) => { if (e.key === 'Enter') goto(`/runs/${run.runId}`); }}
+							role="button"
+							tabindex="0"
+							class="bg-[var(--color-bg-surface)] rounded-lg border border-[var(--color-border)] p-4 hover:border-blue-200 dark:hover:border-blue-800 hover:shadow-sm transition-all text-left w-full group cursor-pointer"
 						>
 							<div class="flex items-center justify-between">
 								<div class="flex items-center gap-3 min-w-0">
 									<StatusBadge status={run.status} size="md" />
 									<div class="min-w-0">
 										<div class="flex items-center gap-2">
-											{#if (run as any).starred}
+											{#if run.starred}
 												<svg class="w-3.5 h-3.5 text-yellow-400 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.562.562 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.562.562 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" /></svg>
 											{/if}
-											<span class="text-sm font-semibold text-[var(--color-text-primary)] group-hover:text-blue-700 transition-colors">{run.configName}</span>
+											<span class="text-sm font-semibold text-[var(--color-text-primary)] group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors">{run.configName}</span>
 											<span class="text-xs font-mono text-[var(--color-text-muted)]">{run.runId}</span>
+											{#if run.archived}
+												<span class="text-[10px] text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 px-1.5 py-0.5 rounded border border-amber-200 dark:border-amber-800">archived</span>
+											{/if}
 										</div>
 										{#if run.description}
 											<div class="text-xs text-[var(--color-text-secondary)] mt-0.5 truncate max-w-lg">{run.description}</div>
@@ -207,13 +237,24 @@
 									{/if}
 									<!-- Time -->
 									<span class="text-xs text-[var(--color-text-muted)] w-16 text-right">{relativeTime(run.lastExecutedAt)}</span>
+									<!-- Archive -->
+									<button
+										data-no-nav
+										onclick={(e) => { e.stopPropagation(); toggleArchive(run); }}
+										class="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded hover:bg-amber-50 dark:hover:bg-amber-900/20"
+										title={run.archived ? 'Unarchive' : 'Archive'}
+									>
+										<svg class="w-3.5 h-3.5 {run.archived ? 'text-amber-500' : 'text-[var(--color-text-muted)]'}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+											<path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H2.25c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+										</svg>
+									</button>
 									<!-- Arrow -->
 									<svg class="w-4 h-4 text-[var(--color-text-muted)] group-hover:text-blue-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
 										<path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
 									</svg>
 								</div>
 							</div>
-						</button>
+						</div>
 					{/each}
 				</div>
 			</div>

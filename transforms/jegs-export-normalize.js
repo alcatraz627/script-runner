@@ -23,6 +23,22 @@
 
 const { extractFirstImage } = require('./jegs-normalize');
 
+// Known stock/placeholder eBay image URL base paths (extension-agnostic).
+// Keep in sync with image-selector/prepare-image-dataset.js BLOCKED_BASES.
+const BLOCKED_IMAGE_BASES = new Set([
+  'https://i.ebayimg.com/00/s/MTIzM1gxNjAw/z/l94AAeSwhLdo2FOA/$_1',
+  'https://i.ebayimg.com/images/g/1VEAAOSwBahVcLz8/s-l1600',
+  'https://i.ebayimg.com/images/g/DOcAAOSw8NplLtwK/s-l1600', // storefront gallery — 92 SKUs
+  'https://i.ebayimg.com/images/g/DnkAAeSwAKtpgwkt/s-l1600',
+  'https://i.ebayimg.com/images/g/Eq8AAeSwWthplcJ8/s-l1600',
+  'https://i.ebayimg.com/images/g/gm8AAeSwQgBplcJ8/s-l1600',
+  'https://i.ebayimg.com/images/g/rBQAAeSwlJVplcJ8/s-l1600',
+  'pics.ebaystatic.com/aw/pics/nextGenVit/imgNoImg',
+]);
+
+function stripExt(url) { return url.replace(/\.[^.?]+(\?.*)?$/, ''); }
+function isBlockedImage(url) { return url && BLOCKED_IMAGE_BASES.has(stripExt(url)); }
+
 /** Parse the "Item Specifics (JSON)" column, which may be a JSON string of
  *  a flat object, an array of [name, value] pairs, or an array of {name, value}
  *  objects. Normalizes all formats to [[name, value], ...]. */
@@ -46,13 +62,19 @@ function transformRow(row, config = {}) {
 
   return {
     'Part Number':         row['SKU'] || '',
-    'Part Type':           row['Category Hierarchy'] || '',
+    // Prefer explicit 'Part Type' if sideloaded (e.g. via sideload-part-types.js);
+    // fall back to 'Category Hierarchy' which contains raw eBay breadcrumbs.
+    'Part Type':           row['Part Type'] || row['Category Hierarchy'] || '',
     'Description':         row['Description'] || '',
     'Title':               (row['eBay Listing Title'] || row['Original Title'] || '').replace(/\{\{brand\}\}/gi, brand),
     'Attributes Small':    specs,
     'Attributes Full':     specs,
     'Features & Benefits': row['Features and Benefits'] || [],
-    'Images':              row['Main Image'] || extractFirstImage(row['Images (pipe-separated)']) || '',
+    // Prefer curated Main Image; reject it if it's a known blocked/stock URL.
+    // Fall back to extractFirstImage for runs that skip the image-selector dashboard,
+    // then reject that too if it resolves to a blocked URL.
+    'Images':              (isBlockedImage(row['Main Image']) ? '' : (row['Main Image'] || '')) ||
+                           (isBlockedImage(extractFirstImage(row['Images (pipe-separated)'])) ? '' : extractFirstImage(row['Images (pipe-separated)'])) || '',
     'Brand':               brand,
     'Fitment':             row['Fitment / Compatibility'] || '',
   };

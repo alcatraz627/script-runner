@@ -14,6 +14,8 @@ export interface RunSummary {
 	configName: string;
 	description: string;
 	status: 'draft' | 'running' | 'completed' | 'partial' | 'error' | 'interrupted';
+	starred: boolean;
+	archived: boolean;
 	stepsCompleted: number;
 	stepsTotal: number;
 	lastExecutedAt: string | null;
@@ -53,6 +55,7 @@ export interface RunManifest {
 	createdAt: string;
 	lastExecutedAt: string | null;
 	status: 'draft' | 'running' | 'completed' | 'partial' | 'error' | 'interrupted';
+	starred: boolean;
 	input: {
 		file: string | null;
 		sheet: string | null;

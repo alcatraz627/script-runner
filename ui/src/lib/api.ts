@@ -91,6 +91,9 @@ export const api = {
 		toggleStar(id: string): Promise<{ starred: boolean }> {
 			return request(`/runs/${id}/star`, { method: 'POST' });
 		},
+		toggleArchive(id: string): Promise<{ archived: boolean }> {
+			return request(`/runs/${id}/archive`, { method: 'POST' });
+		},
 	},
 	transforms: {
 		list(): Promise<TransformInfo[]> {

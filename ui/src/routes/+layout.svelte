@@ -79,7 +79,7 @@
 	<!-- Sidebar -->
 	<aside class="w-56 bg-[var(--color-sidebar-bg)] border-r border-[var(--color-border)] flex flex-col shrink-0">
 		<!-- Logo -->
-		<div class="px-4 py-5 border-b border-[var(--color-border-light)]">
+		<a href="/runs" class="block px-4 py-5 border-b border-[var(--color-border-light)] hover:bg-[var(--color-bg-surface-hover)] transition-colors">
 			<div class="flex items-center gap-2.5">
 				<div class="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-sm">
 					<svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
@@ -91,7 +91,7 @@
 					<p class="text-[10px] text-[var(--color-text-muted)] mt-0.5">{APP.subtitle}</p>
 				</div>
 			</div>
-		</div>
+		</a>
 
 		<!-- Quick action -->
 		<div class="px-3 pt-4 pb-2">

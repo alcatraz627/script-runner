@@ -1,0 +1,6340 @@
+[
+  {
+    "sku": "555-80040-4",
+    "partType": "Engine Stand Replacement Turn Handle",
+    "attrs": [
+      [
+        "Finish",
+        "Red"
+      ],
+      [
+        "Quantity",
+        "1"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-81290",
+    "partType": "Turn Signal Cancel Cam & Horn Contact Repair Kit GM",
+    "attrs": [
+      [
+        "Fitment",
+        "1969-2002 GM"
+      ],
+      [
+        "Column Type",
+        "Tilt and non-tilt"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-79847",
+    "partType": "Exterior Door Handle Gasket",
+    "attrs": [
+      [
+        "Material",
+        "Rubber"
+      ],
+      [
+        "Fitment",
+        "1970-1981 GM F-Body"
+      ],
+      [
+        "Quantity per 2-door",
+        "2"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-81692",
+    "partType": "Torque Angle Gauge",
+    "attrs": [
+      [
+        "Square Drive",
+        "1/2 inch"
+      ],
+      [
+        "Angle Range",
+        "0-360 degrees"
+      ],
+      [
+        "Increment",
+        "2 degrees"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-80063-1",
+    "partType": "Replacement Swivel Caster for Two-Piece Engine Storage Stand",
+    "attrs": [
+      [
+        "Wheel Diameter",
+        "3 inches"
+      ],
+      [
+        "Wheel Material",
+        "Hard rubber"
+      ],
+      [
+        "Thread Size",
+        "M12"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-81385",
+    "partType": "Inside Deburring Tool",
+    "attrs": [
+      [
+        "Inner Diameter Range",
+        "1/8 to 3/4 inches"
+      ],
+      [
+        "Shank Size",
+        "1/4 inch"
+      ],
+      [
+        "Height",
+        "2 inches"
+      ],
+      [
+        "Diameter",
+        "3/4 inches"
+      ],
+      [
+        "Cutting Head Depth",
+        "3/8 inches"
+      ],
+      [
+        "Max RPM",
+        "400"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-23607",
+    "partType": "Oil Filter Adapter",
+    "attrs": [
+      [
+        "Material",
+        "Steel"
+      ],
+      [
+        "Finish",
+        "Natural"
+      ],
+      [
+        "Block Thread",
+        "1-1/16 inch-12"
+      ],
+      [
+        "Filter Thread",
+        "3/4 inch-16"
+      ],
+      [
+        "Fitment",
+        "1986-1996 Ford 302/351W/3.8L/4.9L"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-W1187",
+    "partType": "Carburetor Adjuster Tool",
+    "attrs": [
+      [
+        "Shaft Length",
+        "11.5 inches"
+      ],
+      [
+        "Shank Size",
+        "1/4 inch"
+      ],
+      [
+        "Adapter Quantity",
+        "4"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-60901",
+    "partType": "Transmission Filter and Gasket Kit",
+    "attrs": [
+      [
+        "Fitment",
+        "TH400 Chevy and BOP"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-40710",
+    "partType": "Timing Tape",
+    "attrs": [
+      [
+        "Balancer Diameter",
+        "6.375 inches"
+      ],
+      [
+        "Fitment",
+        "Small Block Ford 289/302/351"
+      ],
+      [
+        "Increment",
+        "1 degree"
+      ],
+      [
+        "Angle Range",
+        "20 ATDC to 65 BTDC"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-63673",
+    "partType": "Fuel Fragrance",
+    "attrs": [
+      [
+        "Capacity",
+        "4 ounces"
+      ],
+      [
+        "Scent",
+        "Cinnamon and citrus"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78538",
+    "partType": "Fuel Tank Sending Unit Filter",
+    "attrs": [
+      [
+        "Inlet Size",
+        "3/8 inches"
+      ],
+      [
+        "Fitment",
+        "1954-1988 GM"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-19236",
+    "partType": "Wiring Diagram",
+    "attrs": [
+      [
+        "Dimensions",
+        "11 x 17 inches"
+      ],
+      [
+        "Fitment",
+        "1969 Chevrolet Camaro"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-10028",
+    "partType": "Starter Shim Kit",
+    "attrs": [
+      [
+        "Shim Quantity",
+        "7 pieces"
+      ],
+      [
+        "Shim Thickness 1",
+        "0.016 inches"
+      ],
+      [
+        "Shim Thickness 2",
+        "0.031 inches"
+      ],
+      [
+        "Shim Thickness 3",
+        "0.062 inches"
+      ],
+      [
+        "Fitment",
+        "Heavy-Duty Hitachi/GM"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-50216",
+    "partType": "Oil Pump Pickup",
+    "attrs": [
+      [
+        "Pickup Tube Diameter",
+        "3/4 inches"
+      ],
+      [
+        "Material",
+        "Natural finish"
+      ],
+      [
+        "Weight",
+        "0.45 pounds"
+      ],
+      [
+        "Fitment",
+        "Big Block Chevy 396/402/427/454/502"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-40701",
+    "partType": "Timing Tape",
+    "attrs": [
+      [
+        "Balancer Diameter",
+        "6.75 inches"
+      ],
+      [
+        "Fitment",
+        "Small Block Chevy 283/307/327/350/400"
+      ],
+      [
+        "Increment",
+        "1 degree"
+      ],
+      [
+        "Angle Range",
+        "20 ATDC to 65 BTDC"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-28011",
+    "partType": "Thread Sealant",
+    "attrs": [
+      [
+        "Capacity",
+        "0.5 ounces"
+      ],
+      [
+        "Temperature Range",
+        "-35 to 550 degrees Fahrenheit"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-28030",
+    "partType": "Blue RTV",
+    "attrs": [
+      [
+        "Temperature Rating",
+        "0-500 degrees Fahrenheit"
+      ],
+      [
+        "Type",
+        "Blue RTV"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-40703",
+    "partType": "Timing Tape",
+    "attrs": [
+      [
+        "Balancer Diameter",
+        "8 inches"
+      ],
+      [
+        "Fitment",
+        "Small Block and Big Block Chevy"
+      ],
+      [
+        "Increment",
+        "1 degree"
+      ],
+      [
+        "Angle Range",
+        "20 ATDC to 65 BTDC"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-93778",
+    "partType": "Button Power Window Switch Retainer",
+    "attrs": [
+      [
+        "Material",
+        "Steel"
+      ],
+      [
+        "Finish",
+        "Silver zinc"
+      ],
+      [
+        "Switch Type",
+        "1-button"
+      ],
+      [
+        "Fitment",
+        "1964-1987 GM"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-81515-4",
+    "partType": "Replacement Handle",
+    "attrs": [
+      [
+        "Diameter",
+        "7/8 inch"
+      ],
+      [
+        "Quantity",
+        "1"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-636305",
+    "partType": "Pump To Carb Fuel Line",
+    "attrs": [
+      [
+        "Material",
+        "Steel"
+      ],
+      [
+        "Carburetor",
+        "2-barrel"
+      ],
+      [
+        "Vehicle Year",
+        "1968-1971"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-92062",
+    "partType": "Front Wheel Well Molding",
+    "attrs": [
+      [
+        "Material",
+        "Aluminum"
+      ],
+      [
+        "Finish",
+        "Bright-dipped clear with black stripe"
+      ],
+      [
+        "Side",
+        "Right/Passenger"
+      ],
+      [
+        "Includes",
+        "Mounting hardware"
+      ],
+      [
+        "Vehicle Year",
+        "1973-1980"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-93777",
+    "partType": "Button Power Window Switch Retainer",
+    "attrs": [
+      [
+        "Material",
+        "Steel"
+      ],
+      [
+        "Finish",
+        "Silver zinc"
+      ],
+      [
+        "Button Configuration",
+        "4-button"
+      ],
+      [
+        "Vehicle Year",
+        "1964-1987"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-612110",
+    "partType": "Pinion Seal",
+    "attrs": [
+      [
+        "Material",
+        "Fluoroelastomer and metal"
+      ],
+      [
+        "Fits",
+        "Ford 7.5 and 8.8 inch"
+      ],
+      [
+        "Quantity",
+        "1"
+      ],
+      [
+        "Weight",
+        "0.10 lb"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-63689",
+    "partType": "Fuel Fragrance Fireball Scented 4 oz. Bottle Safe",
+    "attrs": [
+      [
+        "Capacity",
+        "4 oz"
+      ],
+      [
+        "Color",
+        "Red"
+      ],
+      [
+        "Flavor",
+        "Cinnamon whisky"
+      ],
+      [
+        "Dosage Gasoline",
+        "1/3-1/4 oz per gallon"
+      ],
+      [
+        "Dosage Methanol",
+        "1/8-1/16 oz per gallon"
+      ],
+      [
+        "Dosage Diesel",
+        "1/2-1/4 oz per gallon"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-13431",
+    "partType": "Fuel Line",
+    "attrs": [
+      [
+        "Material",
+        "Steel"
+      ],
+      [
+        "Carburetor",
+        "4-barrel Quadra-Jet"
+      ],
+      [
+        "Vehicle Year",
+        "1970-1972"
+      ],
+      [
+        "Engine",
+        "350 ci"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-50211",
+    "partType": "Engine Diaper Replacement Pads",
+    "attrs": [
+      [
+        "Dimension",
+        "15 x 19 inches"
+      ],
+      [
+        "Quantity",
+        "2"
+      ],
+      [
+        "Capacity Range",
+        "6-10 quart"
+      ],
+      [
+        "Made in",
+        "USA"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-63070",
+    "partType": "Brake Light Switch",
+    "attrs": [
+      [
+        "Thread Size",
+        "1/8 inch NPT"
+      ],
+      [
+        "Pressure Rating",
+        "0-1500 psi"
+      ],
+      [
+        "Activation Pressure",
+        "60-120 psi"
+      ],
+      [
+        "Made in",
+        "USA"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-2000",
+    "partType": "Folding Chair",
+    "attrs": [
+      [
+        "Capacity",
+        "250 lb"
+      ],
+      [
+        "Weight",
+        "8 lb"
+      ],
+      [
+        "Seat Dimension",
+        "23 x 23 inches"
+      ],
+      [
+        "Seat Height",
+        "18 inches"
+      ],
+      [
+        "Total Height",
+        "36 inches"
+      ],
+      [
+        "Material",
+        "Powder-coated steel frame"
+      ],
+      [
+        "Includes",
+        "Cup holder, storage bag with strap"
+      ],
+      [
+        "Color",
+        "Black and yellow"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-2001",
+    "partType": "Folding Chair",
+    "attrs": [
+      [
+        "Capacity",
+        "250 lb"
+      ],
+      [
+        "Weight",
+        "8 lb"
+      ],
+      [
+        "Seat Dimension",
+        "23 x 23 inches"
+      ],
+      [
+        "Seat Height",
+        "18 inches"
+      ],
+      [
+        "Total Height",
+        "36 inches"
+      ],
+      [
+        "Material",
+        "Powder-coated frame"
+      ],
+      [
+        "Color",
+        "Yellow with black logo"
+      ],
+      [
+        "Includes",
+        "Cup holder, storage bag with strap"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-40609",
+    "partType": "HEI Wiring Harness",
+    "attrs": [
+      [
+        "Configuration",
+        "4-pin HEI module"
+      ],
+      [
+        "Material",
+        "Copper conductors"
+      ],
+      [
+        "Weight",
+        "0.08 lb"
+      ],
+      [
+        "Finish",
+        "Natural"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-80216",
+    "partType": "Replacement Utility Jug Cap",
+    "attrs": [
+      [
+        "Material",
+        "Black plastic"
+      ],
+      [
+        "Includes",
+        "O-ring seal"
+      ],
+      [
+        "Quantity",
+        "1"
+      ],
+      [
+        "Capacity",
+        "5 gallon style"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-40618",
+    "partType": "VVT To Non-VVT Camshaft Sensor Adapter Wiring Harness",
+    "attrs": [
+      [
+        "Length",
+        "10 inches"
+      ],
+      [
+        "Quantity",
+        "1"
+      ],
+      [
+        "Wire Type",
+        "Automotive-grade high-temp"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-50217",
+    "partType": "Small Block Ford Oil Pump Pickup",
+    "attrs": [
+      [
+        "Engine",
+        "Small Block Ford 289-302 ci"
+      ],
+      [
+        "Tube Diameter",
+        "0.625 inch"
+      ],
+      [
+        "Finish",
+        "Natural"
+      ],
+      [
+        "Made in",
+        "USA"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-19259",
+    "partType": "Wiring Diagram",
+    "attrs": [
+      [
+        "Dimension",
+        "11 x 17 inches"
+      ],
+      [
+        "Finish",
+        "Laminated color"
+      ],
+      [
+        "Vehicle Year",
+        "1970-1971"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78106",
+    "partType": "Fuel Tank Straps",
+    "attrs": [
+      [
+        "Quantity",
+        "2"
+      ],
+      [
+        "Finish",
+        "Black EDP"
+      ],
+      [
+        "Vehicle Year",
+        "1964-1967"
+      ],
+      [
+        "Replaces",
+        "OE part ST48"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-81515-2",
+    "partType": "Replacement Springs",
+    "attrs": [
+      [
+        "Type",
+        "Return springs"
+      ],
+      [
+        "Quantity",
+        "2"
+      ],
+      [
+        "Material",
+        "Spring steel"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-28050",
+    "partType": "75W-90 Synthetic Gear Oil",
+    "attrs": [
+      [
+        "Viscosity",
+        "75W-90"
+      ],
+      [
+        "Type",
+        "Synthetic"
+      ],
+      [
+        "Specification",
+        "GL-5/GL-4"
+      ],
+      [
+        "Capacity",
+        "1 quart"
+      ],
+      [
+        "Made in",
+        "USA"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-80295",
+    "partType": "Rear Cab Corner Right/Passenger Side",
+    "attrs": [
+      [
+        "Gauge",
+        "18 gauge"
+      ],
+      [
+        "Material",
+        "Stamped steel"
+      ],
+      [
+        "Finish",
+        "Black EDP"
+      ],
+      [
+        "Side",
+        "Right/Passenger"
+      ],
+      [
+        "Vehicle Year",
+        "1967-1972"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-90927",
+    "partType": "Front Headliner Molding Strip",
+    "attrs": [
+      [
+        "Material",
+        "Black plastic"
+      ],
+      [
+        "Finish",
+        "OEM-style"
+      ],
+      [
+        "Weight",
+        "0.4 lb"
+      ],
+      [
+        "Quantity",
+        "1"
+      ],
+      [
+        "Fitment",
+        "1964-1967 GM A-body"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-81500-6",
+    "partType": "Replacement Glass",
+    "attrs": [],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-32030",
+    "partType": "Heat Shield Tape",
+    "attrs": [
+      [
+        "Width",
+        "1.5 in"
+      ],
+      [
+        "Length",
+        "20 ft"
+      ],
+      [
+        "Material",
+        "Reflective cloth"
+      ],
+      [
+        "Temperature Rating",
+        "1100°F radiant, 500°F direct contact"
+      ],
+      [
+        "Finish",
+        "High-temp adhesive backing"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-91539",
+    "partType": "Battery Tray",
+    "attrs": [
+      [
+        "Material",
+        "Stamped steel"
+      ],
+      [
+        "Finish",
+        "Black EDP primer"
+      ],
+      [
+        "Fitment",
+        "1968 Chevy II, 1969-1974 Nova"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-79108",
+    "partType": "Cigarette Lighter",
+    "attrs": [
+      [
+        "Finish",
+        "Chrome-finished knob"
+      ],
+      [
+        "Fitment",
+        "1969-1970 Chevelle/El Camino"
+      ],
+      [
+        "Quantity",
+        "1"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-19258",
+    "partType": "Wiring Diagram",
+    "attrs": [
+      [
+        "Width",
+        "11 in"
+      ],
+      [
+        "Height",
+        "17 in"
+      ],
+      [
+        "Finish",
+        "Laminated"
+      ],
+      [
+        "Fitment",
+        "1970-1971 Chevelle/El Camino gauge package"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-91587",
+    "partType": "Battery Tray",
+    "attrs": [
+      [
+        "Material",
+        "Stamped steel"
+      ],
+      [
+        "Finish",
+        "Black EDP primer"
+      ],
+      [
+        "Fitment",
+        "1968-1972 Pontiac GTO"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-90762",
+    "partType": "Spark Plug Wire Retainer Set Big Blocks Plug-In Style",
+    "attrs": [
+      [
+        "Material",
+        "Black plastic"
+      ],
+      [
+        "Quantity",
+        "4 pieces (2x 4-wire, 2x 2-wire)"
+      ],
+      [
+        "Fitment",
+        "1968-1974 Chevy big block"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-81785",
+    "partType": "Spot Weld Locking Pliers",
+    "attrs": [
+      [
+        "Length",
+        "9 in"
+      ],
+      [
+        "Finish",
+        "JEGS logo etched handle"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-81615",
+    "partType": "Adjustable Magnetic Base",
+    "attrs": [
+      [
+        "Capacity",
+        "110 lb magnet"
+      ],
+      [
+        "Finish",
+        "On/Off lever control"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-10671",
+    "partType": "Cobra Low-Profile Wire/Cable Ties",
+    "attrs": [
+      [
+        "Material",
+        "Black nylon"
+      ],
+      [
+        "Length",
+        "11 in"
+      ],
+      [
+        "Amperage",
+        "110 lb pull strength"
+      ],
+      [
+        "Quantity",
+        "100 per pack"
+      ],
+      [
+        "Compliance",
+        "UL/CSA, QPL, Mil-S-23190"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-81637-4",
+    "partType": "Replacement Pins",
+    "attrs": [
+      [
+        "Diameter",
+        "3/4 in"
+      ],
+      [
+        "Length",
+        "10 in"
+      ],
+      [
+        "Material",
+        "Alloy steel"
+      ],
+      [
+        "Finish",
+        "Natural/silver"
+      ],
+      [
+        "Quantity",
+        "2"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-502068",
+    "partType": "Gen III Hemi Engine Swap Oil Pickup Main Cap Stud Support",
+    "attrs": [
+      [
+        "Material",
+        "Metric stud"
+      ],
+      [
+        "Finish",
+        "6-point hex"
+      ],
+      [
+        "Torque Spec",
+        "13 Nm, 28 Nm, +120°"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-92247",
+    "partType": "Front Armrest Pad Right/Passenger Side",
+    "attrs": [
+      [
+        "Material",
+        "Urethane"
+      ],
+      [
+        "Finish",
+        "Parchment"
+      ],
+      [
+        "Fitment",
+        "1968-1972 GM, right/passenger side"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-210501",
+    "partType": "Intake Manifold Gasket Set Small Block",
+    "attrs": [
+      [
+        "Material",
+        "High-quality gasket materials"
+      ],
+      [
+        "Quantity",
+        "5 pieces"
+      ],
+      [
+        "Port Size",
+        "1.280\" x 2.090\""
+      ],
+      [
+        "Thickness",
+        "0.062 in"
+      ],
+      [
+        "Fitment",
+        "Small Block Chevy"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-79902",
+    "partType": "Inside Mirror Support Bracket",
+    "attrs": [
+      [
+        "Material",
+        "Stainless steel"
+      ],
+      [
+        "Finish",
+        "Polished"
+      ],
+      [
+        "Fitment",
+        "1968-1969 F-Body Camaro/Pontiac coupe/hardtop"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-95091",
+    "partType": "Door Hinge Bolt Kit",
+    "attrs": [
+      [
+        "Material",
+        "High-strength steel"
+      ],
+      [
+        "Finish",
+        "Black-phosphate"
+      ],
+      [
+        "Quantity",
+        "24 pieces"
+      ],
+      [
+        "Fitment",
+        "1973-1991 GM trucks/SUVs"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-93651",
+    "partType": "Front Side Marker Light Lens",
+    "attrs": [
+      [
+        "Material",
+        "Injection-molded amber ABS"
+      ],
+      [
+        "Color",
+        "Amber"
+      ],
+      [
+        "Quantity",
+        "Pair"
+      ],
+      [
+        "Fitment",
+        "1970-1972 Chevrolet Monte Carlo front"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-18104",
+    "partType": "Glovebox Lock",
+    "attrs": [
+      [
+        "Fitment",
+        "1953-1967 GM classics"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-91316",
+    "partType": "Factory Assembly Instruction Manual",
+    "attrs": [
+      [
+        "Length",
+        "920 pages"
+      ],
+      [
+        "Finish",
+        "Soft-cover, perfect-bound"
+      ],
+      [
+        "Fitment",
+        "1970 Chevelle/El Camino/Monte Carlo"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-94890",
+    "partType": "Armrest Pad Left/Driver Side",
+    "attrs": [
+      [
+        "Material",
+        "Molded urethane with metal insert"
+      ],
+      [
+        "Finish",
+        "Black"
+      ],
+      [
+        "Color",
+        "Black"
+      ],
+      [
+        "Quantity",
+        "1"
+      ],
+      [
+        "Side",
+        "Left/Driver"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-41510",
+    "partType": "Fuel Pressure Gauge",
+    "attrs": [
+      [
+        "Pressure Rating",
+        "0-15 psi"
+      ],
+      [
+        "Thread Size",
+        "1/8 in. NPT male"
+      ],
+      [
+        "Diameter",
+        "1.5 in."
+      ],
+      [
+        "Color",
+        "Black"
+      ],
+      [
+        "Finish",
+        "Black"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-79324",
+    "partType": "Cowl Induction Hood Seal",
+    "attrs": [
+      [
+        "Material",
+        "Black rubber"
+      ],
+      [
+        "Color",
+        "Black"
+      ],
+      [
+        "Includes",
+        "OEM-style black seam tape"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78330",
+    "partType": "Fuel Tank Straps",
+    "attrs": [
+      [
+        "Material",
+        "Steel"
+      ],
+      [
+        "Finish",
+        "Black EDP"
+      ],
+      [
+        "Length",
+        "23.50 in. and 41.25 in."
+      ],
+      [
+        "Width",
+        "2.20 in."
+      ],
+      [
+        "Capacity",
+        "35 gallons"
+      ],
+      [
+        "Quantity",
+        "2 pairs"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-70130",
+    "partType": "2-Point Non-Retractable Seat Belt",
+    "attrs": [
+      [
+        "Material",
+        "Black polyester"
+      ],
+      [
+        "Length",
+        "60 in."
+      ],
+      [
+        "Width",
+        "1 7/8 in."
+      ],
+      [
+        "Mounting Hole Size",
+        "1/2 in."
+      ],
+      [
+        "Color",
+        "Black"
+      ],
+      [
+        "Quantity",
+        "1"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-81500-2",
+    "partType": "Replacement Power Supply",
+    "attrs": [
+      [
+        "Height",
+        "4.60 in."
+      ],
+      [
+        "Width",
+        "3.40 in."
+      ],
+      [
+        "Diameter",
+        "3.10 in."
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-63604",
+    "partType": "Fuel Fragrance",
+    "attrs": [
+      [
+        "Capacity",
+        "4 oz"
+      ],
+      [
+        "Color",
+        "Cotton Candy scent"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-63630",
+    "partType": "Top Lube Fuel Additive",
+    "attrs": [
+      [
+        "Capacity",
+        "16 oz"
+      ],
+      [
+        "Color",
+        "Grape scent"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-32000",
+    "partType": "Starter Heat Insulator",
+    "attrs": [
+      [
+        "Material",
+        "Reflective mylar"
+      ],
+      [
+        "Length",
+        "24 in."
+      ],
+      [
+        "Width",
+        "7 in."
+      ],
+      [
+        "Temperature Rating",
+        "2000°F max"
+      ],
+      [
+        "Temperature Rating",
+        "500°F ambient"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-601011",
+    "partType": "Flexplate Bolts",
+    "attrs": [
+      [
+        "Material",
+        "Forged Grade 10.9 steel"
+      ],
+      [
+        "Thread Size",
+        "11 mm x 1.5"
+      ],
+      [
+        "Length",
+        "1.060 in. under-head"
+      ],
+      [
+        "Quantity",
+        "6"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-81164-1",
+    "partType": "Replacement Caster",
+    "attrs": [
+      [
+        "Diameter",
+        "3 in."
+      ],
+      [
+        "Mounting Hole Size",
+        "2 1/8 in. center-to-center"
+      ],
+      [
+        "Quantity",
+        "1"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-W38137",
+    "partType": "Ratcheting Adapter",
+    "attrs": [
+      [
+        "Material",
+        "Chrome vanadium steel"
+      ],
+      [
+        "Finish",
+        "Black phosphate"
+      ],
+      [
+        "Drive Size",
+        "3/8 in."
+      ],
+      [
+        "Voltage",
+        "164.5 ft-lbs"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-19217",
+    "partType": "Wiring Diagram",
+    "attrs": [
+      [
+        "Height",
+        "17 in."
+      ],
+      [
+        "Width",
+        "11 in."
+      ],
+      [
+        "Material",
+        "Laminated full-color"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-157310",
+    "partType": "Throttle & Kickdown/TV Cable Bracket",
+    "attrs": [],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-30611",
+    "partType": "Aluminized Exhaust Tubing",
+    "attrs": [
+      [
+        "Diameter",
+        "3 in. OD"
+      ],
+      [
+        "Length",
+        "4 ft"
+      ],
+      [
+        "Material",
+        "16-gauge aluminized steel"
+      ],
+      [
+        "Weight",
+        "8.6 lbs"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-85200",
+    "partType": "Deep Throat Locking C-Clamp",
+    "attrs": [
+      [
+        "Length",
+        "18 in."
+      ],
+      [
+        "Material",
+        "Heavy-duty steel"
+      ],
+      [
+        "Diameter",
+        "10 in. throat"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78989",
+    "partType": "Hood Latch Support",
+    "attrs": [
+      [
+        "Material",
+        "Steel"
+      ],
+      [
+        "Finish",
+        "Black"
+      ],
+      [
+        "Color",
+        "Black"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-92372",
+    "partType": "Lower Door Skin Left/Driver Side",
+    "attrs": [
+      [
+        "Material",
+        "Stamped steel"
+      ],
+      [
+        "Finish",
+        "Black EDP"
+      ],
+      [
+        "Side",
+        "Left/Driver"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-82505",
+    "partType": "Mid-Plate Shim Kit",
+    "attrs": [
+      [
+        "Thread Size",
+        "7/16 in."
+      ],
+      [
+        "Thickness",
+        "0.060 in., 0.125 in., 0.250 in."
+      ],
+      [
+        "Quantity",
+        "9"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-90490",
+    "partType": "Front Wheel Well Molding Left/Driver Side",
+    "attrs": [
+      [
+        "Material",
+        "Anodized aluminum"
+      ],
+      [
+        "Finish",
+        "Bright dipped clear"
+      ],
+      [
+        "Side",
+        "Left/Driver"
+      ],
+      [
+        "Includes",
+        "7 screws #8 x 3/8 in. UHL"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-90492",
+    "partType": "Rear Wheel Well Molding Left/Driver Side",
+    "attrs": [
+      [
+        "Material",
+        "Anodized aluminum"
+      ],
+      [
+        "Finish",
+        "Bright dipped clear"
+      ],
+      [
+        "Includes",
+        "8 #8 x 3/8 in. UHL flat top screws"
+      ],
+      [
+        "Quantity",
+        "1"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78246",
+    "partType": "Fuel Tank Straps",
+    "attrs": [
+      [
+        "Material",
+        "Steel"
+      ],
+      [
+        "Finish",
+        "Black EDP"
+      ],
+      [
+        "Length",
+        "31.250 in."
+      ],
+      [
+        "Width",
+        "2.500 in."
+      ],
+      [
+        "Capacity",
+        "34 gallons"
+      ],
+      [
+        "Quantity",
+        "2"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-50097",
+    "partType": "Air Filter Element Cotton Gauze Reusable & Washable",
+    "attrs": [
+      [
+        "Material",
+        "Cotton gauze"
+      ],
+      [
+        "Diameter",
+        "14 in."
+      ],
+      [
+        "Height",
+        "4 in."
+      ],
+      [
+        "Color",
+        "Black"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78858",
+    "partType": "Fuel Tank Straps",
+    "attrs": [
+      [
+        "Material",
+        "Steel"
+      ],
+      [
+        "Finish",
+        "Black EDP"
+      ],
+      [
+        "Capacity",
+        "22 gallons"
+      ],
+      [
+        "Quantity",
+        "2"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-13619",
+    "partType": "Rear Axle Brake Line Set",
+    "attrs": [
+      [
+        "Material",
+        "T304 stainless steel"
+      ],
+      [
+        "Quantity",
+        "2"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-10338",
+    "partType": "Coil Cord",
+    "attrs": [
+      [
+        "Wire Gauge",
+        "18"
+      ],
+      [
+        "Amperage",
+        "15"
+      ],
+      [
+        "Length",
+        "5 feet"
+      ],
+      [
+        "Color",
+        "Black"
+      ],
+      [
+        "Quantity",
+        "1"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-13624",
+    "partType": "Rear Axle Brake Line Set",
+    "attrs": [
+      [
+        "Material",
+        "T304 stainless steel"
+      ],
+      [
+        "Quantity",
+        "2"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-15090",
+    "partType": "Jr. Dragster Fuel Pump High Volume 2 Outlets",
+    "attrs": [
+      [
+        "Capacity",
+        "35 L/hr"
+      ],
+      [
+        "Capacity",
+        "9.1 GPH"
+      ],
+      [
+        "Inlet Size",
+        "1"
+      ],
+      [
+        "Outlet Size",
+        "2"
+      ],
+      [
+        "Fuel Line Size",
+        "5/16 in."
+      ],
+      [
+        "Mounting Holes",
+        "2 x 1/4 in."
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-13610",
+    "partType": "Rear Axle Brake Line Set",
+    "attrs": [
+      [
+        "Material",
+        "T304 stainless steel"
+      ],
+      [
+        "Quantity",
+        "2"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-81170",
+    "partType": "Mechanic Seat Set",
+    "attrs": [
+      [
+        "Weight Capacity",
+        "350 lbs"
+      ],
+      [
+        "Height",
+        "14.50 in."
+      ],
+      [
+        "Length",
+        "14 in."
+      ],
+      [
+        "Width",
+        "14.75 in."
+      ],
+      [
+        "Seat Pad Dimensions",
+        "14 x 7.50 x 1.75 in."
+      ],
+      [
+        "Tool Tray Dimensions",
+        "11.625 x 13.25 in."
+      ],
+      [
+        "Caster Size",
+        "2.50 in."
+      ],
+      [
+        "Quantity Casters",
+        "4"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-81804",
+    "partType": "Coil-Over Shock Roller Thrust Bearings",
+    "attrs": [
+      [
+        "Inner Diameter",
+        "2.500 in."
+      ],
+      [
+        "Diameter",
+        "3.400 in."
+      ],
+      [
+        "Quantity",
+        "2"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-90823",
+    "partType": "Lower Power Steering Bracket Big Block",
+    "attrs": [
+      [
+        "Material",
+        "Steel"
+      ],
+      [
+        "Finish",
+        "Black"
+      ],
+      [
+        "Weight",
+        "2.95 lbs"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78342",
+    "partType": "Fuel Tank Straps",
+    "attrs": [
+      [
+        "Material",
+        "Steel"
+      ],
+      [
+        "Finish",
+        "Black EDP"
+      ],
+      [
+        "Capacity",
+        "33 gallons"
+      ],
+      [
+        "Quantity",
+        "2"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78315",
+    "partType": "Fuel Tank Straps",
+    "attrs": [
+      [
+        "Material",
+        "Steel"
+      ],
+      [
+        "Finish",
+        "Black EDP"
+      ],
+      [
+        "Length",
+        "32 in."
+      ],
+      [
+        "Width",
+        "1.750 in."
+      ],
+      [
+        "Capacity",
+        "13.2 gallons"
+      ],
+      [
+        "Quantity",
+        "1"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-60525",
+    "partType": "Rear Axle Housing Bushings",
+    "attrs": [
+      [
+        "Material",
+        "Graphite-impregnated urethane"
+      ],
+      [
+        "Quantity",
+        "2"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-157313",
+    "partType": "Throttle and Transmission Cable Bracket",
+    "attrs": [
+      [
+        "Material",
+        "Steel"
+      ],
+      [
+        "Finish",
+        "Zinc-plated"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78739",
+    "partType": "Front Cab Floor Panel",
+    "attrs": [
+      [
+        "Material",
+        "Steel"
+      ],
+      [
+        "Wire Gauge",
+        "18"
+      ],
+      [
+        "Finish",
+        "EDP"
+      ],
+      [
+        "Quantity",
+        "1"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-93580",
+    "partType": "Fuel Tank Sending Unit",
+    "attrs": [
+      [
+        "Material",
+        "Stainless steel"
+      ],
+      [
+        "Ohm Range",
+        "0-30"
+      ],
+      [
+        "Capacity",
+        "16 gallons"
+      ],
+      [
+        "Main Port Size",
+        "3/8 in."
+      ],
+      [
+        "Return Port Size",
+        "5/16 in."
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-60386",
+    "partType": "High Performance Transmission Cooler",
+    "attrs": [
+      [
+        "Material",
+        "Aluminum"
+      ],
+      [
+        "Finish",
+        "Black powder-coated"
+      ],
+      [
+        "GVW Rating",
+        "22,000"
+      ],
+      [
+        "Pressure Rating",
+        "150 psi"
+      ],
+      [
+        "Length",
+        "7.5 in."
+      ],
+      [
+        "Width",
+        "16.125 in."
+      ],
+      [
+        "Thickness",
+        "0.75 in."
+      ],
+      [
+        "Hose Length",
+        "4.5 ft"
+      ],
+      [
+        "AN Size",
+        "-6"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-52489",
+    "partType": "Heater Hose Kit",
+    "attrs": [
+      [
+        "Material",
+        "Rubber"
+      ],
+      [
+        "Inner Diameter",
+        "3/4 in."
+      ],
+      [
+        "Length",
+        "50 in."
+      ],
+      [
+        "Inner Diameter",
+        "5/8 in."
+      ],
+      [
+        "Quantity",
+        "2"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-79600",
+    "partType": "Turn Signal Cancel Cam",
+    "attrs": [],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-90402",
+    "partType": "Cowl Induction Hood Emblems",
+    "attrs": [
+      [
+        "Material",
+        "die-cast zinc"
+      ],
+      [
+        "Finish",
+        "chrome"
+      ],
+      [
+        "Includes",
+        "4 pieces"
+      ],
+      [
+        "Width",
+        "3-3/16 inches and 5-3/4 inches"
+      ],
+      [
+        "Height",
+        "1/2 inch"
+      ],
+      [
+        "Quantity",
+        "4"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-81496",
+    "partType": "Parts Washer Replacement Pump",
+    "attrs": [
+      [
+        "Material",
+        "polypropylene"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-79805",
+    "partType": "Bucket Seat Mounting Brackets",
+    "attrs": [
+      [
+        "Material",
+        "stamped steel"
+      ],
+      [
+        "Finish",
+        "weld-through primer"
+      ],
+      [
+        "Quantity",
+        "pair"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-11001",
+    "partType": "Ignition Switch and Start Button Panel",
+    "attrs": [
+      [
+        "Material",
+        "billet aluminum"
+      ],
+      [
+        "Finish",
+        "clear anodized"
+      ],
+      [
+        "Width",
+        "2.5 inches"
+      ],
+      [
+        "Height",
+        "3.5 inches"
+      ],
+      [
+        "Includes",
+        "ignition toggle, start button, LED indicator"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-79288",
+    "partType": "Center Dash A/C Vents",
+    "attrs": [
+      [
+        "Material",
+        "black ABS"
+      ],
+      [
+        "Finish",
+        "chrome-plated"
+      ],
+      [
+        "Quantity",
+        "pair"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-13633",
+    "partType": "Rear Axle Brake Line Set",
+    "attrs": [
+      [
+        "Material",
+        "T304 stainless steel"
+      ],
+      [
+        "Quantity",
+        "2 pieces"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-80514",
+    "partType": "Piston Ring Filer",
+    "attrs": [
+      [
+        "Diameter",
+        "2-1/4 inches"
+      ],
+      [
+        "Grit",
+        "170/140"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-91111",
+    "partType": "Interior Door Panel Upper Retaining Molding Set",
+    "attrs": [
+      [
+        "Material",
+        "formed steel"
+      ],
+      [
+        "Finish",
+        "black"
+      ],
+      [
+        "Quantity",
+        "pair"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-19094",
+    "partType": "Instrument Panel Printed Circuit Board",
+    "attrs": [
+      [
+        "Weight",
+        "0.07 pounds"
+      ],
+      [
+        "Color",
+        "natural"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-79571",
+    "partType": "Trunk Lid Torsion Rods",
+    "attrs": [
+      [
+        "Material",
+        "steel"
+      ],
+      [
+        "Finish",
+        "natural"
+      ],
+      [
+        "Weight",
+        "approximately 3 pounds"
+      ],
+      [
+        "Quantity",
+        "matched pair"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-601010",
+    "partType": "Crankshaft Spacer, GM LS1/LS2/LS3/LS6/LS7/L92 Adapter",
+    "attrs": [
+      [
+        "Material",
+        "steel"
+      ],
+      [
+        "Inner Diameter",
+        "2.88 inches"
+      ],
+      [
+        "Diameter",
+        "3.858 inches"
+      ],
+      [
+        "Bolt Pattern",
+        "6-bolt"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-81147",
+    "partType": "Air Decal and Pinstripe Removal Tool",
+    "attrs": [
+      [
+        "Diameter",
+        "3.5 inches"
+      ],
+      [
+        "Thickness",
+        "0.5 inches"
+      ],
+      [
+        "Length",
+        "8 inches"
+      ],
+      [
+        "Color",
+        "black"
+      ],
+      [
+        "RPM",
+        "2,600"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-601150",
+    "partType": "Heavy-Duty Ford Clutch Fork",
+    "attrs": [
+      [
+        "Material",
+        "steel"
+      ],
+      [
+        "Finish",
+        "zinc dichromate"
+      ],
+      [
+        "Thread Size",
+        "1-1/16 inch x 10-spline"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78902",
+    "partType": "Engine Mount Bracket",
+    "attrs": [
+      [
+        "Material",
+        "stamped steel"
+      ],
+      [
+        "Finish",
+        "black"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-60620",
+    "partType": "Mustang Driveshaft Spacer",
+    "attrs": [
+      [
+        "Material",
+        "billet aluminum"
+      ],
+      [
+        "Finish",
+        "natural"
+      ],
+      [
+        "Thickness",
+        "11/16 inches"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-13221",
+    "partType": "Transmission Oil Cooler Lines",
+    "attrs": [
+      [
+        "Material",
+        "T304 stainless steel"
+      ],
+      [
+        "Quantity",
+        "2 pieces"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-91516",
+    "partType": "Battery Tray Assembly",
+    "attrs": [
+      [
+        "Material",
+        "stamped steel"
+      ],
+      [
+        "Finish",
+        "black electro-deposit primer"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-70026",
+    "partType": "Ribbon Window Net Angled Drag Style",
+    "attrs": [
+      [
+        "Material",
+        "black nylon"
+      ],
+      [
+        "Width",
+        "21 inches top, 20.5 inches bottom"
+      ],
+      [
+        "Height",
+        "19 inches and 15 inches"
+      ],
+      [
+        "Color",
+        "black"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-79547",
+    "partType": "Top Edge Fender Molding",
+    "attrs": [
+      [
+        "Material",
+        "polished stainless steel"
+      ],
+      [
+        "Finish",
+        "polished"
+      ],
+      [
+        "Quantity",
+        "pair"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-681162",
+    "partType": "3 Bar Swept Fluted Spinner Center Caps",
+    "attrs": [
+      [
+        "Material",
+        "Stainless steel"
+      ],
+      [
+        "Finish",
+        "Bright chrome"
+      ],
+      [
+        "Quantity",
+        "4"
+      ],
+      [
+        "Style",
+        "3-bar swept fluted spinner"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-91099",
+    "partType": "Header Panel Molding",
+    "attrs": [
+      [
+        "Material",
+        "Anodized aluminum"
+      ],
+      [
+        "Application",
+        "1968-1969 Chevelle, El Camino"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-15950",
+    "partType": "Mechanical Fuel Pump Small Block",
+    "attrs": [
+      [
+        "Flow Rate",
+        "80 GPH"
+      ],
+      [
+        "Pressure Rating",
+        "5.7-8 psi"
+      ],
+      [
+        "Thread Size",
+        "1/4 in. NPT"
+      ],
+      [
+        "Finish",
+        "Chrome"
+      ],
+      [
+        "Application",
+        "Small Block Chevy"
+      ],
+      [
+        "Fuel Type",
+        "Gasoline only"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-41513",
+    "partType": "Fuel Pressure Gauge",
+    "attrs": [
+      [
+        "Pressure Rating",
+        "0-100 psi"
+      ],
+      [
+        "Thread Size",
+        "1/8 in. NPT"
+      ],
+      [
+        "Diameter",
+        "1.5 in."
+      ],
+      [
+        "Color",
+        "Black"
+      ],
+      [
+        "Type",
+        "Liquid-filled"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78506",
+    "partType": "Fuel Tank Sending Unit",
+    "attrs": [
+      [
+        "Application",
+        "1972 Chevrolet, GMC trucks"
+      ],
+      [
+        "Thread Size",
+        "3/8 in. main line"
+      ],
+      [
+        "Configuration",
+        "Manual transmission"
+      ],
+      [
+        "Includes",
+        "Fuel strainer"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78492",
+    "partType": "Fuel Tank Sending Unit",
+    "attrs": [
+      [
+        "Ohm Range",
+        "0-90 ohm"
+      ],
+      [
+        "Thread Size",
+        "3/8 in. main, 1/4 in. return"
+      ],
+      [
+        "Application",
+        "1973-1975 Chevy Nova"
+      ],
+      [
+        "Includes",
+        "Fuel strainer"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78886",
+    "partType": "Fuel Filler Neck",
+    "attrs": [
+      [
+        "Material",
+        "Steel"
+      ],
+      [
+        "Finish",
+        "Black epoxy"
+      ],
+      [
+        "Application",
+        "1966-1976 Ford Bronco"
+      ],
+      [
+        "Type",
+        "Front auxiliary tank"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-72336",
+    "partType": "Industrial Strength Cleaner & Degreaser",
+    "attrs": [
+      [
+        "Capacity",
+        "2 gallon"
+      ],
+      [
+        "Type",
+        "Concentrated"
+      ],
+      [
+        "Properties",
+        "Biodegradable, phosphate-free, non-flammable"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-91501",
+    "partType": "Complete Toe Board Right/Passenger Side",
+    "attrs": [
+      [
+        "Material",
+        "Stamped steel"
+      ],
+      [
+        "Finish",
+        "Black EDP primer"
+      ],
+      [
+        "Dimensions",
+        "30 x 16 in."
+      ],
+      [
+        "Application",
+        "1968-1972 Chevy Chevelle, El Camino"
+      ],
+      [
+        "Side",
+        "Right/Passenger"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-51652",
+    "partType": "Harmonic Balancer Small Block",
+    "attrs": [
+      [
+        "Diameter",
+        "6.75 in."
+      ],
+      [
+        "RPM Rating",
+        "6500"
+      ],
+      [
+        "Material",
+        "Spherical graphite hub"
+      ],
+      [
+        "Type",
+        "Internally balanced"
+      ],
+      [
+        "Application",
+        "Small Block Chevy"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-91903",
+    "partType": "Door Seals",
+    "attrs": [
+      [
+        "Material",
+        "Rubber"
+      ],
+      [
+        "Type",
+        "Weatherstrip pair"
+      ],
+      [
+        "Application",
+        "1969-1972 Buick Skylark, Chevy Chevelle, Olds Cutlass, Pontiac Grand Prix, 1970-1972 Chevy Monte Carlo"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-91159",
+    "partType": "Interior Door Handle & Mechanism",
+    "attrs": [
+      [
+        "Material",
+        "Die-cast zinc"
+      ],
+      [
+        "Finish",
+        "Bright chrome"
+      ],
+      [
+        "Application",
+        "1968-1969 Chevy Camaro, Pontiac Firebird"
+      ],
+      [
+        "Type",
+        "Deluxe Interior"
+      ],
+      [
+        "Quantity",
+        "2"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-93650",
+    "partType": "Back-Up Light Lens",
+    "attrs": [
+      [
+        "Material",
+        "Clear acrylic"
+      ],
+      [
+        "Quantity",
+        "2"
+      ],
+      [
+        "Application",
+        "1971-1973 Chevrolet Monte Carlo"
+      ],
+      [
+        "Type",
+        "Injection-molded"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-93782",
+    "partType": "Windshield Wiper Switch",
+    "attrs": [
+      [
+        "Terminals",
+        "3-blade male"
+      ],
+      [
+        "Application",
+        "1959-1964 Buick, Chevrolet, Oldsmobile"
+      ],
+      [
+        "Voltage",
+        "12V"
+      ],
+      [
+        "Speeds",
+        "2-speed"
+      ],
+      [
+        "Replaces",
+        "GM 01993543"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-93639",
+    "partType": "Back-Up Light Assembly",
+    "attrs": [
+      [
+        "Material",
+        "Injection-molded plastic lens, die-cast zinc housing"
+      ],
+      [
+        "Application",
+        "1968 Chevelle, El Camino"
+      ],
+      [
+        "Includes",
+        "Bulb, wiring harness"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-70020",
+    "partType": "Window Net Installation Kit",
+    "attrs": [
+      [
+        "Quantity",
+        "2"
+      ],
+      [
+        "Length",
+        "28.5 in."
+      ],
+      [
+        "Diameter",
+        "7/16 in."
+      ],
+      [
+        "Bushings",
+        "3"
+      ],
+      [
+        "Cotters",
+        "3"
+      ],
+      [
+        "Type",
+        "Window net installation kit"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78740",
+    "partType": "Front Cab Floor Panel",
+    "attrs": [
+      [
+        "Material",
+        "Steel"
+      ],
+      [
+        "Wire Gauge",
+        "18 AWG"
+      ],
+      [
+        "Finish",
+        "EDP primer"
+      ],
+      [
+        "Application",
+        "1967-1979 Ford F-Series, 1978-1979 Ford Bronco"
+      ],
+      [
+        "Side",
+        "Right/Passenger"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78847",
+    "partType": "Fuel Filler Neck",
+    "attrs": [
+      [
+        "Material",
+        "Steel"
+      ],
+      [
+        "Finish",
+        "Black epoxy"
+      ],
+      [
+        "Inner Diameter",
+        "1.75 in."
+      ],
+      [
+        "Length",
+        "8.25 in."
+      ],
+      [
+        "Mounting Holes",
+        "3 #8 screw"
+      ],
+      [
+        "Application",
+        "1984-1987 Chevy/GMC C/K Crew Cab, Fleetside"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-79120",
+    "partType": "Bucket Seat Conversion Brackets",
+    "attrs": [
+      [
+        "Material",
+        "Steel"
+      ],
+      [
+        "Quantity",
+        "2"
+      ],
+      [
+        "Weight",
+        "2.6 lb"
+      ],
+      [
+        "Application",
+        "1964-1972 GM A-Body"
+      ],
+      [
+        "Type",
+        "Bucket seat conversion brackets"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-23620",
+    "partType": "Oil Pump Pickup Retainer",
+    "attrs": [
+      [
+        "Material",
+        "6061 aluminum"
+      ],
+      [
+        "Diameter",
+        "5/8 in."
+      ],
+      [
+        "Finish",
+        "Natural"
+      ],
+      [
+        "Application",
+        "1955-1997 Small Block Chevy, 1978-1992 Buick/Olds/Pontiac SBC"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-60662",
+    "partType": "Driveshaft Loop",
+    "attrs": [
+      [
+        "Inner Diameter",
+        "8-5/8 to 10-5/8 inches"
+      ],
+      [
+        "Width",
+        "2 inches"
+      ],
+      [
+        "Thickness",
+        "1/4 inch"
+      ],
+      [
+        "Material",
+        "A36 carbon steel"
+      ],
+      [
+        "Loop Width",
+        "4-1/2 inches"
+      ],
+      [
+        "Bolt Pattern",
+        "20 and 24 inches"
+      ],
+      [
+        "Finish",
+        "Black powder coat"
+      ],
+      [
+        "Includes",
+        "Mounting hardware"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-92123",
+    "partType": "Quarter Window Molding",
+    "attrs": [
+      [
+        "Finish",
+        "Chrome"
+      ],
+      [
+        "Color",
+        "Black"
+      ],
+      [
+        "Material",
+        "Chrome plated steel"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78482",
+    "partType": "Fuel Tank Sending Unit",
+    "attrs": [
+      [
+        "Thread Size",
+        "3/8 inch"
+      ],
+      [
+        "Ohm Range",
+        "0 to 90 ohms"
+      ],
+      [
+        "Includes",
+        "Fuel strainer"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78124",
+    "partType": "Fuel Tank Straps",
+    "attrs": [
+      [
+        "Quantity",
+        "2"
+      ],
+      [
+        "Finish",
+        "Black EDP"
+      ],
+      [
+        "Material",
+        "Steel"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-91500",
+    "partType": "Toe Board / Floor Panel",
+    "attrs": [
+      [
+        "Length",
+        "30 inches"
+      ],
+      [
+        "Width",
+        "16 inches"
+      ],
+      [
+        "Material",
+        "Stamped steel"
+      ],
+      [
+        "Finish",
+        "Black EDP"
+      ],
+      [
+        "Includes",
+        "Transmission hump section"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-19065",
+    "partType": "Instrument Panel Printed Circuit Board",
+    "attrs": [
+      [
+        "Material",
+        "Copper foil, Mylar"
+      ],
+      [
+        "Color",
+        "Blue-green"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-81156",
+    "partType": "Mechanic Seat and Step Stool",
+    "attrs": [
+      [
+        "Capacity",
+        "300 pounds"
+      ],
+      [
+        "Caster Size",
+        "2.5 inches"
+      ],
+      [
+        "Quantity",
+        "5"
+      ],
+      [
+        "Seat Dimensions",
+        "14 x 9.5 x 1.5 inches"
+      ],
+      [
+        "Step Dimensions",
+        "14 x 9 inches"
+      ],
+      [
+        "Tray Dimensions",
+        "13 x 12 inches"
+      ],
+      [
+        "Material",
+        "Metal"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-90897",
+    "partType": "Water Pump Backing Plate",
+    "attrs": [
+      [
+        "Material",
+        "Stainless steel"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-63022",
+    "partType": "Adjustable Proportioning Valve",
+    "attrs": [
+      [
+        "Thread Size",
+        "3/8-24 SAE"
+      ],
+      [
+        "Port Size",
+        "1/8 inch"
+      ],
+      [
+        "Pressure Rating",
+        "100 to 3000 PSI"
+      ],
+      [
+        "Material",
+        "Aluminum"
+      ],
+      [
+        "Finish",
+        "Black anodized"
+      ],
+      [
+        "Height",
+        "3.75 to 4.25 inches"
+      ],
+      [
+        "Dimensions",
+        "1.5 x 1 inches"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-91628",
+    "partType": "Door Latch",
+    "attrs": [
+      [
+        "Material",
+        "Steel"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-91629",
+    "partType": "Door Latch, Left/Driver Side",
+    "attrs": [
+      [
+        "Material",
+        "Steel"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-157005",
+    "partType": "Throttle Cable",
+    "attrs": [
+      [
+        "Sleeve Length",
+        "24 inches"
+      ],
+      [
+        "Wire Length",
+        "40.5 inches"
+      ],
+      [
+        "Material",
+        "Stainless steel braided inner wire"
+      ],
+      [
+        "Finish",
+        "Black rubber jacket"
+      ],
+      [
+        "Includes",
+        "Aluminum fittings, clevis, e-clip"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-93602",
+    "partType": "Rear Window Seal, Without Trim Groove",
+    "attrs": [
+      [
+        "Material",
+        "EPDM rubber"
+      ],
+      [
+        "Color",
+        "Black"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-64832",
+    "partType": "Parachute Tether Mount Main Anchor Assembly",
+    "attrs": [
+      [
+        "Tube Length",
+        "18 inches"
+      ],
+      [
+        "Tube Wall",
+        "0.120 inch"
+      ],
+      [
+        "Material",
+        "DOM tubing"
+      ],
+      [
+        "Weight",
+        "4.2 pounds"
+      ],
+      [
+        "Bolt Size",
+        "1/2 inch"
+      ],
+      [
+        "Bolt Grade",
+        "Grade 8"
+      ],
+      [
+        "Includes",
+        "Sleeved cord bushing, bolt and nut"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-40800",
+    "partType": "Ignition Control Unit",
+    "attrs": [
+      [
+        "Connector Pins",
+        "4 or 5"
+      ],
+      [
+        "Coil Resistance",
+        "1.4 ohms minimum"
+      ],
+      [
+        "Ballast Resistor",
+        "0.5 to 1.0 ohms"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-91623",
+    "partType": "Door Latch, Left/Driver Side",
+    "attrs": [
+      [
+        "Material",
+        "Steel"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-92198",
+    "partType": "Rear License Plate Bracket",
+    "attrs": [
+      [
+        "Material",
+        "Stamped steel"
+      ],
+      [
+        "Finish",
+        "Black EDP"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78625",
+    "partType": "Front Inner Fender, Right/Passenger Side",
+    "attrs": [
+      [
+        "Material",
+        "20-gauge stamped steel"
+      ],
+      [
+        "Finish",
+        "Black EDP"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-79803",
+    "partType": "Seat Back Lock Assembly",
+    "attrs": [
+      [
+        "Includes",
+        "Release button and protective cover"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-91537",
+    "partType": "Battery Tray with Support",
+    "attrs": [
+      [
+        "Material",
+        "Stamped steel"
+      ],
+      [
+        "Finish",
+        "Black EDP"
+      ],
+      [
+        "Includes",
+        "Battery support"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-91631",
+    "partType": "Door Latch, Left/Driver Side",
+    "attrs": [
+      [
+        "Material",
+        "Steel"
+      ],
+      [
+        "Finish",
+        "OEM specification"
+      ],
+      [
+        "Includes",
+        "Door latch assembly"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-159120",
+    "partType": "EFI Fuel Pressure Regulator",
+    "attrs": [
+      [
+        "Pressure Rating",
+        "30-100 psi"
+      ],
+      [
+        "Boost Reference",
+        "1:1"
+      ],
+      [
+        "AN Size",
+        "-8"
+      ],
+      [
+        "Thread Size",
+        "3/8 in. NPT"
+      ],
+      [
+        "Finish",
+        "Black anodized"
+      ],
+      [
+        "Capacity",
+        "200 GPH"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-91520",
+    "partType": "Battery Tray Assembly",
+    "attrs": [
+      [
+        "Material",
+        "Stamped steel"
+      ],
+      [
+        "Finish",
+        "Black EDP"
+      ],
+      [
+        "Weight",
+        "2.4 lb"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-79840",
+    "partType": "Interior Rear View Mirror, Day/Night",
+    "attrs": [
+      [
+        "Length",
+        "12 inches"
+      ],
+      [
+        "Mirror Type",
+        "Rectangular flat-glass"
+      ],
+      [
+        "Material",
+        "Stainless steel backing"
+      ],
+      [
+        "Color",
+        "Grey surround"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78494",
+    "partType": "Fuel Tank Sending Unit",
+    "attrs": [
+      [
+        "Ohm Range",
+        "0-30 ohms"
+      ],
+      [
+        "Thread Size",
+        "3/8 in."
+      ],
+      [
+        "Includes",
+        "Fuel strainer"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-90692",
+    "partType": "Dash Pad",
+    "attrs": [
+      [
+        "Material",
+        "Urethane"
+      ],
+      [
+        "Color",
+        "Black"
+      ],
+      [
+        "Finish",
+        "Madrid grain"
+      ],
+      [
+        "Includes",
+        "Hardware"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-210098",
+    "partType": "One-Piece Oil Pan Gasket Big Block",
+    "attrs": [
+      [
+        "Material",
+        "Silicone over metal core"
+      ],
+      [
+        "Temperature Rating",
+        "High-temperature"
+      ],
+      [
+        "Quantity",
+        "1-piece"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-60712",
+    "partType": "Power Steering Hose Kit",
+    "attrs": [
+      [
+        "Hose Diameter",
+        "3/8 in."
+      ],
+      [
+        "Pressure Hose Length",
+        "24 inches"
+      ],
+      [
+        "Return Hose Length",
+        "26 inches"
+      ],
+      [
+        "Thread Size",
+        "3/8 in.-18 and 11/16 in.-18"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-79544",
+    "partType": "Front Edge Hood Molding",
+    "attrs": [
+      [
+        "Material",
+        "Aluminum"
+      ],
+      [
+        "Finish",
+        "Chrome"
+      ],
+      [
+        "Includes",
+        "Steel inner thread-bolt sleeve"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-64718",
+    "partType": "G-body Frame Extension Kit",
+    "attrs": [
+      [
+        "Material",
+        "Steel"
+      ],
+      [
+        "Thickness",
+        "0.125 inches"
+      ],
+      [
+        "Dimensions",
+        "18 x 3 x 1 in."
+      ],
+      [
+        "Finish",
+        "Black powder-coated"
+      ],
+      [
+        "Includes",
+        "4 bolts, 4 nuts, 8 washers"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-48369",
+    "partType": "Dual Dash Speakers",
+    "attrs": [
+      [
+        "Quantity",
+        "2 speakers"
+      ],
+      [
+        "Speaker Size",
+        "4-inch round"
+      ],
+      [
+        "Material",
+        "Plastic frame"
+      ],
+      [
+        "Finish",
+        "Natural"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78801",
+    "partType": "Fuel Tank Sending Unit",
+    "attrs": [
+      [
+        "Ohm Range",
+        "10-75 ohms"
+      ],
+      [
+        "Thread Size",
+        "3/8 in."
+      ],
+      [
+        "Material",
+        "Stainless steel"
+      ],
+      [
+        "Float Material",
+        "Brass"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-50325",
+    "partType": "LS Rear Main Seal Cover",
+    "attrs": [
+      [
+        "Material",
+        "Cast aluminum"
+      ],
+      [
+        "Finish",
+        "Natural"
+      ],
+      [
+        "Includes",
+        "Rear cover seal, RTV sealer, attaching bolts"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78624",
+    "partType": "Front Inner Fender Left/Driver Side",
+    "attrs": [
+      [
+        "Material",
+        "Stamped steel"
+      ],
+      [
+        "Thickness",
+        "20-gauge"
+      ],
+      [
+        "Finish",
+        "Black EDP"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78486",
+    "partType": "Fuel Tank Sending Unit",
+    "attrs": [
+      [
+        "Ohm Range",
+        "0-90 ohms"
+      ],
+      [
+        "Thread Size",
+        "3/8 in. main and 1/4 in. return"
+      ],
+      [
+        "Includes",
+        "Fuel strainer"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-40826",
+    "partType": "RPM-Activated Window Switch Digital Readout",
+    "attrs": [
+      [
+        "RPM Range",
+        "2000-9900"
+      ],
+      [
+        "RPM Increment",
+        "100"
+      ],
+      [
+        "Display Type",
+        "4-digit LED"
+      ],
+      [
+        "Amperage",
+        "3 amps"
+      ],
+      [
+        "Modes",
+        "3"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78468",
+    "partType": "Fuel Tank Sending Unit",
+    "attrs": [
+      [
+        "Ohm Range",
+        "0-90 ohms"
+      ],
+      [
+        "Thread Size",
+        "3/8 in. main and 1/4 in. return"
+      ],
+      [
+        "Finish",
+        "Natural"
+      ],
+      [
+        "Includes",
+        "Fuel strainer"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-702261-1",
+    "partType": "Racing Seat Cover",
+    "attrs": [
+      [
+        "Width",
+        "17 inches hip"
+      ],
+      [
+        "Layback Angle",
+        "18 degrees"
+      ],
+      [
+        "Color",
+        "Black"
+      ],
+      [
+        "Material",
+        "Tweed with foam"
+      ],
+      [
+        "Closure Type",
+        "9 edge snaps"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-70075",
+    "partType": "3-Point Retractable Seat Belt",
+    "attrs": [
+      [
+        "Width",
+        "1 7/8 inches"
+      ],
+      [
+        "Color",
+        "Black"
+      ],
+      [
+        "Material",
+        "Polyester webbing"
+      ],
+      [
+        "Mounting Hole Size",
+        "1/2 inch"
+      ],
+      [
+        "Sleeve Length",
+        "12 inches"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-61620",
+    "partType": "Automatic Transmission Shifter Pedestal",
+    "attrs": [
+      [
+        "Material",
+        "Steel"
+      ],
+      [
+        "Finish",
+        "Natural"
+      ],
+      [
+        "Height Range",
+        "4-8.25 inches"
+      ],
+      [
+        "Top Plate Size",
+        "7.5 x 3 in."
+      ],
+      [
+        "Pin Size",
+        "1/4 in. x 1.5 in."
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-79546",
+    "partType": "Rear Edge Hood Molding",
+    "attrs": [
+      [
+        "Material",
+        "Stainless steel"
+      ],
+      [
+        "Finish",
+        "Polished"
+      ],
+      [
+        "Quantity",
+        "1"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-70067",
+    "partType": "Carbon Fiber Roll Bar Protector",
+    "attrs": [
+      [
+        "Material",
+        "Carbon fiber"
+      ],
+      [
+        "Length",
+        "48 inches"
+      ],
+      [
+        "Thickness",
+        "0.040 inches"
+      ],
+      [
+        "Inner Diameter",
+        "1.625-2.0 inches"
+      ],
+      [
+        "Quantity",
+        "1"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-79822",
+    "partType": "Glove Box Face Plate",
+    "attrs": [
+      [
+        "Finish",
+        "Chrome"
+      ],
+      [
+        "Color",
+        "Black lettering"
+      ],
+      [
+        "Includes",
+        "Chrome trim, SS plaque"
+      ],
+      [
+        "Quantity",
+        "1"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-48370",
+    "partType": "Dual Dash Speakers",
+    "attrs": [
+      [
+        "Diameter",
+        "3.5 inches"
+      ],
+      [
+        "Wattage",
+        "60W RMS"
+      ],
+      [
+        "Wattage",
+        "80W peak"
+      ],
+      [
+        "Mounting Plate Size",
+        "4.125 x 10 inches"
+      ],
+      [
+        "Color",
+        "Red"
+      ],
+      [
+        "Quantity",
+        "2"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78622",
+    "partType": "Front Inner Fender Left/Driver Side",
+    "attrs": [
+      [
+        "Material",
+        "Steel"
+      ],
+      [
+        "Thickness",
+        "20-gauge"
+      ],
+      [
+        "Finish",
+        "Black EDP"
+      ],
+      [
+        "Quantity",
+        "1"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-81306",
+    "partType": "Blasting Abrasive Soda Blast Media",
+    "attrs": [
+      [
+        "Material",
+        "Sodium bicarbonate"
+      ],
+      [
+        "Weight",
+        "50 pounds"
+      ],
+      [
+        "Particle Size",
+        "350 micron"
+      ],
+      [
+        "Quantity",
+        "1 bag"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-79463",
+    "partType": "Fan Shroud",
+    "attrs": [
+      [
+        "Material",
+        "ABS plastic"
+      ],
+      [
+        "Fan Opening Diameter",
+        "19.75 inches"
+      ],
+      [
+        "Height",
+        "16.875 inches"
+      ],
+      [
+        "Width",
+        "28.125 inches"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-91112",
+    "partType": "2.500 in. Factory-Style Oval Exhaust Tips",
+    "attrs": [
+      [
+        "Material",
+        "Steel"
+      ],
+      [
+        "Finish",
+        "Chrome"
+      ],
+      [
+        "Diameter",
+        "2.5 inches"
+      ],
+      [
+        "Shape",
+        "Oval"
+      ],
+      [
+        "Installation Type",
+        "Weld-on"
+      ],
+      [
+        "Quantity",
+        "2"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-19077",
+    "partType": "Instrument Panel Printed Circuit Board",
+    "attrs": [
+      [
+        "Material",
+        "Printed circuit board"
+      ],
+      [
+        "Color",
+        "Red"
+      ],
+      [
+        "Width",
+        "18.90 inches"
+      ],
+      [
+        "Height",
+        "7.70 inches"
+      ],
+      [
+        "Thickness",
+        "0.50 inches"
+      ],
+      [
+        "Weight",
+        "0.07 pounds"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78642",
+    "partType": "Front Inner Fender Right/Passenger Side",
+    "attrs": [
+      [
+        "Material",
+        "Steel"
+      ],
+      [
+        "Thickness",
+        "20-gauge"
+      ],
+      [
+        "Finish",
+        "Black EDP"
+      ],
+      [
+        "Quantity",
+        "1"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78010",
+    "partType": "Fuel Tank",
+    "attrs": [
+      [
+        "Material",
+        "Zinc-nickel steel"
+      ],
+      [
+        "Finish",
+        "Silver epoxy"
+      ],
+      [
+        "Capacity",
+        "20 gallons"
+      ],
+      [
+        "Filler Neck Diameter",
+        "1.625 inches"
+      ],
+      [
+        "Includes",
+        "Lock ring, gasket"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78859",
+    "partType": "Fuel Tank Straps",
+    "attrs": [
+      [
+        "Finish",
+        "Black EDP"
+      ],
+      [
+        "Quantity",
+        "2"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78640",
+    "partType": "Front Inner Fender Right/Passenger Side",
+    "attrs": [
+      [
+        "Material",
+        "Steel"
+      ],
+      [
+        "Thickness",
+        "20-gauge"
+      ],
+      [
+        "Finish",
+        "Black EDP"
+      ],
+      [
+        "Quantity",
+        "1"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-19085",
+    "partType": "Instrument Panel Printed Circuit Board",
+    "attrs": [
+      [
+        "Material",
+        "Printed circuit board"
+      ],
+      [
+        "Color",
+        "Red"
+      ],
+      [
+        "Weight",
+        "0.07 pounds"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-81789",
+    "partType": "Locking Pliers Slide Hammer Vice Grips, 9 in. Long Curved Jaw",
+    "attrs": [
+      [
+        "Length",
+        "9 inches"
+      ],
+      [
+        "Material",
+        "Chromium-vanadium"
+      ],
+      [
+        "Finish",
+        "Nickel-plated"
+      ],
+      [
+        "Hammer Weight",
+        "2.2 pounds"
+      ],
+      [
+        "Thread Size",
+        "M12-1.5"
+      ],
+      [
+        "Finish",
+        "Black oxide"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-81635",
+    "partType": "Hydraulic A-Frame Shop Press 6-Ton Bench Top",
+    "attrs": [
+      [
+        "Material",
+        "Steel"
+      ],
+      [
+        "Color",
+        "Yellow"
+      ],
+      [
+        "Capacity",
+        "6 tons"
+      ],
+      [
+        "Height Range",
+        "4.25 inches"
+      ],
+      [
+        "Plate Size",
+        "6.125 x 3 inches"
+      ],
+      [
+        "Quantity",
+        "2 plates"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78484",
+    "partType": "Fuel Tank Sending Unit",
+    "attrs": [
+      [
+        "Ohm Range",
+        "0-90"
+      ],
+      [
+        "Line Size",
+        "3/8 inch"
+      ],
+      [
+        "Includes",
+        "Strainer, locking ring, gasket"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-10330",
+    "partType": "Micro Switch with Cord",
+    "attrs": [
+      [
+        "Amperage",
+        "10 amps"
+      ],
+      [
+        "Wire Gauge",
+        "18 AWG"
+      ],
+      [
+        "Cord Length",
+        "6 feet"
+      ],
+      [
+        "Mounting Hole Size",
+        "5/8 inch"
+      ],
+      [
+        "Color",
+        "Red"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78490",
+    "partType": "Fuel Tank Sending Unit",
+    "attrs": [
+      [
+        "Ohm Range",
+        "0-90"
+      ],
+      [
+        "Line Size",
+        "3/8 inch"
+      ],
+      [
+        "Includes",
+        "Fuel strainer"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-79074",
+    "partType": "Front Bumper Brackets",
+    "attrs": [
+      [
+        "Material",
+        "Steel"
+      ],
+      [
+        "Finish",
+        "Black EDP"
+      ],
+      [
+        "Quantity",
+        "8"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-90383",
+    "partType": "Door Sill Plates GM",
+    "attrs": [
+      [
+        "Material",
+        "Polished aluminum"
+      ],
+      [
+        "Quantity",
+        "Pair"
+      ],
+      [
+        "Finish",
+        "Polished"
+      ],
+      [
+        "Color",
+        "Blue/black emblem"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-702262-1",
+    "partType": "Racing Seat Cover",
+    "attrs": [
+      [
+        "Hip Width",
+        "18 inches"
+      ],
+      [
+        "Color",
+        "Black"
+      ],
+      [
+        "Material",
+        "Tweed fabric"
+      ],
+      [
+        "Fastener Type",
+        "Edge snaps"
+      ],
+      [
+        "Quantity",
+        "9 snaps"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78406",
+    "partType": "Front Inner Fender",
+    "attrs": [
+      [
+        "Material",
+        "16-gauge steel"
+      ],
+      [
+        "Finish",
+        "Black EDP coating"
+      ],
+      [
+        "Side",
+        "Left/Driver"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-10009",
+    "partType": "Heavy-Duty Mini Starter Small Block Big Block",
+    "attrs": [
+      [
+        "Compression Rating",
+        "14:1"
+      ],
+      [
+        "Horsepower",
+        "2 hp"
+      ],
+      [
+        "Gear Reduction",
+        "3.7:1"
+      ],
+      [
+        "Weight",
+        "11.6 lb"
+      ],
+      [
+        "Flywheel Teeth Options",
+        "153, 168"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-79353",
+    "partType": "Front Floor Pan Section",
+    "attrs": [
+      [
+        "Material",
+        "20-gauge steel"
+      ],
+      [
+        "Finish",
+        "Natural bare steel"
+      ],
+      [
+        "Side",
+        "Driver"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78076",
+    "partType": "Fuel Tank",
+    "attrs": [
+      [
+        "Capacity",
+        "20 gallons"
+      ],
+      [
+        "Material",
+        "Electroplated zinc steel"
+      ],
+      [
+        "Finish",
+        "Silver"
+      ],
+      [
+        "Includes",
+        "Lock ring, gasket"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78736",
+    "partType": "Floor Panel Front R",
+    "attrs": [
+      [
+        "Material",
+        "Stamped steel"
+      ],
+      [
+        "Finish",
+        "Black EDP coating"
+      ],
+      [
+        "Side",
+        "Right/Passenger"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-91590",
+    "partType": "Wheel Well Opening Molding Kit",
+    "attrs": [
+      [
+        "Material",
+        "Anodized aluminum"
+      ],
+      [
+        "Finish",
+        "Bright dipped clear"
+      ],
+      [
+        "Quantity",
+        "4-piece"
+      ],
+      [
+        "Color",
+        "Bright finish"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78078",
+    "partType": "Fuel Tank",
+    "attrs": [
+      [
+        "Capacity",
+        "22 gallons"
+      ],
+      [
+        "Material",
+        "Electroplated zinc steel"
+      ],
+      [
+        "Finish",
+        "Silver epoxy"
+      ],
+      [
+        "Filler Hose Size",
+        "2.25 inch"
+      ],
+      [
+        "Includes",
+        "Lock ring, gasket"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78623",
+    "partType": "Front Inner Fender Right/Passenger Side",
+    "attrs": [
+      [
+        "Material",
+        "20-gauge steel"
+      ],
+      [
+        "Finish",
+        "Black EDP coating"
+      ],
+      [
+        "Side",
+        "Right/Passenger"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78040",
+    "partType": "Fuel Tank II",
+    "attrs": [
+      [
+        "Capacity",
+        "16 gallons"
+      ],
+      [
+        "Material",
+        "Electroplated zinc-nickel steel"
+      ],
+      [
+        "Includes",
+        "Lock ring, gasket"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-60970",
+    "partType": "Universal Transmission Blanket SFI 4.1 Certified",
+    "attrs": [
+      [
+        "Length",
+        "45 inches"
+      ],
+      [
+        "Width",
+        "12 inches"
+      ],
+      [
+        "Material",
+        "Ballistic material"
+      ],
+      [
+        "Layers",
+        "10"
+      ],
+      [
+        "Strap Width",
+        "2 inches"
+      ],
+      [
+        "Certification",
+        "SFI 4.1"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-90686",
+    "partType": "Dash Pad Black Vinyl-Wrapped",
+    "attrs": [
+      [
+        "Color",
+        "Black"
+      ],
+      [
+        "Material",
+        "Madrid-grain vinyl"
+      ],
+      [
+        "Backing",
+        "Steel plate"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-79466",
+    "partType": "Fan Shroud Big Block, Direct Fit",
+    "attrs": [
+      [
+        "Fan Opening Diameter",
+        "19.25 inches"
+      ],
+      [
+        "Material",
+        "Black plastic"
+      ],
+      [
+        "Color",
+        "Black"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78074",
+    "partType": "Fuel Tank, 15.4-Gallon",
+    "attrs": [
+      [
+        "Capacity",
+        "15.4 gallons"
+      ],
+      [
+        "Material",
+        "Electroplated zinc steel"
+      ],
+      [
+        "Sending Unit Holes",
+        "2"
+      ],
+      [
+        "Includes",
+        "Lock ring, gasket"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-91776",
+    "partType": "Replacement Seat Cushion Foam - Rear",
+    "attrs": [
+      [
+        "Material",
+        "High-density foam"
+      ],
+      [
+        "Position",
+        "Rear seat"
+      ],
+      [
+        "Color",
+        "Neutral"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-1210",
+    "partType": "Parachute Release Cable Kit",
+    "attrs": [
+      [
+        "Cable Length",
+        "18.5 feet"
+      ],
+      [
+        "Cable Lining",
+        "PTFE"
+      ],
+      [
+        "Handle Length",
+        "9.8 inches"
+      ],
+      [
+        "Handle Material",
+        "Aluminum"
+      ],
+      [
+        "Mounting",
+        "Welding required"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78054",
+    "partType": "Fuel Tank, 21-Gallon",
+    "attrs": [
+      [
+        "Capacity",
+        "21 gallons"
+      ],
+      [
+        "Material",
+        "Electroplated zinc steel"
+      ],
+      [
+        "Includes",
+        "Lock ring, gasket"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-91650",
+    "partType": "Full-Length Floor Panel",
+    "attrs": [
+      [
+        "Material",
+        "Stamped steel"
+      ],
+      [
+        "Finish",
+        "Black EDP primer"
+      ],
+      [
+        "Side",
+        "Left/Driver"
+      ],
+      [
+        "Length",
+        "Full-length"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-79590",
+    "partType": "Bucket Seat Bottom Spring Assembly",
+    "attrs": [
+      [
+        "Weight",
+        "3.15 lb"
+      ],
+      [
+        "Assembly Type",
+        "Bottom and side spring"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78030",
+    "partType": "Fuel Tank",
+    "attrs": [
+      [
+        "Material",
+        "Electroplated zinc steel"
+      ],
+      [
+        "Finish",
+        "Silver epoxy"
+      ],
+      [
+        "Capacity",
+        "14 gallons"
+      ],
+      [
+        "Includes",
+        "Lock ring, gasket"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-48400",
+    "partType": "Six Speaker Soundbar",
+    "attrs": [
+      [
+        "Woofers",
+        "Two 4 inch"
+      ],
+      [
+        "Mid-range speakers",
+        "Two 3 inch"
+      ],
+      [
+        "Tweeters",
+        "Two 1.5 inch"
+      ],
+      [
+        "Wattage",
+        "200 watts peak"
+      ],
+      [
+        "Side panel dimensions",
+        "18 x 7 x 3 inches"
+      ],
+      [
+        "Center panel dimensions",
+        "24 x 6 x 2 inches"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-91975",
+    "partType": "Hood Hinges",
+    "attrs": [
+      [
+        "Material",
+        "Steel"
+      ],
+      [
+        "Finish",
+        "Black EDP"
+      ],
+      [
+        "Includes",
+        "Tension springs"
+      ],
+      [
+        "Quantity",
+        "Left and right pair"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78034",
+    "partType": "Fuel Tank",
+    "attrs": [
+      [
+        "Material",
+        "Electroplated zinc-nickel steel"
+      ],
+      [
+        "Finish",
+        "Silver epoxy"
+      ],
+      [
+        "Capacity",
+        "21.5 gallons"
+      ],
+      [
+        "Includes",
+        "Filler neck, lock ring, O-ring gasket"
+      ],
+      [
+        "Height",
+        "10.25 inches"
+      ],
+      [
+        "Length",
+        "39.625 inches"
+      ],
+      [
+        "Width",
+        "21.25 inches"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78066",
+    "partType": "Fuel Tank",
+    "attrs": [
+      [
+        "Material",
+        "Electroplated zinc steel"
+      ],
+      [
+        "Finish",
+        "Silver epoxy"
+      ],
+      [
+        "Capacity",
+        "17 gallons"
+      ],
+      [
+        "Includes",
+        "Filler neck, lock ring, gasket"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-681440",
+    "partType": "SSR Spike Wheel Diameter & Width: 17 x 4.5",
+    "attrs": [
+      [
+        "Diameter",
+        "17 inches"
+      ],
+      [
+        "Width",
+        "4.5 inches"
+      ],
+      [
+        "Material",
+        "One-piece aluminum"
+      ],
+      [
+        "Finish",
+        "Gloss black with milled accents"
+      ],
+      [
+        "Bolt Pattern",
+        "5x4.50"
+      ],
+      [
+        "Offset",
+        "-24 mm"
+      ],
+      [
+        "Backspacing",
+        "1.75 inches"
+      ],
+      [
+        "Center bore",
+        "3.27 inches"
+      ],
+      [
+        "Load rating",
+        "1900 pounds"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-30528",
+    "partType": "Header-Back Dual 2-1/2\" Exhaust Kit 409 Stainless Steel",
+    "attrs": [
+      [
+        "Material",
+        "409 stainless steel"
+      ],
+      [
+        "Diameter",
+        "2.5 inches"
+      ],
+      [
+        "Type",
+        "Mandrel-bent"
+      ],
+      [
+        "Muffler body length",
+        "13 to 14 inches"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78024",
+    "partType": "Fuel Tank",
+    "attrs": [
+      [
+        "Material",
+        "Electroplated zinc steel"
+      ],
+      [
+        "Finish",
+        "Silver epoxy"
+      ],
+      [
+        "Capacity",
+        "16 gallons"
+      ],
+      [
+        "Includes",
+        "Filler neck, lock ring, O-ring gasket"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78480",
+    "partType": "Fuel Tank Sending Unit",
+    "attrs": [
+      [
+        "Main line size",
+        "3/8 inch"
+      ],
+      [
+        "Ohm range",
+        "90 to 0 ohms"
+      ],
+      [
+        "Includes",
+        "Fuel strainer"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-10015",
+    "partType": "Mini Starter Small Block",
+    "attrs": [
+      [
+        "Power",
+        "1.4 kW"
+      ],
+      [
+        "Horsepower",
+        "1.7 HP"
+      ],
+      [
+        "Torque output",
+        "160 foot-pounds"
+      ],
+      [
+        "Reduction ratio",
+        "6 to 1"
+      ],
+      [
+        "Flywheel teeth",
+        "168"
+      ],
+      [
+        "Weight",
+        "7.5 pounds"
+      ],
+      [
+        "Compression rating",
+        "Up to 11 to 1"
+      ],
+      [
+        "Includes",
+        "Bolts, washers, shims"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-90384",
+    "partType": "Door Sill Plates",
+    "attrs": [
+      [
+        "Material",
+        "Polished aluminum"
+      ],
+      [
+        "Style",
+        "Ribbed"
+      ],
+      [
+        "Includes",
+        "Blue and black Body by Fisher emblem"
+      ],
+      [
+        "Quantity",
+        "Pair"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78052",
+    "partType": "Fuel Tank",
+    "attrs": [
+      [
+        "Material",
+        "Zinc-nickel plated steel"
+      ],
+      [
+        "Finish",
+        "Silver epoxy coated interior"
+      ],
+      [
+        "Capacity",
+        "20 gallons"
+      ],
+      [
+        "Includes",
+        "Filler neck, 3 vent tubes, lock ring, gasket"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-79611",
+    "partType": "Steering Wheel Kit",
+    "attrs": [
+      [
+        "Diameter",
+        "15 inches"
+      ],
+      [
+        "Spokes",
+        "3"
+      ],
+      [
+        "Material",
+        "Brushed aluminum"
+      ],
+      [
+        "Grip material",
+        "Black grain vinyl"
+      ],
+      [
+        "Includes",
+        "Center cap, hub adapter, horn button, hardware"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78036",
+    "partType": "Fuel Tank",
+    "attrs": [
+      [
+        "Material",
+        "Zinc-nickel plated steel"
+      ],
+      [
+        "Capacity",
+        "18 gallons"
+      ],
+      [
+        "Includes",
+        "Filler neck, lock ring, gasket"
+      ],
+      [
+        "Length",
+        "38.375 inches"
+      ],
+      [
+        "Width",
+        "20.875 inches"
+      ],
+      [
+        "Height",
+        "7.75 inches"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-79164",
+    "partType": "Rear Bumper Pad",
+    "attrs": [
+      [
+        "Material",
+        "Rubber"
+      ],
+      [
+        "Length",
+        "45.875 inches"
+      ],
+      [
+        "Width",
+        "0.625 inches"
+      ],
+      [
+        "Height",
+        "4.75 inches"
+      ],
+      [
+        "Center opening width",
+        "18.875 inches"
+      ],
+      [
+        "Center opening height",
+        "3 inches"
+      ],
+      [
+        "Includes",
+        "Adhesive kit"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-681442",
+    "partType": "SSR Spike Wheel",
+    "attrs": [
+      [
+        "Diameter",
+        "17 inches"
+      ],
+      [
+        "Width",
+        "4.5 inches"
+      ],
+      [
+        "Material",
+        "One-piece aluminum"
+      ],
+      [
+        "Finish",
+        "Gloss black with milled accents"
+      ],
+      [
+        "Bolt Pattern",
+        "5x4.75"
+      ],
+      [
+        "Backspacing",
+        "1.75 inches"
+      ],
+      [
+        "Offset",
+        "-24 mm"
+      ],
+      [
+        "Center bore",
+        "3.27 inches"
+      ],
+      [
+        "Load rating",
+        "1900 pounds"
+      ],
+      [
+        "Weight",
+        "24 pounds"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-90711",
+    "partType": "Dash Pad",
+    "attrs": [
+      [
+        "Material",
+        "Solid urethane"
+      ],
+      [
+        "Finish",
+        "OEM Dark Blue"
+      ],
+      [
+        "Texture",
+        "Madrid grain with seam stitching"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78026",
+    "partType": "Fuel Tank",
+    "attrs": [
+      [
+        "Material",
+        "Zinc-nickel plated steel"
+      ],
+      [
+        "Finish",
+        "Silver epoxy"
+      ],
+      [
+        "Capacity",
+        "18 gallons"
+      ],
+      [
+        "Includes",
+        "Lock ring, gasket"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78014",
+    "partType": "Fuel Tank",
+    "attrs": [
+      [
+        "Material",
+        "Electroplated zinc-nickel steel"
+      ],
+      [
+        "Finish",
+        "Silver epoxy"
+      ],
+      [
+        "Capacity",
+        "20 gallons"
+      ],
+      [
+        "Includes",
+        "Filler neck, 3 vent tubes, internal baffle, lock ring, gasket"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-681422",
+    "partType": "SSR Spike Wheel",
+    "attrs": [
+      [
+        "Diameter",
+        "15 inches"
+      ],
+      [
+        "Width",
+        "8 inches"
+      ],
+      [
+        "Material",
+        "Cast aluminum"
+      ],
+      [
+        "Finish",
+        "Gloss black powder coat"
+      ],
+      [
+        "Bolt Pattern",
+        "5x4.75"
+      ],
+      [
+        "Backspacing",
+        "4.5 inches"
+      ],
+      [
+        "Offset",
+        "0 mm"
+      ],
+      [
+        "Load rating",
+        "1900 pounds"
+      ],
+      [
+        "Max tire support",
+        "28 inches"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-48097",
+    "partType": "Classic 230 Series AM-FM Radio",
+    "attrs": [
+      [
+        "Power Output",
+        "200W peak"
+      ],
+      [
+        "RMS Power",
+        "35x4"
+      ],
+      [
+        "AM Presets",
+        "4"
+      ],
+      [
+        "FM Presets",
+        "12"
+      ],
+      [
+        "Finish",
+        "Chrome bezel"
+      ],
+      [
+        "Includes",
+        "4 RCA pre-outs"
+      ],
+      [
+        "Includes",
+        "AUX input"
+      ],
+      [
+        "Includes",
+        "Power antenna lead"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-81153",
+    "partType": "Under Dash Creeper",
+    "attrs": [
+      [
+        "Material",
+        "PVC backboard"
+      ],
+      [
+        "Length",
+        "40 in"
+      ],
+      [
+        "Height Range",
+        "20–27 in"
+      ],
+      [
+        "Height Positions",
+        "6"
+      ],
+      [
+        "Weight Capacity",
+        "300 lb"
+      ],
+      [
+        "Frame Material",
+        "Black-painted steel"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78791",
+    "partType": "Rear Under Seat Floor Panel",
+    "attrs": [
+      [
+        "Material",
+        "Heavy-gauge stamped steel"
+      ],
+      [
+        "Finish",
+        "Black EDP coating"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-681436",
+    "partType": "SSR Spike Wheel",
+    "attrs": [
+      [
+        "Diameter",
+        "15x10"
+      ],
+      [
+        "Bolt Pattern",
+        "5x4.75"
+      ],
+      [
+        "Backspace",
+        "5.50 in"
+      ],
+      [
+        "Offset",
+        "0mm"
+      ],
+      [
+        "Center Bore",
+        "83.1mm"
+      ],
+      [
+        "Load Rating",
+        "1900 lb"
+      ],
+      [
+        "Finish",
+        "Gloss black powder coat"
+      ],
+      [
+        "Construction",
+        "One-piece cast aluminum"
+      ],
+      [
+        "Lug Seat",
+        "60° conical-seat acorn"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-81518",
+    "partType": "Hydraulic Shop Press",
+    "attrs": [
+      [
+        "Capacity",
+        "6-ton"
+      ],
+      [
+        "Force Output",
+        "12,000 lb"
+      ],
+      [
+        "Working Range",
+        "18 in"
+      ],
+      [
+        "Height",
+        "36.5 in"
+      ],
+      [
+        "Width",
+        "19.75 in"
+      ],
+      [
+        "Length",
+        "15.375 in"
+      ],
+      [
+        "Weight",
+        "60 lb"
+      ],
+      [
+        "Material",
+        "Black steel"
+      ],
+      [
+        "Includes",
+        "Two 5.25 x 2.75 in press plates"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-681405",
+    "partType": "SSR Spike Wheel",
+    "attrs": [
+      [
+        "Diameter",
+        "15x4"
+      ],
+      [
+        "Bolt Pattern",
+        "5x4.75"
+      ],
+      [
+        "Backspace",
+        "1.75 in"
+      ],
+      [
+        "Offset",
+        "-19mm"
+      ],
+      [
+        "Center Bore",
+        "3.27 in"
+      ],
+      [
+        "Load Rating",
+        "1900 lb"
+      ],
+      [
+        "Finish",
+        "Gloss black with milled accents"
+      ],
+      [
+        "Construction",
+        "One-piece cast aluminum"
+      ],
+      [
+        "Cap Size",
+        "2-3/8 in"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-51614",
+    "partType": "Harmonic Balancer / Damper",
+    "attrs": [
+      [
+        "Underdrive Ratio",
+        "25%"
+      ],
+      [
+        "Pulley Diameter",
+        "5.630 in"
+      ],
+      [
+        "Material",
+        "Steel"
+      ],
+      [
+        "Finish",
+        "Black"
+      ],
+      [
+        "Timing Mark Increment",
+        "2 degrees"
+      ],
+      [
+        "Woodruff Key Size",
+        "3/16 in"
+      ],
+      [
+        "Certification",
+        "SFI 18.1"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-10011",
+    "partType": "Hitachi-Style Mini Starter Small Block and Big Block",
+    "attrs": [
+      [
+        "Horsepower",
+        "1.7 HP"
+      ],
+      [
+        "Gear Reduction Ratio",
+        "6.00:1"
+      ],
+      [
+        "Max Compression",
+        "11.0:1"
+      ],
+      [
+        "Weight",
+        "7.4 lb"
+      ],
+      [
+        "Flywheel Teeth Options",
+        "153 or 168"
+      ],
+      [
+        "Mounting",
+        "Adjustable billet aluminum"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-90827",
+    "partType": "4-Speed Transmission Conversion Kit",
+    "attrs": [
+      [
+        "Pedal Material",
+        "Steel"
+      ],
+      [
+        "Pedal Style",
+        "Rectangle"
+      ],
+      [
+        "Includes",
+        "Brake pedal"
+      ],
+      [
+        "Includes",
+        "Clutch pedal"
+      ],
+      [
+        "Includes",
+        "Return spring"
+      ],
+      [
+        "Includes",
+        "Z-bar with bracket"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-681434",
+    "partType": "SSR Spike Wheel Size: 15\" x 10\"",
+    "attrs": [
+      [
+        "Diameter",
+        "15x10"
+      ],
+      [
+        "Bolt Pattern",
+        "5x4.50"
+      ],
+      [
+        "Backspace",
+        "5.5 in"
+      ],
+      [
+        "Offset",
+        "0mm"
+      ],
+      [
+        "Center Bore",
+        "3.27 in"
+      ],
+      [
+        "Load Rating",
+        "1900 lb"
+      ],
+      [
+        "Finish",
+        "Gloss black with milled accents"
+      ],
+      [
+        "Construction",
+        "One-piece cast aluminum"
+      ],
+      [
+        "Lug Seat",
+        "60° conical"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78006",
+    "partType": "Fuel Tank",
+    "attrs": [
+      [
+        "Material",
+        "Electroplated zinc steel"
+      ],
+      [
+        "Capacity",
+        "20 gallon"
+      ],
+      [
+        "Finish",
+        "Silver"
+      ],
+      [
+        "Includes",
+        "Lock ring and gasket"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-70250",
+    "partType": "Pro High Back II Race Seat",
+    "attrs": [
+      [
+        "Material",
+        "High-density polyethylene"
+      ],
+      [
+        "Height",
+        "32 in"
+      ],
+      [
+        "Width",
+        "21 in"
+      ],
+      [
+        "Depth",
+        "30 in"
+      ],
+      [
+        "Weight",
+        "13 lb"
+      ],
+      [
+        "Layback Angle",
+        "17°"
+      ],
+      [
+        "Color",
+        "Black"
+      ],
+      [
+        "Construction",
+        "Double-wall shell"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78046",
+    "partType": "Fuel Tank",
+    "attrs": [
+      [
+        "Material",
+        "Electroplated zinc steel"
+      ],
+      [
+        "Capacity",
+        "22 gallon"
+      ],
+      [
+        "Finish",
+        "Silver epoxy"
+      ],
+      [
+        "Includes",
+        "Filler neck"
+      ],
+      [
+        "Includes",
+        "Lock ring and gasket"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78683",
+    "partType": "Radiator Core Support Pre-Drill",
+    "attrs": [
+      [
+        "Material",
+        "Stamped steel"
+      ],
+      [
+        "Finish",
+        "EDP coating"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78781",
+    "partType": "Fuel Tank Zinc-Nickel Steel Silver",
+    "attrs": [
+      [
+        "Material",
+        "Zinc-nickel-coated steel"
+      ],
+      [
+        "Finish",
+        "Silver epoxy"
+      ],
+      [
+        "Capacity",
+        "17 gallon"
+      ],
+      [
+        "Construction",
+        "Laser-cut robotic-welded"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-41800",
+    "partType": "Mechanical Drive Speedometer Converter with Built-in GPS",
+    "attrs": [
+      [
+        "Output Thread",
+        "7/8 in-18"
+      ],
+      [
+        "Includes",
+        "GPS antenna"
+      ],
+      [
+        "Includes",
+        "Wiring harness"
+      ],
+      [
+        "Includes",
+        "Fused lead"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-10014",
+    "partType": "Mini Starter Small Block Ford 289/302/351W, 157/164-Tooth",
+    "attrs": [
+      [
+        "Power Output",
+        "1.4 kW"
+      ],
+      [
+        "Horsepower",
+        "1.7 HP"
+      ],
+      [
+        "Gear Reduction Ratio",
+        "6:1"
+      ],
+      [
+        "Max Torque",
+        "160 ft-lb"
+      ],
+      [
+        "Max Compression",
+        "11:1"
+      ],
+      [
+        "Flywheel Teeth Options",
+        "157 or 164"
+      ],
+      [
+        "Body Offset",
+        "3/4 in"
+      ],
+      [
+        "Mounting",
+        "Billet adjustable indexable"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-60401",
+    "partType": "Torque Converter",
+    "attrs": [
+      [
+        "Stall Speed",
+        "2700–3000 RPM"
+      ],
+      [
+        "HP Rating",
+        "500 hp"
+      ],
+      [
+        "Bolt Circle",
+        "10.75 in"
+      ],
+      [
+        "Bolt Size",
+        "3/8-16"
+      ],
+      [
+        "Pilot Diameter",
+        "1.703 in"
+      ],
+      [
+        "Spline",
+        "30-spline"
+      ],
+      [
+        "Type",
+        "Non-lockup"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-90687",
+    "partType": "Dash Pad Black Vinyl-Wrapped",
+    "attrs": [
+      [
+        "Material",
+        "Foam molded"
+      ],
+      [
+        "Backing",
+        "Steel backing plate"
+      ],
+      [
+        "Color",
+        "Black"
+      ],
+      [
+        "Vinyl Pattern",
+        "Madrid grain"
+      ],
+      [
+        "Includes",
+        "Hardware"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-681430",
+    "partType": "SSR Spike Wheel Size: 15\" x 10\"",
+    "attrs": [
+      [
+        "Diameter",
+        "15x10"
+      ],
+      [
+        "Bolt Pattern",
+        "5x4.50"
+      ],
+      [
+        "Backspace",
+        "4.50 in"
+      ],
+      [
+        "Offset",
+        "-25mm"
+      ],
+      [
+        "Center Bore",
+        "3.27 in"
+      ],
+      [
+        "Load Rating",
+        "1900 lb"
+      ],
+      [
+        "Finish",
+        "Gloss black with milled accents"
+      ],
+      [
+        "Construction",
+        "One-piece cast aluminum"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-90828",
+    "partType": "Dash Pad With Stereo S",
+    "attrs": [
+      [
+        "Material",
+        "Foam core with vinyl wrap"
+      ],
+      [
+        "Finish",
+        "Black Madrid grain vinyl"
+      ],
+      [
+        "Includes",
+        "Direct-fit dash pad with stereo cutouts"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-81243",
+    "partType": "Truck Bed Dolly, 600 lb. Capacity",
+    "attrs": [
+      [
+        "Capacity",
+        "600 lb"
+      ],
+      [
+        "Length",
+        "51 to 88 inches"
+      ],
+      [
+        "Height",
+        "32 to 46 inches"
+      ],
+      [
+        "Caster Size",
+        "5 inch"
+      ],
+      [
+        "Quantity",
+        "4 locking casters"
+      ],
+      [
+        "Folded Dimensions",
+        "51 x 44 x 12 inches"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78734",
+    "partType": "Radiator Core Support",
+    "attrs": [
+      [
+        "Material",
+        "Stamped steel"
+      ],
+      [
+        "Finish",
+        "EDP coating"
+      ],
+      [
+        "Includes",
+        "Pre-drilled mounting holes"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-90908",
+    "partType": "Front and Rear Sway Bar Kit",
+    "attrs": [
+      [
+        "Front Diameter",
+        "1.250 inches"
+      ],
+      [
+        "Rear Diameter",
+        "1 inch"
+      ],
+      [
+        "Finish",
+        "Black semi-gloss"
+      ],
+      [
+        "Includes",
+        "2 frame bushings, 2 end links with bushings, mounting hardware"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-81641",
+    "partType": "Welding Cart w/Drawers 286 lb. Capacity",
+    "attrs": [
+      [
+        "Capacity",
+        "286 lb"
+      ],
+      [
+        "Welder Deck Size",
+        "20 x 14 inches"
+      ],
+      [
+        "Cabinet Size",
+        "19 x 12 x 8.75 inches"
+      ],
+      [
+        "Drawers",
+        "3 ball-bearing with 9 bins"
+      ],
+      [
+        "Finish",
+        "Black powder coat"
+      ],
+      [
+        "Casters",
+        "2 fixed and 2 locking swivel"
+      ],
+      [
+        "Gas Cylinder Size",
+        "8 inch"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78000",
+    "partType": "Fuel Tank",
+    "attrs": [
+      [
+        "Capacity",
+        "21 gallons"
+      ],
+      [
+        "Material",
+        "Electroplated zinc steel"
+      ],
+      [
+        "Includes",
+        "Lock ring and gasket"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-681432",
+    "partType": "SSR Spike Wheel Size: 15\" x 10\"",
+    "attrs": [
+      [
+        "Size",
+        "15 x 10 inches"
+      ],
+      [
+        "Material",
+        "Cast aluminum"
+      ],
+      [
+        "Finish",
+        "Gloss black with milled accents"
+      ],
+      [
+        "Bolt Pattern",
+        "5 x 4.75"
+      ],
+      [
+        "Backspacing",
+        "4.50 inches"
+      ],
+      [
+        "Offset",
+        "-25 mm"
+      ],
+      [
+        "Center Bore",
+        "3.27 inches"
+      ],
+      [
+        "Load Rating",
+        "1900 lb"
+      ],
+      [
+        "Includes",
+        "2.375 inch center cap"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-81492",
+    "partType": "Press Brake Attachment",
+    "attrs": [
+      [
+        "Bend Angle",
+        "90 degrees"
+      ],
+      [
+        "Capacity",
+        "3/16 x 12 inches, 5/16 x 6 inches, or 3/8 x 3 inches"
+      ],
+      [
+        "Weight",
+        "34 lb"
+      ],
+      [
+        "Compatible Press",
+        "12 or 20 ton"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-90710",
+    "partType": "Dash Pad Black Urethane",
+    "attrs": [
+      [
+        "Material",
+        "Solid urethane"
+      ],
+      [
+        "Finish",
+        "Deep black"
+      ],
+      [
+        "Texture",
+        "Madrid grain with seam stitching"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-78825",
+    "partType": "Grille Assembly Stamped Steel Chrome",
+    "attrs": [
+      [
+        "Material",
+        "Stamped steel"
+      ],
+      [
+        "Finish",
+        "Chrome with black EDP accents"
+      ]
+    ],
+    "source": "extracted"
+  },
+  {
+    "sku": "555-60400",
+    "partType": "Torque Converter for GM TH350/TH400",
+    "attrs": [
+      [
+        "Stall Speed",
+        "2300 to 2700 RPM"
+      ],
+      [
+        "Spline Count",
+        "30 spline"
+      ],
+      [
+        "Mounting Pad Size",
+        "3/8-16"
+      ],
+      [
+        "Flexplate Size",
+        "10.75 inch or dual pattern"
+      ],
+      [
+        "HP Rating",
+        "500 hp maximum"
+      ]
+    ],
+    "source": "extracted"
+  }
+]

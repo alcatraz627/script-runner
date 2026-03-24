@@ -4,7 +4,7 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { api } from '$lib/api';
 	import { APP } from '$lib/constants/app';
-	import type { RunManifest, StepManifest } from '$lib/types';
+	import type { RunManifest, StepManifest, TransformInfo } from '$lib/types';
 	import StatusBadge from '$lib/components/StatusBadge.svelte';
 	import DataTable from '$lib/components/DataTable.svelte';
 	import RunConfig from '$lib/components/RunConfig.svelte';
@@ -13,6 +13,7 @@
 	import { toast } from '$lib/stores/toast.svelte';
 
 	let manifest: RunManifest | null = $state(null);
+	let transformInfoMap: Record<string, TransformInfo> = $state({});
 	let loading = $state(true);
 	let error: string | null = $state(null);
 	let expandedStep: string | null = $state(null);
@@ -70,7 +71,7 @@
 		loading = true;
 		try {
 			manifest = await api.runs.get(runId);
-			starred = (manifest as any).starred || false;
+			starred = manifest.starred || false;
 			error = null;
 		} catch (e) {
 			error = e instanceof Error ? e.message : 'Failed to load run';
@@ -87,8 +88,19 @@
 		}
 	}
 
+	async function loadTransformInfo() {
+		try {
+			const transforms = await api.transforms.list();
+			for (const t of transforms) {
+				transformInfoMap[t.name] = t;
+			}
+			transformInfoMap = { ...transformInfoMap };
+		} catch { /* ignore */ }
+	}
+
 	onMount(async () => {
 		await fetchManifest();
+		loadTransformInfo();
 		// Reconnect to SSE if a job is still active
 		if (manifest && (manifest.status === 'running' || manifest.steps.some(s => s.status === 'running'))) {
 			await reconnectToActiveJob();
@@ -194,7 +206,6 @@
 		try {
 			const result = await api.runs.activeJob(runId);
 			if (!result.active) {
-				// Job gone but manifest still says running — re-fetch (startup recovery should have fixed it)
 				await fetchManifest();
 				return;
 			}
@@ -202,17 +213,9 @@
 			jobId = result.jobId ?? null;
 			executing = true;
 
-			// Replay past events
-			const pastEvents = (result.events || []) as Array<{ type: string; [key: string]: unknown }>;
-			events = pastEvents;
-			for (const event of pastEvents) {
-				applyEvent(event);
-			}
-
-			// Connect to live stream
+			// SSE replays all buffered events on connect — no manual replay needed
 			connectSSE();
 		} catch {
-			// Endpoint may not exist on older server — just re-fetch manifest
 			await fetchManifest();
 		}
 	}
@@ -227,11 +230,10 @@
 			const result = await api.runs.execute(runId, opts);
 			jobId = result.jobId;
 
-			// Re-fetch manifest to show "running" status
-			await fetchManifest();
-
-			// Open SSE connection
+			// Connect SSE immediately — server replays buffered events
 			connectSSE();
+			// Fire-and-forget manifest refresh (don't block SSE connection)
+			fetchManifest();
 		} catch (e) {
 			executeError = e instanceof Error ? e.message : 'Failed to start execution';
 			executing = false;
@@ -402,86 +404,93 @@
 	<div class="space-y-6 max-w-5xl">
 		<Breadcrumb items={[{ label: 'Runs', href: '/runs' }, { label: manifest.configName }]} />
 
-		<!-- Header -->
-		<div class="flex items-start justify-between">
-			<div>
-				{#if editingTitle}
-					<form onsubmit={(e) => { e.preventDefault(); saveTitle(); }} class="flex items-center gap-2">
-						<input
-							type="text"
-							bind:value={editTitle}
-							class="text-2xl font-bold text-[var(--color-text-primary)] border-b-2 border-blue-400 bg-transparent focus:outline-none px-0 py-0"
-							autofocus
-						/>
-						<button type="submit" disabled={savingTitle} class="text-xs text-blue-600 hover:text-blue-800">Save</button>
-						<button type="button" onclick={() => { editingTitle = false; }} class="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)]">Cancel</button>
-					</form>
-				{:else}
-					<button
-						onclick={() => { editTitle = manifest?.configName ?? ''; editingTitle = true; }}
-						class="text-2xl font-bold text-[var(--color-text-primary)] hover:text-blue-700 transition-colors cursor-text text-left"
-						title="Click to edit name"
-					>
-						{manifest.configName}
-					</button>
-				{/if}
-				<div class="flex items-center gap-3 mt-1.5">
-					<button
-						onclick={async () => { const result = await api.runs.toggleStar(runId); starred = result.starred; }}
-						class="transition-all hover:scale-110 active:scale-95"
-						title={starred ? 'Unstar run' : 'Star run'}
-					>
-						{#if starred}
-							<svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 24 24"><path d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.562.562 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.562.562 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" /></svg>
-						{:else}
-							<svg class="w-5 h-5 text-[var(--color-text-muted)] hover:text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.562.562 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.562.562 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" /></svg>
-						{/if}
-					</button>
-					<button
-						onclick={() => { navigator.clipboard.writeText(manifest?.runId ?? ''); copied = true; setTimeout(() => { copied = false; }, 1500); }}
-						class="text-xs font-mono text-[var(--color-text-muted)] hover:text-blue-600 transition-colors flex items-center gap-1 group"
-						title="Copy run ID"
-					>
-						{manifest.runId}
-						{#if copied}
-							<svg class="w-3 h-3 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-						{:else}
-							<svg class="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9.75a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" /></svg>
-						{/if}
-					</button>
+		<!-- Header Card -->
+		<div class="bg-[var(--color-bg-surface)] border border-[var(--color-border)] rounded-xl p-5 space-y-4">
+			<!-- Top row: Title + star + status -->
+			<div class="flex items-start gap-3">
+				<button
+					onclick={async () => { const result = await api.runs.toggleStar(runId); starred = result.starred; }}
+					class="mt-1 transition-all hover:scale-110 active:scale-95 shrink-0"
+					title={starred ? 'Unstar run' : 'Star run'}
+				>
+					{#if starred}
+						<svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 24 24"><path d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.562.562 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.562.562 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" /></svg>
+					{:else}
+						<svg class="w-5 h-5 text-[var(--color-text-muted)] hover:text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.562.562 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.562.562 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" /></svg>
+					{/if}
+				</button>
+				<div class="flex-1 min-w-0">
+					{#if editingTitle}
+						<form onsubmit={(e) => { e.preventDefault(); saveTitle(); }} class="flex items-center gap-2">
+							<input
+								type="text"
+								bind:value={editTitle}
+								class="text-2xl font-bold text-[var(--color-text-primary)] border-b-2 border-blue-400 bg-transparent focus:outline-none px-0 py-0"
+								autofocus
+							/>
+							<button type="submit" disabled={savingTitle} class="text-xs text-blue-600 hover:text-blue-800">Save</button>
+							<button type="button" onclick={() => { editingTitle = false; }} class="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)]">Cancel</button>
+						</form>
+					{:else}
+						<button
+							onclick={() => { editTitle = manifest?.configName ?? ''; editingTitle = true; }}
+							class="text-2xl font-bold text-[var(--color-text-primary)] hover:text-blue-700 transition-colors cursor-text text-left"
+							title="Click to edit name"
+						>
+							{manifest.configName}
+						</button>
+					{/if}
+					<div class="flex items-center gap-3 mt-1">
+						<button
+							onclick={() => { navigator.clipboard.writeText(manifest?.runId ?? ''); copied = true; setTimeout(() => { copied = false; }, 1500); }}
+							class="text-xs font-mono text-[var(--color-text-muted)] hover:text-blue-600 transition-colors flex items-center gap-1 group"
+							title="Copy run ID"
+						>
+							{manifest.runId}
+							{#if copied}
+								<svg class="w-3 h-3 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+							{:else}
+								<svg class="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9.75a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" /></svg>
+							{/if}
+						</button>
+					</div>
+				</div>
+				<div class="flex items-center gap-2 shrink-0">
 					<StatusBadge status={manifest.status} size="md" />
 					{#if manifest.steps.some(s => s.stale)}
-						<span class="text-xs text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
+						<span class="text-xs text-amber-600 bg-amber-50 dark:bg-amber-900/20 dark:text-amber-400 px-2 py-0.5 rounded-full border border-amber-200 dark:border-amber-800">
 							Has stale steps
 						</span>
 					{/if}
 				</div>
-				{#if editingDescription}
-					<form onsubmit={(e) => { e.preventDefault(); saveDescription(); }} class="mt-2 flex items-start gap-2">
-						<textarea
-							bind:value={editDescription}
-							rows={2}
-							class="flex-1 text-sm text-[var(--color-text-secondary)] border border-blue-300 rounded-md bg-transparent focus:outline-none focus:ring-1 focus:ring-blue-400 px-2 py-1 resize-none"
-							autofocus
-						></textarea>
-						<button type="submit" disabled={savingDescription} class="text-xs text-blue-600 hover:text-blue-800 mt-1">Save</button>
-						<button type="button" onclick={() => { editingDescription = false; }} class="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] mt-1">Cancel</button>
-					</form>
-				{:else}
-					<button
-						onclick={() => { editDescription = manifest?.description ?? ''; editingDescription = true; }}
-						class="text-sm text-[var(--color-text-secondary)] mt-2 text-left hover:text-[var(--color-text-primary)] transition-colors cursor-text block"
-						title="Click to edit description"
-					>
-						{manifest.description || 'Add a description...'}
-					</button>
-				{/if}
 			</div>
 
-			<!-- Execute controls -->
-			<div class="flex items-center gap-2">
+			<!-- Description -->
+			{#if editingDescription}
+				<form onsubmit={(e) => { e.preventDefault(); saveDescription(); }} class="flex items-start gap-2">
+					<textarea
+						bind:value={editDescription}
+						rows={2}
+						class="flex-1 text-sm text-[var(--color-text-secondary)] border border-blue-300 rounded-md bg-transparent focus:outline-none focus:ring-1 focus:ring-blue-400 px-2 py-1 resize-none"
+						autofocus
+					></textarea>
+					<button type="submit" disabled={savingDescription} class="text-xs text-blue-600 hover:text-blue-800 mt-1">Save</button>
+					<button type="button" onclick={() => { editingDescription = false; }} class="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] mt-1">Cancel</button>
+				</form>
+			{:else}
+				<button
+					onclick={() => { editDescription = manifest?.description ?? ''; editingDescription = true; }}
+					class="text-sm text-[var(--color-text-secondary)] text-left hover:text-[var(--color-text-primary)] transition-colors cursor-text block"
+					title="Click to edit description"
+				>
+					{manifest.description || 'Add a description...'}
+				</button>
+			{/if}
+
+			<!-- Toolbar -->
+			<div class="flex flex-wrap items-center justify-end gap-2 pt-3 border-t border-[var(--color-border-light)]">
 				{#if executing}
-					<div class="flex items-center gap-2 text-sm text-blue-600">
+					<div class="flex items-center gap-2 text-sm text-blue-600 mr-auto">
 						<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
 							<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
 							<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -491,7 +500,7 @@
 					<button
 						onclick={cancelRun}
 						disabled={cancelling}
-						class="inline-flex items-center gap-1.5 px-3 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 disabled:opacity-50 transition-colors active:scale-95 cursor-pointer"
+						class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 disabled:opacity-50 transition-colors active:scale-95 cursor-pointer whitespace-nowrap"
 					>
 						<svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="1" /></svg>
 						{cancelling ? 'Stopping...' : 'Stop'}
@@ -500,7 +509,7 @@
 					<button
 						onclick={() => executeRun()}
 						disabled={manifest.steps.length === 0}
-						class="inline-flex items-center gap-1.5 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:bg-[var(--color-bg-inset)] disabled:cursor-not-allowed transition-colors active:scale-95"
+						class="inline-flex items-center gap-1.5 px-4 py-1.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:bg-[var(--color-bg-inset)] disabled:cursor-not-allowed transition-colors active:scale-95 whitespace-nowrap"
 					>
 						<svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" /></svg>
 						Run All
@@ -508,7 +517,7 @@
 					{#if manifest.steps.some(s => s.status === 'completed')}
 						<div class="relative group">
 							<button
-								class="inline-flex items-center gap-1.5 px-3 py-2 border border-[var(--color-border)] text-[var(--color-text-secondary)] text-sm font-medium rounded-lg hover:bg-[var(--color-bg-surface-hover)] hover:border-[var(--color-border)] transition-colors active:scale-95"
+								class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[var(--color-border)] text-[var(--color-text-secondary)] text-sm font-medium rounded-lg hover:bg-[var(--color-bg-surface-hover)] transition-colors active:scale-95 whitespace-nowrap"
 							>
 								<svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8.688c0-.864.933-1.405 1.683-.977l7.108 4.062a1.125 1.125 0 010 1.953l-7.108 4.062A1.125 1.125 0 013 16.81V8.688zM12.75 8.688c0-.864.933-1.405 1.683-.977l7.108 4.062a1.125 1.125 0 010 1.953l-7.108 4.062a1.125 1.125 0 01-1.683-.977V8.688z" /></svg>
 								Run From...
@@ -517,7 +526,7 @@
 								{#each manifest.steps as step (step.id)}
 									<button
 										onclick={() => executeRun({ fromStep: step.id })}
-										class="w-full text-left px-3 py-1.5 text-sm text-[var(--color-text-primary)] hover:bg-blue-50 hover:text-blue-700 transition-colors"
+										class="w-full text-left px-3 py-1.5 text-sm text-[var(--color-text-primary)] hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-700 dark:hover:text-blue-400 transition-colors"
 									>
 										From: {step.name}
 									</button>
@@ -528,28 +537,28 @@
 				{/if}
 				<button
 					onclick={() => { showConfig = !showConfig; }}
-					class="inline-flex items-center gap-1.5 px-3 py-2 border border-[var(--color-border)] text-[var(--color-text-secondary)] text-sm font-medium rounded-lg hover:bg-[var(--color-bg-surface-hover)] hover:border-[var(--color-border)] transition-colors active:scale-95 {showConfig ? 'bg-[var(--color-bg-inset)] border-[var(--color-border)]' : ''}"
+					class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[var(--color-border)] text-[var(--color-text-secondary)] text-sm font-medium rounded-lg hover:bg-[var(--color-bg-surface-hover)] transition-colors active:scale-95 whitespace-nowrap {showConfig ? 'bg-[var(--color-bg-inset)]' : ''}"
 				>
 					<svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
 					{showConfig ? 'Hide Config' : 'Config'}
 				</button>
 				<button
 					onclick={() => { showReportDialog = true; }}
-					class="inline-flex items-center gap-1.5 px-3 py-2 border border-[var(--color-border)] text-[var(--color-text-secondary)] text-sm font-medium rounded-lg hover:bg-[var(--color-bg-surface-hover)] hover:border-[var(--color-border)] transition-colors active:scale-95"
+					class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[var(--color-border)] text-[var(--color-text-secondary)] text-sm font-medium rounded-lg hover:bg-[var(--color-bg-surface-hover)] transition-colors active:scale-95 whitespace-nowrap"
 				>
 					<svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
 					Report
 				</button>
 				<button
 					onclick={openForkDialog}
-					class="inline-flex items-center gap-1.5 px-3 py-2 border border-[var(--color-border)] text-[var(--color-text-secondary)] text-sm font-medium rounded-lg hover:bg-[var(--color-bg-surface-hover)] hover:border-[var(--color-border)] transition-colors active:scale-95"
+					class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[var(--color-border)] text-[var(--color-text-secondary)] text-sm font-medium rounded-lg hover:bg-[var(--color-bg-surface-hover)] transition-colors active:scale-95 whitespace-nowrap"
 				>
 					<svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z" /></svg>
 					Fork
 				</button>
 				<button
 					onclick={() => { showDeleteConfirm = true; }}
-					class="inline-flex items-center gap-1.5 px-3 py-2 border border-red-200 text-red-600 text-sm font-medium rounded-lg hover:bg-red-50 hover:border-red-300 transition-colors active:scale-95"
+					class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-sm font-medium rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 hover:border-red-300 dark:hover:border-red-700 transition-colors active:scale-95 whitespace-nowrap"
 				>
 					<svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /></svg>
 					Delete
@@ -760,7 +769,7 @@
 				</div>
 				<div>
 					<div class="text-[var(--color-text-muted)] text-xs">Imported</div>
-					<div class="text-[var(--color-text-primary)] mt-0.5">{formatDate((manifest.input as any).importedAt)}</div>
+					<div class="text-[var(--color-text-primary)] mt-0.5">{formatDate(manifest.input.importedAt)}</div>
 				</div>
 			</div>
 		</div>
@@ -845,6 +854,28 @@
 							<!-- Expanded: step details + data table -->
 							{#if expandedStep === step.id}
 								<div class="border-t border-[var(--color-border-light)] px-4 py-3 space-y-4">
+									<!-- Transform info -->
+									{#if transformInfoMap[step.fn]}
+										{@const tInfo = transformInfoMap[step.fn]}
+										<div class="bg-[var(--color-bg-page)] rounded-lg px-3 py-2 text-xs space-y-1.5 border border-[var(--color-border-light)]">
+											<div class="text-[var(--color-text-secondary)] leading-relaxed">{tInfo.description}</div>
+											{#if tInfo.inputOutput}
+												<div class="text-[var(--color-text-muted)] font-mono text-[10px]">{tInfo.inputOutput}</div>
+											{/if}
+											<div class="flex flex-wrap items-center gap-2 pt-0.5">
+												{#if tInfo.hasSystemPrompt}
+													<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded border border-purple-200 dark:border-purple-800 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 text-[10px]">
+														<svg class="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" /></svg>
+														LLM-powered
+													</span>
+												{/if}
+												{#if tInfo.config}
+													<span class="text-[10px] text-[var(--color-text-muted)] font-mono">config: {tInfo.config.slice(0, 60)}{tInfo.config.length > 60 ? '...' : ''}</span>
+												{/if}
+											</div>
+										</div>
+									{/if}
+
 									<!-- Step metadata -->
 									<div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
 										<div>

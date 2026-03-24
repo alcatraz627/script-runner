@@ -71,6 +71,7 @@ function toRunSummary(mf) {
     description:    mf.description,
     status:         mf.status,
     starred:        mf.starred || false,
+    archived:       mf.archived || false,
     stepsCompleted: completedSteps,
     stepsTotal:     mf.steps.length,
     lastExecutedAt: mf.lastExecutedAt,
@@ -191,6 +192,29 @@ app.post('/api/runs/:id/fork', (req, res) => {
       return res.status(409).json({ error: `Run "${newRunId}" already exists` });
     }
 
+    // Validate source config input file resolves before creating anything
+    const srcConfig = path.join(srcDir, 'run.config.js');
+    delete require.cache[require.resolve(srcConfig)];
+    const srcCfg = require(srcConfig);
+    if (copyDataThrough || !srcCfg.input?.file) {
+      // Copying data or no input file — fine
+    } else {
+      // Config-only fork: verify the input file can be resolved from source
+      // (it will be symlinked, so it just needs to exist in source raw/)
+      const inputFile = srcCfg.input.file;
+      const inputAbs = path.isAbsolute(inputFile)
+        ? inputFile
+        : path.resolve(srcDir, inputFile);
+      const resolved = inputAbs.startsWith('~')
+        ? inputAbs.replace('~', process.env.HOME)
+        : inputAbs;
+      if (!fs.existsSync(resolved)) {
+        return res.status(400).json({
+          error: `Input file not found: ${inputFile}. The source run's config references a file that doesn't exist. Fork with data copy, or fix the config first.`
+        });
+      }
+    }
+
     // Create directories
     fs.mkdirSync(destDir, { recursive: true });
     fs.mkdirSync(path.join(destDir, 'data'), { recursive: true });
@@ -198,7 +222,6 @@ app.post('/api/runs/:id/fork', (req, res) => {
     fs.mkdirSync(path.join(destDir, 'output'), { recursive: true });
 
     // Copy config
-    const srcConfig = path.join(srcDir, 'run.config.js');
     fs.copyFileSync(srcConfig, path.join(destDir, 'run.config.js'));
 
     // Copy raw/ symlinks/files
@@ -309,6 +332,21 @@ app.post('/api/runs/:id/star', (req, res) => {
   }
 });
 
+// POST /api/runs/:id/archive — toggle archived status
+app.post('/api/runs/:id/archive', (req, res) => {
+  try {
+    const runDir = resolveRunDir(req.params.id);
+    if (!runDir) return res.status(404).json({ error: 'Run not found' });
+
+    const mf = manifest.getOrCreate(runDir);
+    mf.archived = !mf.archived;
+    manifest.save(mf, runDir);
+    res.json({ archived: mf.archived });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // ═══════════════════════════════════════════════════════════════════════════════
 //  EXECUTION
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -338,10 +376,8 @@ app.post('/api/runs/:id/execute', (req, res) => {
 
 // GET /api/runs/:id/events — SSE stream
 // Opens a Server-Sent Events connection for real-time pipeline execution updates.
-// The handler registers a listener on the job queue's EventEmitter, scoped to the
-// run ID. Events are forwarded as JSON data frames until the job completes.
-// NOTE: There is a known race condition where events emitted before SSE connects
-// are lost. See sse-event-race-condition.md for the documented fix.
+// Replays buffered events from the job queue on connect, then streams live events.
+// This eliminates the race condition where early events were lost before SSE connected.
 app.get('/api/runs/:id/events', (req, res) => {
   res.writeHead(200, {
     'Content-Type':  'text/event-stream',
@@ -350,6 +386,17 @@ app.get('/api/runs/:id/events', (req, res) => {
   });
 
   const runId = req.params.id;
+
+  // Replay buffered events from the active job (fixes SSE race condition)
+  const activeJob = queue.listJobs().find(j =>
+    path.basename(j.runDir) === runId &&
+    (j.status === 'running' || j.status === 'queued')
+  );
+  if (activeJob) {
+    for (const event of activeJob.events) {
+      res.write(`data: ${JSON.stringify({ jobId: activeJob.jobId, ...event })}\n\n`);
+    }
+  }
 
   const handler = ({ jobId, runDir, event }) => {
     if (path.basename(runDir) === runId) {
@@ -986,8 +1033,9 @@ app.put('/api/transforms/:name/source', (req, res) => {
 // POST /api/runs/:id/report — generate a markdown summary report for a run
 app.post('/api/runs/:id/report', (req, res) => {
   try {
-    const m = manifest.load(req.params.id);
-    if (!m) return res.status(404).json({ error: 'Run not found' });
+    const runDir = resolveRunDir(req.params.id);
+    if (!runDir) return res.status(404).json({ error: 'Run not found' });
+    const m = manifest.getOrCreate(runDir);
 
     const { instructions } = req.body || {};
     const lines = [];
@@ -1061,8 +1109,7 @@ app.post('/api/runs/:id/report', (req, res) => {
     const markdown = lines.join('\n');
 
     // Write to file
-    const outputDir = path.join(__dirname, 'runs', req.params.id);
-    const reportPath = path.join(outputDir, 'report.md');
+    const reportPath = path.join(runDir, 'report.md');
     fs.writeFileSync(reportPath, markdown, 'utf-8');
 
     res.json({
@@ -1080,22 +1127,31 @@ app.post('/api/runs/:id/report', (req, res) => {
 //  META
 // ═══════════════════════════════════════════════════════════════════════════════
 
+// ── Shared doc registry (single source of truth) ─────────────────────────────
+const DOC_FILES = [
+  { id: 'system-design', label: 'System Design', path: 'SYSTEM-DESIGN.md', description: 'Architecture, API design, and data flow' },
+  { id: 'tech-stack', label: 'Tech Stack', path: 'TECH-STACK.md', description: 'Technical specs, dependencies, and setup' },
+  { id: 'changelog', label: 'Changelog', path: 'ui/CHANGELOG.md', description: 'Feature history and release notes' },
+  { id: 'scripts-readme', label: 'Scripts README', path: 'README.md', description: 'Pipeline scripts overview' },
+  { id: 'deploy', label: 'Deployment', path: 'DEPLOY.md', description: 'Preview dashboard deployment (Vercel)' },
+  { id: 'deploy-strategy', label: 'Deployment Strategy', path: 'DEPLOYMENT-STRATEGY.md', description: 'Full app deployment options and checklist' },
+  { id: 'sse-race-condition', label: 'SSE Race Condition', path: 'sse-event-race-condition.md', description: 'Known SSE bug writeup and fix plan' },
+  { id: 'ui-readme', label: 'UI README', path: 'ui/README.md', description: 'SvelteKit frontend setup' },
+  { id: 'parse-excel-readme', label: 'Parse Excel', path: 'parse-excel/README.md', description: 'Excel parsing module docs' },
+];
+const DOC_MAP = Object.fromEntries(DOC_FILES.map(f => [f.id, f.path]));
+
+function resolveDocPath(id) {
+  const relPath = DOC_MAP[id];
+  if (!relPath) return null;
+  const fullPath = path.join(path.resolve(__dirname), relPath);
+  return fs.existsSync(fullPath) ? { relPath, fullPath } : null;
+}
+
 // GET /api/docs/files — list available markdown documentation files
 app.get('/api/docs/files', (req, res) => {
   const baseDir = path.resolve(__dirname);
-  const docFiles = [
-    { id: 'system-design', label: 'System Design', path: 'SYSTEM-DESIGN.md', description: 'Architecture, API design, and data flow' },
-    { id: 'tech-stack', label: 'Tech Stack', path: 'TECH-STACK.md', description: 'Technical specs, dependencies, and setup' },
-    { id: 'changelog', label: 'Changelog', path: 'ui/CHANGELOG.md', description: 'Feature history and release notes' },
-    { id: 'scripts-readme', label: 'Scripts README', path: 'README.md', description: 'Pipeline scripts overview' },
-    { id: 'deploy', label: 'Deployment', path: 'DEPLOY.md', description: 'Preview dashboard deployment (Vercel)' },
-    { id: 'deploy-strategy', label: 'Deployment Strategy', path: 'DEPLOYMENT-STRATEGY.md', description: 'Full app deployment options and checklist' },
-    { id: 'sse-race-condition', label: 'SSE Race Condition', path: 'sse-event-race-condition.md', description: 'Known SSE bug writeup and fix plan' },
-    { id: 'ui-readme', label: 'UI README', path: 'ui/README.md', description: 'SvelteKit frontend setup' },
-    { id: 'parse-excel-readme', label: 'Parse Excel', path: 'parse-excel/README.md', description: 'Excel parsing module docs' },
-  ];
-
-  const result = docFiles.map(f => {
+  const result = DOC_FILES.map(f => {
     const fullPath = path.join(baseDir, f.path);
     const exists = fs.existsSync(fullPath);
     let sizeBytes = 0;
@@ -1107,55 +1163,22 @@ app.get('/api/docs/files', (req, res) => {
     }
     return { ...f, exists, sizeBytes, modifiedAt };
   });
-
   res.json(result);
 });
 
 // GET /api/docs/files/:id — read a specific markdown file
 app.get('/api/docs/files/:id', (req, res) => {
-  const baseDir = path.resolve(__dirname);
-  const docMap = {
-    'system-design': 'SYSTEM-DESIGN.md',
-    'tech-stack': 'TECH-STACK.md',
-    changelog: 'ui/CHANGELOG.md',
-    'scripts-readme': 'README.md',
-    deploy: 'DEPLOY.md',
-    'deploy-strategy': 'DEPLOYMENT-STRATEGY.md',
-    'sse-race-condition': 'sse-event-race-condition.md',
-    'ui-readme': 'ui/README.md',
-    'parse-excel-readme': 'parse-excel/README.md',
-  };
-  const relPath = docMap[req.params.id];
-  if (!relPath) return res.status(404).json({ error: 'Unknown document' });
-
-  const fullPath = path.join(baseDir, relPath);
-  if (!fs.existsSync(fullPath)) return res.status(404).json({ error: 'File not found' });
-
-  const content = fs.readFileSync(fullPath, 'utf-8');
-  res.json({ id: req.params.id, path: relPath, content });
+  const doc = resolveDocPath(req.params.id);
+  if (!doc) return res.status(404).json({ error: 'Document not found' });
+  const content = fs.readFileSync(doc.fullPath, 'utf-8');
+  res.json({ id: req.params.id, path: doc.relPath, content });
 });
 
 // GET /api/docs/files/:id/raw — serve raw markdown as text/plain (for "open in new tab")
 app.get('/api/docs/files/:id/raw', (req, res) => {
-  const baseDir = path.resolve(__dirname);
-  const docMap = {
-    'system-design': 'SYSTEM-DESIGN.md',
-    'tech-stack': 'TECH-STACK.md',
-    changelog: 'ui/CHANGELOG.md',
-    'scripts-readme': 'README.md',
-    deploy: 'DEPLOY.md',
-    'deploy-strategy': 'DEPLOYMENT-STRATEGY.md',
-    'sse-race-condition': 'sse-event-race-condition.md',
-    'ui-readme': 'ui/README.md',
-    'parse-excel-readme': 'parse-excel/README.md',
-  };
-  const relPath = docMap[req.params.id];
-  if (!relPath) return res.status(404).send('Unknown document');
-
-  const fullPath = path.join(baseDir, relPath);
-  if (!fs.existsSync(fullPath)) return res.status(404).send('File not found');
-
-  res.type('text/plain; charset=utf-8').sendFile(fullPath);
+  const doc = resolveDocPath(req.params.id);
+  if (!doc) return res.status(404).send('Document not found');
+  res.type('text/plain; charset=utf-8').sendFile(doc.fullPath);
 });
 
 app.get('/api/schema', (req, res) => {
@@ -1377,20 +1400,27 @@ app.get(
 //  STATIC / SPA FALLBACK
 // ═══════════════════════════════════════════════════════════════════════════════
 
+// Dev redirect: send browser requests to Vite dev server (port 5173)
+// Falls through to static build serving if Vite isn't running
+const VITE_DEV_PORT = 5173;
 const uiBuildDir = path.join(__dirname, 'ui', 'build');
-if (fs.existsSync(uiBuildDir)) {
+const hasUIBuild = fs.existsSync(path.join(uiBuildDir, 'index.html'));
+
+app.use((req, res, next) => {
+  if (req.method !== 'GET' || req.path.startsWith('/api/')) return next();
+  const accept = req.headers.accept || '';
+  if (!accept.includes('text/html')) return next();
+  // If no production build, always redirect to Vite
+  // If there IS a build, prefer it (production mode)
+  if (hasUIBuild) return next();
+  res.redirect(307, `http://localhost:${VITE_DEV_PORT}${req.originalUrl}`);
+});
+
+if (hasUIBuild) {
   app.use(express.static(uiBuildDir));
-  // SPA fallback — serve index.html for non-API routes
   app.use((req, res, next) => {
-    if (req.method !== 'GET' || req.path.startsWith('/api/')) {
-      return next();
-    }
-    const indexPath = path.join(uiBuildDir, 'index.html');
-    if (fs.existsSync(indexPath)) {
-      res.sendFile(indexPath);
-    } else {
-      res.status(404).send('UI not built yet. Run: cd ui && npm run build');
-    }
+    if (req.method !== 'GET' || req.path.startsWith('/api/')) return next();
+    res.sendFile(path.join(uiBuildDir, 'index.html'));
   });
 }
 

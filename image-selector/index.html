@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Selector</title>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #22263a;
+    --border: #2e3350;
+    --accent: #4f8ef7;
+    --accent2: #7c5ef5;
+    --text: #e2e8f0;
+    --muted: #7a8099;
+    --danger: #ef4444;
+    --success: #22c55e;
+    --radius: 10px;
+    --cols: 3;
+    --card-gap: 14px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 13px;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  #header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(15,17,23,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 18px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  #header h1 {
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  #counter { font-size: 11px; color: var(--muted); white-space: nowrap; }
+
+  #search {
+    flex: 1;
+    min-width: 180px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 13px;
+    outline: none;
+    transition: border-color .2s;
+  }
+  #search:focus { border-color: var(--accent); }
+
+  .ctrl-group { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+  .ctrl-label { color: var(--muted); font-size: 11px; }
+
+  #zoom-slider {
+    -webkit-appearance: none;
+    width: 100px; height: 4px;
+    border-radius: 2px;
+    background: var(--border);
+    outline: none;
+    cursor: pointer;
+  }
+  #zoom-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+  }
+
+  #view-toggle {
+    display: flex;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  #view-toggle button {
+    background: none; border: none;
+    color: var(--muted);
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background .15s, color .15s;
+  }
+  #view-toggle button.active { background: var(--accent); color: #fff; }
+
+  .hdr-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 6px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background .15s, border-color .15s, color .15s;
+    white-space: nowrap;
+  }
+  .hdr-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .hdr-btn.active { background: var(--accent2); border-color: var(--accent2); color: #fff; }
+  .hdr-btn .badge {
+    display: inline-block;
+    background: rgba(255,255,255,.2);
+    border-radius: 10px;
+    padding: 0 5px;
+    font-size: 10px;
+    margin-left: 4px;
+  }
+
+  #sel-status { font-size: 10px; color: var(--muted); white-space: nowrap; }
+  #sel-status.saved { color: var(--success); }
+
+  /* ── GRID ── */
+  #grid-wrap { padding: 16px; }
+  #grid {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), 1fr);
+    gap: var(--card-gap);
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: border-color .15s, box-shadow .15s;
+    cursor: pointer;
+    position: relative;
+  }
+  .card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent), 0 8px 24px rgba(0,0,0,.4);
+    z-index: 2;
+  }
+  .card.selected {
+    border-color: var(--accent2);
+    box-shadow: 0 0 0 2px var(--accent2);
+  }
+
+  .card-images {
+    position: relative;
+    background: #0a0c14;
+    overflow: hidden;
+    aspect-ratio: 4/3;
+  }
+  .card-images img {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    object-fit: contain;
+    opacity: 0;
+    transition: opacity .3s;
+  }
+  .card-images img.loaded { opacity: 1; }
+  .card-images img.hidden { display: none; }
+
+  .img-nav {
+    position: absolute;
+    bottom: 6px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; gap: 4px;
+    z-index: 2;
+  }
+  .img-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.35);
+    cursor: pointer;
+    transition: background .2s, transform .2s;
+  }
+  .img-dot.active { background: #fff; transform: scale(1.3); }
+
+  .img-arrows {
+    position: absolute; inset: 0;
+    display: flex; justify-content: space-between;
+    pointer-events: none;
+    z-index: 3;
+  }
+  .img-arrow {
+    pointer-events: all; border: none;
+    color: rgba(255,255,255,.8);
+    width: 44px; height: 100%;
+    cursor: pointer;
+    font-size: 26px; font-weight: 200;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(to right, rgba(0,0,0,.6) 0%, transparent 100%);
+    opacity: 0;
+    transition: opacity .15s, color .15s, background .15s;
+    line-height: 1;
+    padding-bottom: 2px;
+  }
+  .img-arrow[data-dir="1"] { background: linear-gradient(to left, rgba(0,0,0,.6) 0%, transparent 100%); }
+  .card-images:hover .img-arrow { opacity: 1; }
+  .img-arrow:hover { color: #fff; background: rgba(79,142,247,.4) !important; }
+
+  .img-counter {
+    position: absolute; top: 6px; right: 6px;
+    background: rgba(0,0,0,.6); color: #fff;
+    font-size: 10px; padding: 2px 6px; border-radius: 10px;
+    z-index: 4;
+  }
+
+  /* ── PIN button (set main image) ── */
+  .pin-btn {
+    position: absolute; top: 6px; left: 6px;
+    background: rgba(0,0,0,.65);
+    border: 1px solid rgba(255,255,255,.15);
+    color: rgba(255,255,255,.5);
+    width: 26px; height: 26px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 5;
+    opacity: 0;
+    transition: opacity .15s, color .15s, background .15s, border-color .15s;
+  }
+  .card-images:hover .pin-btn { opacity: 1; }
+  .pin-btn.pinned {
+    opacity: 1;
+    color: #facc15;
+    border-color: #facc15;
+    background: rgba(0,0,0,.75);
+  }
+  .pin-btn:hover { color: #facc15; border-color: #facc15; }
+
+  .card-body {
+    padding: 10px 11px 11px;
+    display: flex; flex-direction: column; gap: 5px;
+    flex: 1;
+  }
+  .card-sku {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: .05em; color: var(--accent);
+    text-transform: uppercase;
+  }
+  .card-title {
+    font-size: 12px; line-height: 1.4; color: var(--text);
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .card-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: auto; padding-top: 6px;
+  }
+  .card-link {
+    font-size: 10px; color: var(--muted);
+    text-decoration: none;
+    transition: color .15s;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    max-width: 70%;
+  }
+  .card-link:hover { color: var(--accent); }
+
+  .sel-check {
+    width: 16px; height: 16px;
+    border-radius: 4px;
+    border: 1.5px solid var(--border);
+    background: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .15s, border-color .15s;
+    flex-shrink: 0;
+  }
+  .sel-check.checked { background: var(--accent2); border-color: var(--accent2); }
+  .sel-check.checked::after { content: '✓'; font-size: 10px; color: #fff; }
+
+  /* ── TABLE VIEW ── */
+  #table-wrap { display: none; padding: 16px; overflow-x: auto; }
+  #table-wrap.visible { display: block; }
+  #grid-wrap.hidden { display: none; }
+
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    background: var(--surface2); border: 1px solid var(--border);
+    padding: 8px 10px; text-align: left;
+    font-size: 11px; font-weight: 700; color: var(--muted);
+    text-transform: uppercase; letter-spacing: .05em;
+    position: sticky; top: 49px; white-space: nowrap;
+  }
+  td {
+    border: 1px solid var(--border); padding: 7px 10px;
+    vertical-align: middle; background: var(--surface); font-size: 12px;
+  }
+  tr:hover td { background: var(--surface2); }
+
+  .td-sku { color: var(--accent); font-weight: 700; white-space: nowrap; }
+  .td-title { max-width: 320px; }
+  .td-imgs { display: flex; gap: 6px; flex-wrap: wrap; }
+  .td-thumb {
+    width: 48px; height: 48px; object-fit: contain;
+    border-radius: 4px; background: #0a0c14;
+    border: 1px solid var(--border);
+    cursor: zoom-in; transition: transform .15s, border-color .15s;
+  }
+  .td-thumb:hover { transform: scale(1.1); }
+  .td-thumb.is-main { border-color: #facc15; }
+  .td-link { color: var(--accent); font-size: 11px; text-decoration: none; }
+  .td-link:hover { text-decoration: underline; }
+
+  /* ── COMPARE PANEL ── */
+  #compare-panel {
+    display: none; position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(15,17,23,.97);
+    border-top: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+    z-index: 200; max-height: 46vh;
+    overflow: hidden; flex-direction: column;
+  }
+  #compare-panel.visible { display: flex; }
+  #compare-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 16px; border-bottom: 1px solid var(--border); flex-shrink: 0;
+  }
+  #compare-header h3 { font-size: 12px; font-weight: 700; flex: 1; }
+  #compare-clear {
+    background: none; border: 1px solid var(--border);
+    color: var(--muted); border-radius: 5px;
+    padding: 3px 8px; font-size: 11px; cursor: pointer;
+  }
+  #compare-clear:hover { color: var(--danger); border-color: var(--danger); }
+  #compare-items {
+    display: flex; gap: 12px;
+    padding: 12px 16px; overflow-x: auto; flex: 1;
+  }
+
+  .cmp-item {
+    flex: 0 0 210px; background: var(--surface2);
+    border: 1px solid var(--border); border-radius: 8px;
+    overflow: hidden; display: flex; flex-direction: column;
+    position: relative; transition: border-color .15s;
+  }
+  .cmp-item:hover { border-color: var(--accent); }
+  .cmp-img-wrap {
+    position: relative; width: 100%; aspect-ratio: 4/3;
+    background: #0a0c14; overflow: hidden;
+  }
+  .cmp-img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: contain; cursor: zoom-in;
+  }
+  .cmp-img.hidden { display: none; }
+  .cmp-img-arrows {
+    position: absolute; inset: 0;
+    display: flex; justify-content: space-between;
+    pointer-events: none; z-index: 2;
+  }
+  .cmp-img-arrow {
+    pointer-events: all; border: none;
+    color: rgba(255,255,255,.8);
+    width: 30px; height: 100%; cursor: pointer; font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(to right, rgba(0,0,0,.55) 0%, transparent 100%);
+    opacity: 0; transition: opacity .15s;
+  }
+  .cmp-img-arrow[data-dir="1"] { background: linear-gradient(to left, rgba(0,0,0,.55) 0%, transparent 100%); }
+  .cmp-img-wrap:hover .cmp-img-arrow { opacity: 1; }
+  .cmp-img-arrow:hover { background: rgba(79,142,247,.35) !important; }
+  .cmp-img-count {
+    position: absolute; bottom: 5px; right: 5px;
+    background: rgba(0,0,0,.6); color: #fff;
+    font-size: 9px; padding: 1px 5px; border-radius: 8px; z-index: 3;
+  }
+  .cmp-info { padding: 8px; flex: 1; display: flex; flex-direction: column; gap: 4px; }
+  .cmp-sku { font-size: 10px; font-weight: 700; color: var(--accent); }
+  .cmp-title { font-size: 11px; line-height: 1.35; color: var(--text); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; flex: 1; }
+  .cmp-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; gap: 4px; }
+  .cmp-link { font-size: 10px; color: var(--muted); text-decoration: none; }
+  .cmp-link:hover { color: var(--accent); }
+  .cmp-remove {
+    position: absolute; top: 4px; right: 4px;
+    background: rgba(0,0,0,.75); border: none; color: #fff;
+    width: 20px; height: 20px; border-radius: 50%;
+    cursor: pointer; font-size: 11px;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 4; transition: background .15s;
+  }
+  .cmp-remove:hover { background: var(--danger); }
+  #compare-header-actions { display: flex; gap: 6px; align-items: center; }
+  .cmp-action-btn {
+    background: none; border: 1px solid var(--border);
+    color: var(--muted); border-radius: 5px;
+    padding: 3px 8px; font-size: 11px; cursor: pointer;
+    white-space: nowrap; transition: color .15s, border-color .15s;
+  }
+  .cmp-action-btn:hover { color: var(--text); border-color: var(--accent); }
+
+  /* ── FULL COMPARE MODAL ── */
+  #fullcmp-modal {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,.92); z-index: 600;
+    flex-direction: column; overflow: hidden;
+  }
+  #fullcmp-modal.visible { display: flex; }
+  #fullcmp-topbar {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 18px; border-bottom: 1px solid var(--border);
+    background: var(--surface); flex-shrink: 0;
+  }
+  #fullcmp-topbar h2 { font-size: 13px; flex: 1; color: var(--text); }
+  #fullcmp-close {
+    background: none; border: 1px solid var(--border);
+    color: var(--muted); border-radius: 6px;
+    padding: 4px 10px; cursor: pointer; font-size: 12px;
+  }
+  #fullcmp-close:hover { color: var(--danger); border-color: var(--danger); }
+  #fullcmp-grid { display: flex; gap: 0; flex: 1; overflow-x: auto; overflow-y: hidden; }
+  .fullcmp-col {
+    flex: 1 0 260px; border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; overflow-y: auto; min-width: 0;
+  }
+  .fullcmp-col:last-child { border-right: none; }
+  .fullcmp-img-wrap { position: relative; width: 100%; aspect-ratio: 4/3; background: #0a0c14; flex-shrink: 0; }
+  .fullcmp-img-main { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; cursor: zoom-in; }
+  .fullcmp-img-main.hidden { display: none; }
+  .fullcmp-img-arrows { position: absolute; inset: 0; display: flex; justify-content: space-between; pointer-events: none; z-index: 2; }
+  .fullcmp-img-arrow {
+    pointer-events: all; border: none; color: rgba(255,255,255,.8);
+    width: 38px; height: 100%; font-size: 22px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(to right, rgba(0,0,0,.55) 0%, transparent 100%);
+    opacity: 0; transition: opacity .15s;
+  }
+  .fullcmp-img-arrow[data-dir="1"] { background: linear-gradient(to left, rgba(0,0,0,.55) 0%, transparent 100%); }
+  .fullcmp-img-wrap:hover .fullcmp-img-arrow { opacity: 1; }
+  .fullcmp-img-arrow:hover { background: rgba(79,142,247,.4) !important; }
+  .fullcmp-img-strip {
+    display: flex; gap: 5px; padding: 8px; overflow-x: auto;
+    background: #0a0c14; border-bottom: 1px solid var(--border); flex-shrink: 0;
+  }
+  .fullcmp-thumb {
+    width: 44px; height: 44px; object-fit: contain;
+    border-radius: 4px; border: 1.5px solid var(--border);
+    cursor: pointer; background: #0a0c14; flex-shrink: 0;
+    transition: border-color .15s;
+  }
+  .fullcmp-thumb.active { border-color: var(--accent); }
+  .fullcmp-thumb:hover { border-color: var(--accent); }
+  .fullcmp-body { padding: 12px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .fullcmp-sku { font-size: 11px; font-weight: 700; color: var(--accent); letter-spacing: .04em; }
+  .fullcmp-title { font-size: 13px; line-height: 1.5; color: var(--text); }
+  .fullcmp-meta { font-size: 11px; color: var(--muted); }
+  .fullcmp-link { display: inline-block; margin-top: 4px; font-size: 11px; color: var(--accent); text-decoration: none; }
+  .fullcmp-link:hover { text-decoration: underline; }
+
+  /* ── LIGHTBOX ── */
+  #lightbox {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,.9); z-index: 700;
+    align-items: center; justify-content: center;
+    flex-direction: column; gap: 12px;
+  }
+  #lightbox.visible { display: flex; }
+  #lightbox img { max-width: 90vw; max-height: 80vh; object-fit: contain; border-radius: 6px; }
+  #lightbox-close {
+    position: absolute; top: 16px; right: 20px;
+    background: none; border: none; color: #fff;
+    font-size: 28px; cursor: pointer; opacity: .7;
+  }
+  #lightbox-close:hover { opacity: 1; }
+  #lightbox-caption { color: var(--muted); font-size: 12px; }
+
+  /* ── EMPTY / LOADING ── */
+  #empty { display: none; text-align: center; padding: 60px 20px; color: var(--muted); }
+  #empty.visible { display: block; }
+  #loading {
+    position: fixed; inset: 0; background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 12px; z-index: 800;
+    font-size: 14px; color: var(--muted);
+  }
+  #loading.hidden { display: none; }
+  .spinner {
+    width: 32px; height: 32px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── PREVIEW MODAL ── */
+  #preview-modal {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,.88); z-index: 650;
+    flex-direction: column; overflow: hidden;
+  }
+  #preview-modal.visible { display: flex; }
+  #preview-topbar {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 18px; border-bottom: 1px solid var(--border);
+    background: var(--surface); flex-shrink: 0;
+  }
+  #preview-topbar h2 { font-size: 13px; font-weight: 700; flex: 1; }
+  #preview-topbar .sub { font-size: 11px; color: var(--muted); }
+  #preview-close {
+    background: none; border: 1px solid var(--border);
+    color: var(--muted); border-radius: 6px;
+    padding: 4px 10px; cursor: pointer; font-size: 12px;
+  }
+  #preview-close:hover { color: var(--danger); border-color: var(--danger); }
+  #preview-scroll { flex: 1; overflow: auto; padding: 16px; }
+  #preview-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  #preview-table th {
+    background: var(--surface2); border: 1px solid var(--border);
+    padding: 7px 10px; text-align: left;
+    font-size: 10px; font-weight: 700; color: var(--muted);
+    text-transform: uppercase; letter-spacing: .05em;
+    position: sticky; top: 0;
+  }
+  #preview-table td {
+    border: 1px solid var(--border); padding: 6px 8px;
+    vertical-align: middle; background: var(--surface);
+  }
+  #preview-table tr:hover td { background: var(--surface2); }
+  .prev-thumb {
+    width: 48px; height: 48px; object-fit: contain;
+    border-radius: 4px; background: #0a0c14; border: 1px solid var(--border);
+    display: block;
+  }
+  .prev-no-img {
+    width: 48px; height: 48px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted); font-size: 10px;
+    border: 1px dashed var(--border); border-radius: 4px;
+  }
+  .prev-sku { color: var(--accent); font-weight: 700; }
+  .prev-sel-count { font-size: 11px; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<div id="loading"><div class="spinner"></div><span>Loading data…</span></div>
+
+<div id="header">
+  <h1 id="title">Image Selector</h1>
+  <select id="dataset-picker" style="background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:12px;cursor:pointer;outline:none;"></select>
+  <span id="counter">– items</span>
+  <input id="search" type="search" placeholder="Search SKU or title…" autocomplete="off" />
+  <div class="ctrl-group">
+    <span class="ctrl-label">Zoom</span>
+    <input id="zoom-slider" type="range" min="1" max="6" step="1" value="3" />
+    <span id="zoom-val" style="color:var(--muted);font-size:11px;width:10px;text-align:right">3</span>
+  </div>
+  <div id="view-toggle">
+    <button id="btn-grid" class="active">⊞ Grid</button>
+    <button id="btn-table">≡ Table</button>
+  </div>
+  <button id="compare-btn" class="hdr-btn">Compare <span class="badge" id="cmp-badge">0</span></button>
+  <button id="preview-btn" class="hdr-btn">Preview</button>
+  <button id="export-btn" class="hdr-btn">⬇ Export Excel</button>
+  <span id="sel-status"></span>
+</div>
+
+<div id="grid-wrap">
+  <div id="grid"></div>
+  <div id="empty">No results match your search.</div>
+</div>
+
+<div id="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>SKU</th>
+        <th>Title</th>
+        <th>Main Image</th>
+        <th>All Images</th>
+        <th>eBay Link</th>
+      </tr>
+    </thead>
+    <tbody id="table-body"></tbody>
+  </table>
+</div>
+
+<div id="compare-panel">
+  <div id="compare-header">
+    <h3>Comparing <span id="cmp-count">0</span> items</h3>
+    <div id="compare-header-actions">
+      <button class="cmp-action-btn" id="cmp-open-all">Open all ↗</button>
+      <button class="cmp-action-btn" id="cmp-copy-skus">Copy SKUs</button>
+      <button class="cmp-action-btn" id="cmp-expand">⤢ Expand</button>
+      <button id="compare-clear">Clear all</button>
+    </div>
+  </div>
+  <div id="compare-items"></div>
+</div>
+
+<div id="fullcmp-modal">
+  <div id="fullcmp-topbar">
+    <h2>Side-by-side Compare</h2>
+    <button class="cmp-action-btn" id="fullcmp-open-all">Open all in eBay ↗</button>
+    <button class="cmp-action-btn" id="fullcmp-copy-skus">Copy SKUs</button>
+    <button id="fullcmp-close">✕ Close</button>
+  </div>
+  <div id="fullcmp-grid"></div>
+</div>
+
+<div id="preview-modal">
+  <div id="preview-topbar">
+    <h2>Export Preview</h2>
+    <span class="sub" id="preview-sub"></span>
+    <button class="hdr-btn" id="preview-export-btn">⬇ Export Excel</button>
+    <button id="preview-close">✕ Close</button>
+  </div>
+  <div id="preview-scroll">
+    <table id="preview-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>SKU</th>
+          <th>Original Title</th>
+          <th>eBay Listing Title</th>
+          <th>Main Image</th>
+          <th>eBay Item URL</th>
+          <th>Image Count</th>
+          <th>Category</th>
+        </tr>
+      </thead>
+      <tbody id="preview-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<div id="lightbox">
+  <button id="lightbox-close">✕</button>
+  <img id="lightbox-img" src="" alt="" />
+  <div id="lightbox-caption"></div>
+</div>
+
+<script>
+(async () => {
+  // ── Resolve dataset from URL ──
+  const params = new URLSearchParams(location.search);
+  let DATASET = params.get('dataset');
+
+  // Fetch available datasets
+  let datasets = [];
+  try {
+    const dsResp = await fetch('/api/datasets');
+    if (dsResp.ok) datasets = await dsResp.json();
+  } catch {}
+
+  // Populate dataset picker
+  const picker = document.getElementById('dataset-picker');
+  if (datasets.length > 0) {
+    datasets.forEach(ds => {
+      const opt = document.createElement('option');
+      opt.value = ds.id;
+      opt.textContent = `${ds.name} (${ds.itemCount})`;
+      if (ds.id === DATASET) opt.selected = true;
+      picker.appendChild(opt);
+    });
+    picker.addEventListener('change', () => {
+      location.href = '/?dataset=' + picker.value;
+    });
+  }
+
+  // If no dataset selected, pick first or show error
+  if (!DATASET && datasets.length > 0) {
+    DATASET = datasets[0].id;
+    history.replaceState(null, '', '/?dataset=' + DATASET);
+    picker.value = DATASET;
+  }
+
+  if (!DATASET) {
+    document.getElementById('loading').innerHTML =
+      `<div style="color:#ef4444;text-align:center">
+        <div style="font-size:16px;margin-bottom:8px">No datasets found</div>
+        <div style="font-size:12px;color:#7a8099">Add a dataset folder to <code style="background:#22263a;padding:2px 6px;border-radius:4px">datasets/</code> with data.json</div>
+      </div>`;
+    return;
+  }
+
+  // Update title
+  const dsInfo = datasets.find(d => d.id === DATASET);
+  document.getElementById('title').textContent = dsInfo ? dsInfo.name : DATASET;
+  document.title = `Image Selector · ${dsInfo ? dsInfo.name : DATASET}`;
+
+  // ── Load data ──
+  let ALL;
+  try {
+    const resp = await fetch(`/api/datasets/${DATASET}/data`);
+    if (!resp.ok) throw new Error(resp.statusText);
+    ALL = await resp.json();
+  } catch (e) {
+    document.getElementById('loading').innerHTML =
+      `<div style="color:#ef4444;text-align:center">
+        <div style="font-size:16px;margin-bottom:8px">Failed to load dataset "${DATASET}"</div>
+        <div style="font-size:12px;color:#7a8099">Run the server: <code style="background:#22263a;padding:2px 6px;border-radius:4px">node server.js</code></div>
+        <div style="font-size:11px;color:#7a8099;margin-top:4px">Error: ${e.message}</div>
+      </div>`;
+    return;
+  }
+  document.getElementById('loading').classList.add('hidden');
+
+  // ── Selections state: { [sku]: imageUrl } ──
+  let selections = {};
+  let saveTimer = null;
+
+  async function loadSelections() {
+    try {
+      const r = await fetch(`/api/datasets/${DATASET}/selections`);
+      if (r.ok) { selections = await r.json(); return; }
+    } catch {}
+    // fallback: localStorage
+    try { selections = JSON.parse(localStorage.getItem(`selections_${DATASET}`) || '{}'); } catch {}
+  }
+
+  async function saveSelections() {
+    setStatus('saving…', false);
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(async () => {
+      localStorage.setItem(`selections_${DATASET}`, JSON.stringify(selections));
+      try {
+        await fetch(`/api/datasets/${DATASET}/selections`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(selections),
+        });
+      } catch {}
+      const count = Object.keys(selections).length;
+      setStatus(`${count} main image${count !== 1 ? 's' : ''} saved`, true);
+      setTimeout(() => setStatus('', false), 2500);
+    }, 400);
+  }
+
+  function setStatus(msg, saved) {
+    const el = document.getElementById('sel-status');
+    el.textContent = msg;
+    el.className = saved ? 'saved' : '';
+  }
+
+  function getMainImg(r) {
+    return selections[r.sku] || r._imgs[0] || null;
+  }
+
+  function setMainImg(sku, url) {
+    selections[sku] = url;
+    saveSelections();
+    // update any visible pin buttons for this sku
+    document.querySelectorAll(`.card[data-sku="${CSS.escape(sku)}"] .pin-btn`).forEach(b => {
+      b.classList.toggle('pinned', b.dataset.url === url);
+      b.title = b.dataset.url === url ? 'Main image ★' : 'Set as main image';
+    });
+    // update table main image indicators
+    renderTableMainImages(sku);
+  }
+
+  await loadSelections();
+
+  // ── State ──
+  let filtered = [...ALL];
+  let view = 'grid';
+  let compareMode = false;
+  let selected = new Set();
+  let cols = 3;
+
+  const grid      = document.getElementById('grid');
+  const tableBody = document.getElementById('table-body');
+  const counter   = document.getElementById('counter');
+  const searchEl  = document.getElementById('search');
+  const zoomEl    = document.getElementById('zoom-slider');
+  const zoomVal   = document.getElementById('zoom-val');
+  const gridWrap  = document.getElementById('grid-wrap');
+  const tableWrap = document.getElementById('table-wrap');
+  const emptyEl   = document.getElementById('empty');
+  const cmpPanel  = document.getElementById('compare-panel');
+  const cmpItems  = document.getElementById('compare-items');
+  const cmpBadge  = document.getElementById('cmp-badge');
+  const cmpCount  = document.getElementById('cmp-count');
+  const cmpBtn    = document.getElementById('compare-btn');
+  const lightbox  = document.getElementById('lightbox');
+  const lbImg     = document.getElementById('lightbox-img');
+  const lbCap     = document.getElementById('lightbox-caption');
+
+  // ── Search ──
+  let searchTimer;
+  searchEl.addEventListener('input', () => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(applyFilter, 180);
+  });
+
+  function applyFilter() {
+    const q = searchEl.value.trim().toLowerCase();
+    filtered = q
+      ? ALL.filter(r => (r.sku||'').toLowerCase().includes(q) || (r.title||'').toLowerCase().includes(q))
+      : [...ALL];
+    renderCurrent();
+  }
+
+  function renderCurrent() {
+    counter.textContent = `${filtered.length} / ${ALL.length} items`;
+    if (view === 'grid') renderGrid();
+    else renderTable();
+    emptyEl.classList.toggle('visible', filtered.length === 0);
+  }
+
+  // ── Zoom ──
+  zoomEl.addEventListener('input', () => {
+    cols = parseInt(zoomEl.value);
+    zoomVal.textContent = cols;
+    document.documentElement.style.setProperty('--cols', cols);
+  });
+
+  // ── View toggle ──
+  document.getElementById('btn-grid').addEventListener('click', () => {
+    view = 'grid';
+    document.getElementById('btn-grid').classList.add('active');
+    document.getElementById('btn-table').classList.remove('active');
+    gridWrap.classList.remove('hidden');
+    tableWrap.classList.remove('visible');
+    renderCurrent();
+  });
+  document.getElementById('btn-table').addEventListener('click', () => {
+    view = 'table';
+    document.getElementById('btn-table').classList.add('active');
+    document.getElementById('btn-grid').classList.remove('active');
+    gridWrap.classList.add('hidden');
+    tableWrap.classList.add('visible');
+    renderCurrent();
+  });
+
+  // ── Compare ──
+  cmpBtn.addEventListener('click', () => {
+    compareMode = !compareMode;
+    cmpBtn.classList.toggle('active', compareMode);
+    if (compareMode && selected.size > 0) {
+      cmpPanel.classList.add('visible');
+      gridWrap.style.paddingBottom = '220px';
+    }
+  });
+
+  document.getElementById('compare-clear').addEventListener('click', () => {
+    selected.clear();
+    updateComparePanel();
+    renderCurrent();
+  });
+
+  function toggleSelect(idx) {
+    if (selected.has(idx)) selected.delete(idx);
+    else selected.add(idx);
+    updateComparePanel();
+    const check = document.querySelector(`.sel-check[data-idx="${idx}"]`);
+    if (check) check.classList.toggle('checked', selected.has(idx));
+    const card = document.querySelector(`.card[data-idx="${idx}"]`);
+    if (card) card.classList.toggle('selected', selected.has(idx));
+    cmpBadge.textContent = selected.size;
+  }
+
+  // ── Image observer (lazy load) ──
+  const imgObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const img = e.target;
+        if (img.dataset.src) {
+          img.src = img.dataset.src;
+          img.onload = () => img.classList.add('loaded');
+          img.onerror = () => img.classList.add('loaded');
+          img.removeAttribute('data-src');
+          imgObserver.unobserve(img);
+        }
+      }
+    });
+  }, { rootMargin: '200px' });
+
+  // ── Render Grid ──
+  function renderGrid() {
+    grid.innerHTML = '';
+    for (let fi = 0; fi < filtered.length; fi++) {
+      const r = filtered[fi];
+      const idx = ALL.indexOf(r);
+      const imgs = r._imgs;
+      const imgCount = imgs.length;
+      const mainUrl = getMainImg(r);
+      let imgIdx = 0;
+
+      let dotsHtml = imgCount > 1
+        ? `<div class="img-nav">${imgs.map((_,i) => `<div class="img-dot${i===0?' active':''}" data-i="${i}"></div>`).join('')}</div>`
+        : '';
+      let arrowsHtml = imgCount > 1
+        ? `<div class="img-arrows"><button class="img-arrow" data-dir="-1">‹</button><button class="img-arrow" data-dir="1">›</button></div>`
+        : '';
+      let imgsHtml = imgs.length
+        ? imgs.map((url, i) => `<img data-src="${url}" alt="" class="${i===0?'':'hidden'}" />`).join('')
+        : `<img src="" alt="" class="loaded" style="opacity:.1" />`;
+
+      // pin buttons — one per image
+      let pinsHtml = imgs.map((url, i) =>
+        `<button class="pin-btn${url === mainUrl ? ' pinned' : ''}" data-url="${url}" data-i="${i}" title="${url === mainUrl ? 'Main image ★' : 'Set as main image'}" style="${i===0?'':'display:none'}">★</button>`
+      ).join('');
+
+      const itemId = r.url ? ((r.url.match(/\/itm\/(\d+)/)||[])[1]) : null;
+
+      const card = document.createElement('div');
+      card.className = 'card' + (selected.has(idx) ? ' selected' : '');
+      card.dataset.idx = idx;
+      card.dataset.sku = r.sku || '';
+      card.innerHTML = `
+        <div class="card-images">
+          ${imgsHtml}
+          ${arrowsHtml}
+          ${dotsHtml}
+          ${imgCount > 1 ? `<div class="img-counter"><span class="cur">1</span>/${imgCount}</div>` : ''}
+          ${pinsHtml}
+        </div>
+        <div class="card-body">
+          <div class="card-sku">${r.sku || '—'}</div>
+          <div class="card-title">${r.title || '—'}</div>
+          <div class="card-footer">
+            ${r.url ? `<a class="card-link" href="${r.url}" target="_blank" rel="noopener">${itemId ? '#'+itemId : r.url.replace('https://','')}</a>` : '<span></span>'}
+            <div class="sel-check${selected.has(idx)?' checked':''}" data-idx="${idx}"></div>
+          </div>
+        </div>
+      `;
+
+      // Lazy load first image
+      const firstImg = card.querySelector('img');
+      if (firstImg && imgs.length) imgObserver.observe(firstImg);
+
+      const allImgs = card.querySelectorAll('.card-images img');
+      const dots    = card.querySelectorAll('.img-dot');
+      const curEl   = card.querySelector('.cur');
+      const allPins = card.querySelectorAll('.pin-btn');
+
+      function goToImg(newIdx) {
+        allImgs[imgIdx].classList.add('hidden');
+        allPins[imgIdx].style.display = 'none';
+        dots[imgIdx]?.classList.remove('active');
+        imgIdx = (newIdx + imgCount) % imgCount;
+        allImgs[imgIdx].classList.remove('hidden');
+        allPins[imgIdx].style.display = '';
+        dots[imgIdx]?.classList.add('active');
+        if (curEl) curEl.textContent = imgIdx + 1;
+        const target = allImgs[imgIdx];
+        if (target.dataset.src) {
+          target.src = target.dataset.src;
+          target.onload = () => target.classList.add('loaded');
+          target.onerror = () => target.classList.add('loaded');
+          target.removeAttribute('data-src');
+        }
+      }
+
+      card.querySelectorAll('.img-arrow').forEach(btn => {
+        btn.addEventListener('click', e => { e.stopPropagation(); goToImg(imgIdx + parseInt(btn.dataset.dir)); });
+      });
+      dots.forEach(dot => {
+        dot.addEventListener('click', e => { e.stopPropagation(); goToImg(parseInt(dot.dataset.i)); });
+      });
+
+      // Pin button: set main image
+      allPins.forEach(btn => {
+        btn.addEventListener('click', e => {
+          e.stopPropagation();
+          setMainImg(r.sku, btn.dataset.url);
+        });
+      });
+
+      // Click image → lightbox
+      card.querySelector('.card-images').addEventListener('click', e => {
+        e.stopPropagation();
+        const src = imgs[imgIdx];
+        if (src) openLightbox(src, `${r.sku} — ${r.title}`);
+      });
+
+      // Click card → toggle select
+      card.addEventListener('click', () => toggleSelect(idx));
+
+      // Checkbox: stopPropagation (card click handles it)
+      card.querySelector('.sel-check').addEventListener('click', e => {
+        e.stopPropagation();
+        toggleSelect(idx);
+      });
+
+      grid.appendChild(card);
+    }
+  }
+
+  // ── Render Table ──
+  function renderTable() {
+    tableBody.innerHTML = '';
+    for (const r of filtered) {
+      const mainUrl = getMainImg(r);
+      const itemId  = r.url ? ((r.url.match(/\/itm\/(\d+)/)||[])[1]) : null;
+      const tr = document.createElement('tr');
+      const thumbsHtml = r._imgs.slice(0, 8).map(url => {
+        const isMain = url === mainUrl;
+        return `<img class="td-thumb${isMain ? ' is-main' : ''}" src="${url}" loading="lazy" alt="" title="${isMain ? '★ Main image' : ''}" onclick="openLightbox('${url.replace(/'/g,"\\'")}','${(r.sku||'').replace(/'/g,"\\'")}')"/>`;
+      }).join('');
+      const mainThumb = mainUrl
+        ? `<img class="td-thumb is-main" src="${mainUrl}" loading="lazy" alt="" onclick="openLightbox('${mainUrl.replace(/'/g,"\\'")}','${(r.sku||'').replace(/'/g,"\\'")}')"/>`
+        : `<span style="color:var(--muted);font-size:10px">none</span>`;
+      tr.innerHTML = `
+        <td class="td-sku">${r.sku || '—'}</td>
+        <td class="td-title">${r.title || '—'}</td>
+        <td>${mainThumb}</td>
+        <td><div class="td-imgs">${thumbsHtml}</div></td>
+        <td>${r.url ? `<a class="td-link" href="${r.url}" target="_blank" rel="noopener">${itemId ? '#'+itemId : 'eBay'} ↗</a>` : '—'}</td>
+      `;
+      tableBody.appendChild(tr);
+    }
+  }
+
+  // Update just main image column for a specific sku (after pin change in grid mode)
+  function renderTableMainImages(sku) {
+    if (view !== 'table') return;
+    tableBody.querySelectorAll('tr').forEach((tr, i) => {
+      const r = filtered[i];
+      if (!r || r.sku !== sku) return;
+      const mainUrl = getMainImg(r);
+      const cell = tr.cells[2];
+      if (cell) {
+        cell.innerHTML = mainUrl
+          ? `<img class="td-thumb is-main" src="${mainUrl}" loading="lazy" alt="" onclick="openLightbox('${mainUrl.replace(/'/g,"\\'")}','${(r.sku||'').replace(/'/g,"\\'")}')"/>`
+          : `<span style="color:var(--muted);font-size:10px">none</span>`;
+      }
+    });
+  }
+
+  // ── Compare panel ──
+  function buildCarousel(imgs, wrapClass, arrowClass, imgClass, countClass) {
+    let ci = 0;
+    const n = imgs.length;
+    return {
+      html: `<div class="${wrapClass}">
+        ${imgs.map((url, i) => `<img class="${imgClass}${i>0?' hidden':''}" src="${url}" loading="lazy" alt="" />`).join('')}
+        ${n > 1 ? `<div class="${arrowClass}"><button data-dir="-1">‹</button><button data-dir="1">›</button></div><div class="${countClass}"><span class="ci">1</span>/${n}</div>` : ''}
+      </div>`,
+      init(container) {
+        if (n <= 1) return;
+        const allI = container.querySelectorAll(`.${imgClass}`);
+        const ciEl = container.querySelector(`.${countClass} .ci`);
+        container.querySelectorAll(`.${arrowClass} button`).forEach(btn => {
+          btn.addEventListener('click', e => {
+            e.stopPropagation();
+            allI[ci].classList.add('hidden');
+            ci = (ci + parseInt(btn.dataset.dir) + n) % n;
+            allI[ci].classList.remove('hidden');
+            if (ciEl) ciEl.textContent = ci + 1;
+          });
+        });
+        container.querySelectorAll(`.${imgClass}`).forEach(img => {
+          img.addEventListener('click', () => { if (imgs[ci]) openLightbox(imgs[ci], ''); });
+        });
+      }
+    };
+  }
+
+  function updateComparePanel() {
+    cmpCount.textContent = selected.size;
+    cmpBadge.textContent = selected.size;
+    cmpItems.innerHTML = '';
+    for (const idx of selected) {
+      const r = ALL[idx];
+      const imgs = r._imgs;
+      const itemId = r.url ? ((r.url.match(/\/itm\/(\d+)/)||[])[1]) : null;
+      const car = buildCarousel(imgs, 'cmp-img-wrap', 'cmp-img-arrows', 'cmp-img', 'cmp-img-count');
+      const div = document.createElement('div');
+      div.className = 'cmp-item';
+      div.innerHTML = `
+        ${car.html}
+        <div class="cmp-info">
+          <div class="cmp-sku">${r.sku || ''}</div>
+          <div class="cmp-title">${r.title || ''}</div>
+          <div class="cmp-footer">
+            ${r.url ? `<a class="cmp-link" href="${r.url}" target="_blank" rel="noopener">${itemId ? '#'+itemId : 'eBay'} ↗</a>` : '<span></span>'}
+            <span style="font-size:10px;color:var(--muted)">${imgs.length} img${imgs.length!==1?'s':''}</span>
+          </div>
+        </div>
+        <button class="cmp-remove" data-idx="${idx}">✕</button>
+      `;
+      cmpItems.appendChild(div);
+      car.init(div);
+    }
+    cmpItems.querySelectorAll('.cmp-remove').forEach(btn => {
+      btn.addEventListener('click', e => { toggleSelect(parseInt(e.currentTarget.dataset.idx)); });
+    });
+    if (selected.size === 0) {
+      cmpPanel.classList.remove('visible');
+      gridWrap.style.paddingBottom = '';
+    } else {
+      cmpPanel.classList.add('visible');
+      gridWrap.style.paddingBottom = '220px';
+    }
+  }
+
+  document.getElementById('cmp-open-all').addEventListener('click', () => {
+    for (const idx of selected) { const r = ALL[idx]; if (r.url) window.open(r.url, '_blank'); }
+  });
+  document.getElementById('cmp-copy-skus').addEventListener('click', () => {
+    const skus = [...selected].map(i => ALL[i].sku).filter(Boolean).join(', ');
+    navigator.clipboard.writeText(skus).then(() => {
+      const btn = document.getElementById('cmp-copy-skus');
+      const orig = btn.textContent; btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = orig, 1500);
+    });
+  });
+  document.getElementById('cmp-expand').addEventListener('click', openFullCompare);
+
+  // ── Full Compare Modal ──
+  const fullcmpModal = document.getElementById('fullcmp-modal');
+  const fullcmpGrid  = document.getElementById('fullcmp-grid');
+
+  function openFullCompare() {
+    fullcmpGrid.innerHTML = '';
+    for (const idx of selected) {
+      const r = ALL[idx];
+      const imgs = r._imgs;
+      const itemId = r.url ? ((r.url.match(/\/itm\/(\d+)/)||[])[1]) : null;
+      let ci = 0;
+      const col = document.createElement('div');
+      col.className = 'fullcmp-col';
+      const thumbsHtml = imgs.map((url, i) =>
+        `<img class="fullcmp-thumb${i===0?' active':''}" src="${url}" data-i="${i}" loading="lazy" alt="" />`
+      ).join('');
+      col.innerHTML = `
+        <div class="fullcmp-img-wrap">
+          ${imgs.map((url, i) => `<img class="fullcmp-img-main${i>0?' hidden':''}" src="${url}" loading="lazy" alt="" data-i="${i}" />`).join('')}
+          ${imgs.length > 1 ? `<div class="fullcmp-img-arrows"><button data-dir="-1">‹</button><button data-dir="1">›</button></div>` : ''}
+        </div>
+        ${imgs.length > 1 ? `<div class="fullcmp-img-strip">${thumbsHtml}</div>` : ''}
+        <div class="fullcmp-body">
+          <div class="fullcmp-sku">${r.sku || '—'}</div>
+          <div class="fullcmp-title">${r.title || '—'}</div>
+          <div class="fullcmp-meta">${imgs.length} image${imgs.length!==1?'s':''}</div>
+          ${r.url ? `<a class="fullcmp-link" href="${r.url}" target="_blank" rel="noopener">${itemId ? 'eBay #'+itemId : 'View on eBay'} ↗</a>` : ''}
+        </div>
+      `;
+      const allMain  = col.querySelectorAll('.fullcmp-img-main');
+      const allThumb = col.querySelectorAll('.fullcmp-thumb');
+      function goFull(newI) {
+        allMain[ci].classList.add('hidden');
+        allThumb[ci]?.classList.remove('active');
+        ci = (newI + imgs.length) % imgs.length;
+        allMain[ci].classList.remove('hidden');
+        allThumb[ci]?.classList.add('active');
+        allThumb[ci]?.scrollIntoView({ inline: 'nearest', behavior: 'smooth' });
+      }
+      col.querySelectorAll('.fullcmp-img-arrows button').forEach(btn => {
+        btn.addEventListener('click', () => goFull(ci + parseInt(btn.dataset.dir)));
+      });
+      allThumb.forEach(t => { t.addEventListener('click', () => goFull(parseInt(t.dataset.i))); });
+      allMain.forEach(img => { img.addEventListener('click', () => { if (imgs[ci]) openLightbox(imgs[ci], r.sku || ''); }); });
+      fullcmpGrid.appendChild(col);
+    }
+    fullcmpModal.classList.add('visible');
+  }
+
+  document.getElementById('fullcmp-close').addEventListener('click', () => fullcmpModal.classList.remove('visible'));
+  document.getElementById('fullcmp-open-all').addEventListener('click', () => {
+    for (const idx of selected) { const r = ALL[idx]; if (r.url) window.open(r.url, '_blank'); }
+  });
+  document.getElementById('fullcmp-copy-skus').addEventListener('click', () => {
+    const skus = [...selected].map(i => ALL[i].sku).filter(Boolean).join(', ');
+    navigator.clipboard.writeText(skus).then(() => {
+      const btn = document.getElementById('fullcmp-copy-skus');
+      const orig = btn.textContent; btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = orig, 1500);
+    });
+  });
+
+  // ── Export ──
+  function buildExportRows() {
+    return ALL.map(r => ({
+      'SKU':                    r.sku || '',
+      'Original Title':         r.title || '',
+      'eBay Listing Title':     r.ebay_title || '',
+      'eBay Item URL':          r.url || '',
+      'Main Image':             getMainImg(r) || '',
+      'Images (pipe-separated)': r.images || '',
+      'Image Count':            r.image_count || '',
+      'Category Hierarchy':     r.category || '',
+      'Description':            r.description || '',
+      'Fitment / Compatibility': r.fitment || '',
+      'Item Specifics (JSON)':  r.item_specifics || '',
+    }));
+  }
+
+  function doExport() {
+    const rows = buildExportRows();
+    const ws   = XLSX.utils.json_to_sheet(rows);
+    const wb   = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'JEGS eBay Mar 15');
+    // Column widths
+    ws['!cols'] = [
+      {wch:14},{wch:40},{wch:40},{wch:35},{wch:80},{wch:80},
+      {wch:8},{wch:50},{wch:60},{wch:40},{wch:40},
+    ];
+    XLSX.writeFile(wb, 'JEGS_eBay_Mar15_export.xlsx');
+  }
+
+  document.getElementById('export-btn').addEventListener('click', doExport);
+  document.getElementById('preview-export-btn').addEventListener('click', doExport);
+
+  // ── Preview Modal ──
+  const previewModal = document.getElementById('preview-modal');
+  const previewBody  = document.getElementById('preview-body');
+  const previewSub   = document.getElementById('preview-sub');
+
+  document.getElementById('preview-btn').addEventListener('click', () => {
+    const selCount = Object.keys(selections).length;
+    previewSub.textContent = `${ALL.length} rows · ${selCount} main images selected`;
+    previewBody.innerHTML = '';
+
+    ALL.forEach((r, i) => {
+      const mainUrl = getMainImg(r);
+      const itemId  = r.url ? ((r.url.match(/\/itm\/(\d+)/)||[])[1]) : null;
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td style="color:var(--muted);font-size:10px">${i+1}</td>
+        <td class="prev-sku">${r.sku || '—'}</td>
+        <td style="max-width:220px">${r.title || '—'}</td>
+        <td style="max-width:220px;color:var(--muted)">${r.ebay_title || '—'}</td>
+        <td>${mainUrl
+          ? `<img class="prev-thumb" src="${mainUrl}" loading="lazy" alt="" />`
+          : `<div class="prev-no-img">none</div>`
+        }</td>
+        <td>${r.url ? `<a class="td-link" href="${r.url}" target="_blank" rel="noopener">${itemId ? '#'+itemId : 'eBay'} ↗</a>` : '—'}</td>
+        <td style="color:var(--muted)">${r.image_count || '—'}</td>
+        <td style="max-width:200px;color:var(--muted);font-size:11px">${(r.category || '').split('>').pop().trim() || '—'}</td>
+      `;
+      previewBody.appendChild(tr);
+    });
+
+    previewModal.classList.add('visible');
+  });
+
+  document.getElementById('preview-close').addEventListener('click', () => previewModal.classList.remove('visible'));
+
+  // ── Lightbox ──
+  window.openLightbox = function(src, caption) {
+    lbImg.src = src;
+    lbCap.textContent = caption || '';
+    lightbox.classList.add('visible');
+  };
+  document.getElementById('lightbox-close').addEventListener('click', () => { lightbox.classList.remove('visible'); lbImg.src = ''; });
+  lightbox.addEventListener('click', e => { if (e.target === lightbox) { lightbox.classList.remove('visible'); lbImg.src = ''; } });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      lightbox.classList.remove('visible'); lbImg.src = '';
+      fullcmpModal.classList.remove('visible');
+      previewModal.classList.remove('visible');
+    }
+  });
+
+  // ── Init ──
+  renderCurrent();
+})();
+</script>
+</body>
+</html>

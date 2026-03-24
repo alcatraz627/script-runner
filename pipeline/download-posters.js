@@ -6,29 +6,36 @@
  *   node pipeline/download-posters.js --data <file.json> --out <dir> [options]
  *
  * Options:
- *   --data <file>       Normalized pipeline JSON (required)
- *   --out <dir>         Output directory for PNGs (default: ./posters next to data file)
- *   --api <url>         Poster API base URL (default: http://localhost:3006/lab/ebay-poster/image/)
- *   --attrs <full|small>  Attribute set to use (default: full)
- *   --start <n>         Start index (default: 0)
- *   --end <n>           End index inclusive (default: last)
- *   --retry             Retry only previously failed items
+ *   --data <file>           Normalized pipeline JSON (required)
+ *   --out <dir>             Output directory for PNGs (default: ./posters next to data file)
+ *   --api <url>             Poster API base URL (default: http://localhost:3006/lab/ebay-poster/image/)
+ *   --attrs <full|small>    Attribute set to use (default: full)
+ *   --start <n>             Start index (default: 0)
+ *   --end <n>               End index inclusive (default: last)
+ *   --retry                 Retry only previously failed items
+ *   --concurrency <n>       Parallel download count (default: 5)
+ *   --max-concurrency <n>   Upscale cap (default: concurrency × 2)
+ *   --max-retries <n>       Retry limit per item (default: 3)
  */
 
 const fs   = require('fs');
 const path = require('path');
+const { downloadAll } = require('./poster-downloader');
 
 const args    = process.argv.slice(2);
 const get     = flag => { const i = args.indexOf(flag); return i >= 0 ? args[i + 1] : null; };
 const has     = flag => args.includes(flag);
 
-const dataArg    = get('--data');
-const outArg     = get('--out');
-const apiUrl     = get('--api') || 'http://localhost:3006/lab/ebay-poster/image/';
-const attrsMode  = (get('--attrs') || 'full').toLowerCase() === 'small' ? 'Small' : 'Full';
-const startIdx   = parseInt(get('--start') || '0', 10);
-const endIdx     = get('--end') ? parseInt(get('--end'), 10) : null;
-const onlyRetry  = has('--retry');
+const dataArg        = get('--data');
+const outArg         = get('--out');
+const apiUrl         = get('--api') || 'http://localhost:3006/lab/ebay-poster/image/';
+const attrsMode      = (get('--attrs') || 'full').toLowerCase() === 'small' ? 'Small' : 'Full';
+const startIdx       = parseInt(get('--start') || '0', 10);
+const endIdx         = get('--end') ? parseInt(get('--end'), 10) : null;
+const onlyRetry      = has('--retry');
+const concurrency    = parseInt(get('--concurrency') || '5', 10);
+const maxConcurrency = get('--max-concurrency') ? parseInt(get('--max-concurrency'), 10) : concurrency * 2;
+const maxRetries     = parseInt(get('--max-retries') || '3', 10);
 
 if (!dataArg) {
   console.error('Usage: node pipeline/download-posters.js --data <file.json> --out <dir>');
@@ -40,16 +47,6 @@ const outputDir    = path.resolve(outArg || path.join(path.dirname(dataPath), '.
 const failuresFile = path.join(outputDir, '.download-failures.json');
 
 const SPINNER = ['⠋','⠙','⠹','⠸','⠼','⠴','⠦','⠧','⠇','⠏'];
-
-function sanitize(text) {
-  if (!text) return text;
-  return text
-    .replace(/[\u0000-\u001F\u007F-\u009F]/g, ' ')
-    .replace(/[\u2000-\u200D\u2028-\u202F]/g, ' ')
-    .replace(/[\uFEFF]/g, '')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
 
 function loadFailures() {
   try { return JSON.parse(fs.readFileSync(failuresFile, 'utf8')); } catch { return { failed: [] }; }
@@ -78,92 +75,74 @@ async function main() {
   } else {
     const end = endIdx ?? data.length - 1;
     items = data.slice(startIdx, end + 1);
-    console.log(`\nDownloading ${items.length} posters (${startIdx}–${end}) → ${outputDir}\n`);
+    console.log(`\nDownloading ${items.length} posters (${startIdx}–${end}) → ${outputDir}`);
   }
 
-  let success = 0, failed = 0;
-  const failedParts = [];
+  console.log(`Concurrency: ${concurrency} (max: ${maxConcurrency}), retries: ${maxRetries}\n`);
 
-  for (let i = 0; i < items.length; i++) {
-    const item = items[i];
-    const pn   = item['Part Number'];
-    const num  = (onlyRetry ? i : startIdx + i) + 1;
-    let spinnerInterval;
+  // Progress display
+  let spinFrame = 0;
+  const spinInterval = setInterval(() => {
+    spinFrame = (spinFrame + 1) % SPINNER.length;
+  }, 100);
 
-    try {
-      let showcaseImage = item.Images || '';
-      if (showcaseImage.endsWith('.webp')) showcaseImage = showcaseImage.replace(/\.webp$/i, '.png');
-      if (showcaseImage === '...') showcaseImage = '';
-
-      const payload = {
-        font:          'Inter',
-        bannerImage:   '/ebay-banner-assets/jegs-banner.png',
-        showcaseImage,
-        title:         sanitize(item['Title']),
-        partNumber:    pn,
-        scaleFactor:   3,
-        partType:      sanitize(item['Part Type']),
-        brand:         sanitize(item['Brand']),
-        description:   sanitize(item['Description']),
-        attributes:    (item[`Attributes ${attrsMode}`] || []).map(([n, v]) => [sanitize(n), sanitize(v)]),
-        fab:           (item['Features & Benefits'] || []).map(f => sanitize(f)),
-      };
-
-      let frame = 0;
-      spinnerInterval = setInterval(() => {
-        process.stdout.write(`\r${SPINNER[frame++ % SPINNER.length]} [${num}/${items.length}] ${pn}...`);
-      }, 100);
-
-      const controller = new AbortController();
-      const timeout    = setTimeout(() => controller.abort(), 30000);
-
-      let response;
-      try {
-        response = await fetch(apiUrl, {
-          method:  'POST',
-          headers: { 'Content-Type': 'application/json', 'User-Agent': 'node-fetch' },
-          body:    JSON.stringify(payload),
-          signal:  controller.signal,
-        });
-        clearTimeout(timeout);
-      } catch (e) {
-        clearTimeout(timeout);
-        throw e;
-      }
-
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
-      const buf     = Buffer.from(await response.arrayBuffer());
-      const outFile = path.join(outputDir, `${pn}.png`);
-      fs.writeFileSync(outFile, buf);
-
-      clearInterval(spinnerInterval);
-      process.stdout.write(`\r✓ [${num}/${items.length}] ${pn} (${(buf.length / 1024).toFixed(1)}KB)\n`);
-      success++;
-    } catch (e) {
-      clearInterval(spinnerInterval);
-      process.stdout.write(`\r✗ [${num}/${items.length}] ${pn} — ${e?.message || e}\n`);
-      failed++;
-      failedParts.push(pn);
+  let lastLine = '';
+  function onProgress({ current, total, success, failed, retrying, concurrency: c }) {
+    const line = `${SPINNER[spinFrame]} [${current}/${total}] ✓${success} ✗${failed} ↻${retrying} ⫽${c}`;
+    if (line !== lastLine) {
+      process.stdout.write(`\r${line}   `);
+      lastLine = line;
     }
   }
 
-  if (failedParts.length) {
-    fs.writeFileSync(failuresFile, JSON.stringify({ failed: failedParts }, null, 2));
+  const progressInterval = setInterval(() => {
+    // Re-render spinner frame even if counts haven't changed
+    if (lastLine) process.stdout.write(`\r${lastLine.replace(/^./, SPINNER[spinFrame])}   `);
+  }, 100);
+
+  const { results, failures, summary } = await downloadAll(items, {
+    concurrency,
+    maxConcurrency,
+    maxRetries,
+    timeout: 30000,
+    outputDir,
+    apiUrl,
+    attrsMode,
+    onProgress,
+  });
+
+  clearInterval(spinInterval);
+  clearInterval(progressInterval);
+  process.stdout.write('\r' + ' '.repeat(60) + '\r'); // clear progress line
+
+  // Print per-item results
+  for (const r of results) {
+    const pn = r['Part Number'];
+    if (r.posterPath) {
+      const kb = r.posterSize ? `(${(r.posterSize / 1024).toFixed(1)}KB)` : '';
+      console.log(`✓ ${pn} ${kb}`);
+    } else {
+      console.log(`✗ ${pn} — ${r.posterError}`);
+    }
+  }
+
+  // Write failures file
+  if (failures) {
+    fs.writeFileSync(failuresFile, JSON.stringify(failures, null, 2));
     console.log(`\nFailed parts saved → ${failuresFile}`);
   } else if (fs.existsSync(failuresFile)) {
     fs.unlinkSync(failuresFile);
   }
 
   console.log(`\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
-  console.log(`  ✓ ${success}  ✗ ${failed}  of ${items.length}`);
+  console.log(`  ✓ ${summary.success}  ✗ ${summary.failed}  of ${summary.total}`);
   console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
 
-  if (failed) {
+  if (summary.failed) {
     console.log(`\nRetry with: node pipeline/download-posters.js --data ${dataArg} --out ${outputDir} --retry`);
   }
 
-  process.exit(failed ? 1 : 0);
+  process.exit(summary.failed ? 1 : 0);
 }
 
 main().catch(e => { console.error('\n✗', e.message); process.exit(1); });

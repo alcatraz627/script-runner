@@ -12,9 +12,9 @@
 		partial: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/30 dark:text-amber-400 dark:border-amber-800',
 		error: 'bg-red-50 text-red-700 border-red-200 dark:bg-red-900/30 dark:text-red-400 dark:border-red-800',
 		interrupted: 'bg-yellow-50 text-yellow-700 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-400 dark:border-yellow-800',
-		draft: 'bg-[var(--color-bg-inset)] text-[var(--color-text-secondary)] border-[var(--color-border)]',
-		pending: 'bg-[var(--color-bg-inset)] text-[var(--color-text-secondary)] border-[var(--color-border)]',
-		skipped: 'bg-[var(--color-bg-inset)] text-[var(--color-text-muted)] border-[var(--color-border)]',
+		draft: 'bg-gray-50 text-gray-600 border-gray-200 dark:bg-gray-800/40 dark:text-gray-400 dark:border-gray-700',
+		pending: 'bg-gray-50 text-gray-600 border-gray-200 dark:bg-gray-800/40 dark:text-gray-400 dark:border-gray-700',
+		skipped: 'bg-gray-50 text-gray-500 border-gray-200 dark:bg-gray-800/40 dark:text-gray-500 dark:border-gray-700',
 	};
 
 	const dotColorMap: Record<string, string> = {
@@ -23,9 +23,9 @@
 		partial: 'bg-amber-500',
 		error: 'bg-red-500',
 		interrupted: 'bg-yellow-500',
-		draft: 'bg-[var(--color-text-muted)]',
-		pending: 'bg-[var(--color-text-muted)]',
-		skipped: 'bg-[var(--color-text-muted)]',
+		draft: 'bg-gray-400 dark:bg-gray-500',
+		pending: 'bg-gray-400 dark:bg-gray-500',
+		skipped: 'bg-gray-400 dark:bg-gray-500',
 	};
 
 	const sizeClass = $derived(size === 'sm' ? 'text-xs px-2 py-0.5 gap-1.5' : 'text-sm px-3 py-1 gap-2');
