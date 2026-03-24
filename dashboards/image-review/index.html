@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Image Review — Script Runner</title>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --accent:       #2563eb;
+      --accent-light: #eff6ff;
+      --accent-text:  #1e40af;
+      --success:      #10b981;
+      --success-bg:   #d1fae5;
+      --warning:      #f59e0b;
+      --warning-bg:   #fef3c7;
+      --danger:       #ef4444;
+      --danger-bg:    #fee2e2;
+
+      --bg:           #f8fafc;
+      --surface:      #ffffff;
+      --border:       #e2e8f0;
+      --border-light: #f1f5f9;
+      --text:         #0f172a;
+      --text-2:       #475569;
+      --text-3:       #94a3b8;
+
+      --sidebar-w:    320px;
+      --header-h:     52px;
+    }
+
+    html, body { height: 100%; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; color: var(--text); background: var(--bg); }
+
+    /* ── Layout ─────────────────────────────────── */
+    .layout { display: grid; grid-template-rows: var(--header-h) 1fr; grid-template-columns: var(--sidebar-w) 1fr; height: 100vh; overflow: hidden; }
+    .header { grid-column: 1 / -1; display: flex; align-items: center; gap: 12px; padding: 0 16px; background: var(--surface); border-bottom: 1px solid var(--border); }
+    .sidebar { overflow-y: auto; border-right: 1px solid var(--border); background: var(--surface); display: flex; flex-direction: column; }
+    .main { overflow-y: auto; padding: 24px; }
+
+    /* ── Header ─────────────────────────────────── */
+    .header-title { font-weight: 700; font-size: 15px; letter-spacing: -0.02em; }
+    .header-meta { font-size: 12px; color: var(--text-3); margin-right: auto; }
+    .status-bar { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-2); }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text-3); flex-shrink: 0; transition: background 0.2s; }
+    .status-dot.saving  { background: var(--warning); }
+    .status-dot.saved   { background: var(--success); }
+    .status-dot.error   { background: var(--danger); }
+    .status-dot.done    { background: var(--accent); }
+
+    .btn { padding: 6px 14px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; border: none; transition: opacity 0.15s; white-space: nowrap; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-2); }
+    .btn-outline:hover:not(:disabled) { background: var(--bg); }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover:not(:disabled) { opacity: 0.88; }
+
+    .progress-pill { display: inline-flex; align-items: center; gap: 5px; padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; background: var(--accent-light); color: var(--accent-text); border: 1px solid #bfdbfe; white-space: nowrap; }
+
+    /* ── Sidebar ─────────────────────────────────── */
+    .search-bar { padding: 10px 12px; border-bottom: 1px solid var(--border-light); }
+    .search-bar input { width: 100%; padding: 6px 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; outline: none; }
+    .search-bar input:focus { border-color: var(--accent); }
+
+    .filter-bar { display: flex; gap: 6px; padding: 8px 12px; border-bottom: 1px solid var(--border-light); }
+    .filter-btn { padding: 3px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: transparent; color: var(--text-2); transition: all 0.15s; }
+    .filter-btn.active { border-color: var(--accent); background: var(--accent-light); color: var(--accent-text); }
+    .filter-btn.filter-approved.active { border-color: var(--success); background: var(--success-bg); color: #065f46; }
+    .filter-btn.filter-flagged.active { border-color: var(--danger); background: var(--danger-bg); color: #991b1b; }
+    .filter-btn.filter-noimage.active { border-color: var(--warning); background: var(--warning-bg); color: #92400e; }
+
+    .list-header { padding: 6px 12px 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-3); }
+
+    .item-list { flex: 1; overflow-y: auto; }
+
+    .item-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; cursor: pointer; border-bottom: 1px solid var(--border-light); transition: background 0.1s; }
+    .item-row:hover { background: var(--bg); }
+    .item-row.active { background: var(--accent-light); }
+
+    .item-thumb { width: 40px; height: 40px; border-radius: 4px; object-fit: cover; flex-shrink: 0; border: 1px solid var(--border); }
+    .item-thumb-empty { width: 40px; height: 40px; border-radius: 4px; flex-shrink: 0; border: 1px dashed var(--border); background: var(--bg); display: flex; align-items: center; justify-content: center; }
+    .item-thumb-empty svg { color: var(--text-3); }
+
+    .item-info { flex: 1; min-width: 0; }
+    .item-sku { font-size: 12px; font-weight: 600; color: var(--text); }
+    .item-title { font-size: 11px; color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
+
+    .status-badge { flex-shrink: 0; width: 8px; height: 8px; border-radius: 50%; }
+    .status-badge.approved { background: var(--success); }
+    .status-badge.flagged { background: var(--danger); }
+    .status-badge.none { background: var(--border); }
+
+    /* ── Detail panel ─────────────────────────────── */
+    .empty-state { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: var(--text-3); }
+
+    .detail-card { max-width: 760px; }
+    .detail-header { margin-bottom: 20px; }
+    .detail-header h2 { font-size: 17px; font-weight: 700; line-height: 1.3; margin-bottom: 4px; }
+    .detail-sku { font-size: 12px; color: var(--text-3); font-weight: 600; letter-spacing: 0.03em; }
+
+    .image-section { margin-bottom: 24px; }
+    .image-main { width: 100%; max-height: 360px; object-fit: contain; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); }
+    .image-empty { width: 100%; height: 200px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; border-radius: 8px; border: 2px dashed var(--border); background: var(--border-light); color: var(--text-3); font-size: 13px; }
+    .image-url { margin-top: 8px; font-size: 11px; color: var(--text-3); word-break: break-all; }
+    .image-url a { color: var(--accent); text-decoration: none; }
+    .image-url a:hover { text-decoration: underline; }
+
+    .review-section { display: flex; gap: 10px; margin-bottom: 24px; align-items: center; }
+    .review-section label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-3); margin-right: 4px; }
+    .review-btn { padding: 7px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; border: 2px solid transparent; transition: all 0.15s; }
+    .review-btn.approve { border-color: var(--success); color: var(--success); background: transparent; }
+    .review-btn.approve:hover, .review-btn.approve.active { background: var(--success-bg); }
+    .review-btn.approve.active { border-color: var(--success); }
+    .review-btn.flag { border-color: var(--danger); color: var(--danger); background: transparent; }
+    .review-btn.flag:hover, .review-btn.flag.active { background: var(--danger-bg); }
+    .review-btn.flag.active { border-color: var(--danger); }
+    .review-btn.clear { border-color: var(--border); color: var(--text-3); background: transparent; font-size: 12px; padding: 5px 12px; }
+    .review-btn.clear:hover { background: var(--bg); }
+
+    .note-input { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; resize: vertical; min-height: 56px; outline: none; font-family: inherit; }
+    .note-input:focus { border-color: var(--accent); }
+
+    .meta-section { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+    .meta-block { }
+    .meta-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-3); margin-bottom: 6px; }
+    .meta-value { font-size: 13px; color: var(--text-2); }
+    .meta-value.missing { color: var(--text-3); font-style: italic; }
+
+    .attrs-list { display: flex; flex-wrap: wrap; gap: 6px; }
+    .attr-chip { display: inline-flex; gap: 4px; padding: 2px 8px; border-radius: 4px; font-size: 11px; background: var(--border-light); border: 1px solid var(--border); }
+    .attr-chip .ak { color: var(--text-3); }
+    .attr-chip .av { font-weight: 600; color: var(--text); }
+
+    .features-list { list-style: none; }
+    .features-list li { padding: 3px 0; font-size: 13px; color: var(--text-2); display: flex; gap: 8px; }
+    .features-list li::before { content: '•'; color: var(--text-3); flex-shrink: 0; }
+
+    .description-text { font-size: 13px; color: var(--text-2); line-height: 1.6; }
+
+    .divider { border: none; border-top: 1px solid var(--border-light); margin: 20px 0; }
+  </style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- ── HEADER ──────────────────────────────────────── -->
+  <header class="header">
+    <div class="header-title">🖼 Image Review</div>
+
+    <span id="progress-pill" class="progress-pill" style="display:none"></span>
+
+    <div class="header-meta" id="ctx-label"></div>
+
+    <div class="status-bar">
+      <span class="status-dot" id="status-dot"></span>
+      <span id="status-msg">Loading…</span>
+    </div>
+
+    <button class="btn btn-outline" id="btn-save" onclick="onSaveClick()">Save</button>
+    <button class="btn btn-primary" id="btn-done" onclick="onDoneClick()">✓ Approve &amp; Continue</button>
+  </header>
+
+  <!-- ── SIDEBAR ─────────────────────────────────────── -->
+  <aside class="sidebar">
+    <div class="search-bar">
+      <input type="text" id="search-input" placeholder="Search by SKU or title…" oninput="onSearch(this.value)" />
+    </div>
+
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all" onclick="setFilter('all', this)">All</button>
+      <button class="filter-btn filter-approved" data-filter="approved" onclick="setFilter('approved', this)">✓ Approved</button>
+      <button class="filter-btn filter-flagged" data-filter="flagged" onclick="setFilter('flagged', this)">⚑ Flagged</button>
+      <button class="filter-btn filter-noimage" data-filter="noimage" onclick="setFilter('noimage', this)">No Image</button>
+    </div>
+
+    <div class="list-header" id="list-count">— items</div>
+
+    <div class="item-list" id="item-list"></div>
+  </aside>
+
+  <!-- ── MAIN ────────────────────────────────────────── -->
+  <main class="main" id="main-panel">
+    <div class="empty-state" id="empty-state">
+      <svg width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3 12h18M3 6h18M3 18h18" />
+      </svg>
+      <p>Select a product to review its image</p>
+    </div>
+    <div id="detail-panel" style="display:none"></div>
+  </main>
+
+</div>
+
+<script src="../dashboard-bridge.js"></script>
+<script>
+
+const bridge = new DashboardBridge({ keyField: 'Part Number' });
+
+let allItems = [];
+let filteredItems = [];
+let activeKey = null;
+let activeFilter = 'all';
+let searchQuery = '';
+
+// ── STATUS BAR ────────────────────────────────────────────────────────────
+
+bridge.onStatus(({ status, message }) => {
+  const dot = document.getElementById('status-dot');
+  const msg = document.getElementById('status-msg');
+  dot.className = `status-dot ${status}`;
+  msg.textContent = message;
+  if (status === 'done') {
+    document.getElementById('btn-done').disabled = true;
+    document.getElementById('btn-done').textContent = '✓ Done';
+  }
+});
+
+// ── BOOT ──────────────────────────────────────────────────────────────────
+
+async function boot() {
+  const ctx = bridge.context;
+  const ctxLabel = document.getElementById('ctx-label');
+  ctxLabel.textContent = ctx.runId ? `${ctx.runId} › ${ctx.stepId || '?'}` : 'standalone';
+
+  try {
+    const { items } = await bridge.init();
+    allItems = items;
+    applyFilters();
+    updatePill();
+  } catch (err) {
+    document.getElementById('status-msg').textContent = `Error: ${err.message}`;
+  }
+}
+
+// ── FILTERS ───────────────────────────────────────────────────────────────
+
+function setFilter(filter, btn) {
+  activeFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilters();
+}
+
+function applyFilters() {
+  const q = searchQuery.toLowerCase();
+  filteredItems = allItems.filter(item => {
+    const key = item['Part Number'] || '';
+    const title = getItemSummary(item).toLowerCase();
+    const matchSearch = !q || key.toLowerCase().includes(q) || title.includes(q);
+
+    const sel = bridge.getSelection(key);
+    const status = sel?.status || null;
+    const hasImage = !!(item.Images);
+
+    const matchFilter =
+      activeFilter === 'all'      ? true :
+      activeFilter === 'approved' ? status === 'approved' :
+      activeFilter === 'flagged'  ? status === 'flagged' :
+      activeFilter === 'noimage'  ? !hasImage :
+      true;
+
+    return matchSearch && matchFilter;
+  });
+  renderList(filteredItems);
+}
+
+function onSearch(q) {
+  searchQuery = q;
+  applyFilters();
+}
+
+// ── LIST ──────────────────────────────────────────────────────────────────
+
+function getItemSummary(item) {
+  return item['Title'] || item['Part Number'] || '';
+}
+
+function renderList(items) {
+  const el = document.getElementById('item-list');
+  const count = document.getElementById('list-count');
+  count.textContent = `${items.length} item${items.length !== 1 ? 's' : ''}`;
+
+  if (items.length === 0) {
+    el.innerHTML = '<div style="padding:20px;text-align:center;color:#94a3b8;font-size:13px">No results</div>';
+    return;
+  }
+
+  el.innerHTML = items.map(item => {
+    const key = item['Part Number'] || '';
+    const sel = bridge.getSelection(key);
+    const status = sel?.status || 'none';
+    const isActive = key === activeKey;
+    const img = item.Images;
+
+    const thumb = img
+      ? `<img class="item-thumb" src="${escapeAttr(img)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+        + `<div class="item-thumb-empty" style="display:none"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" /><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" /></svg></div>`
+      : `<div class="item-thumb-empty"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" /></svg></div>`;
+
+    return `
+      <div class="item-row ${isActive ? 'active' : ''}" onclick="selectItem('${escapeAttr(key)}')" data-key="${escapeAttr(key)}">
+        ${thumb}
+        <div class="item-info">
+          <div class="item-sku">${escapeHtml(key)}</div>
+          <div class="item-title">${escapeHtml(getItemSummary(item))}</div>
+        </div>
+        <span class="status-badge ${status}"></span>
+      </div>
+    `;
+  }).join('');
+}
+
+// ── DETAIL ────────────────────────────────────────────────────────────────
+
+function selectItem(key) {
+  activeKey = key;
+  const item = allItems.find(it => (it['Part Number'] || '') === key);
+
+  document.querySelectorAll('.item-row').forEach(row => {
+    row.classList.toggle('active', row.dataset.key === key);
+  });
+
+  document.getElementById('empty-state').style.display = 'none';
+  const panel = document.getElementById('detail-panel');
+  panel.style.display = '';
+  panel.innerHTML = renderDetail(item);
+}
+
+function renderDetail(item) {
+  const key = item['Part Number'] || '?';
+  const sel = bridge.getSelection(key) || {};
+  const status = sel.status || null;
+  const note = sel.note || '';
+
+  const img = item.Images;
+  const attrs = item['Attributes Small'] || [];
+  const features = item['Features & Benefits'] || [];
+  const description = item.Description || '';
+  const fitment = item.Fitment || '';
+  const brand = item.Brand || '';
+
+  const imgSection = img
+    ? `<img class="image-main" src="${escapeAttr(img)}" alt="${escapeAttr(key)}" onerror="this.outerHTML='<div class=\'image-empty\'><svg width=\'32\' height=\'32\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'currentColor\' stroke-width=\'1.2\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' d=\'M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z\' /></svg><span>Image failed to load</span></div>'">
+        <div class="image-url"><a href="${escapeAttr(img)}" target="_blank">↗ Open full image</a></div>`
+    : `<div class="image-empty">
+        <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+        </svg>
+        <span>No image URL — needs manual backfill</span>
+      </div>`;
+
+  return `
+    <div class="detail-card">
+      <div class="detail-header">
+        <h2>${escapeHtml(item.Title || key)}</h2>
+        <span class="detail-sku">${escapeHtml(key)}${brand ? ' · ' + escapeHtml(brand) : ''}</span>
+      </div>
+
+      <div class="image-section">${imgSection}</div>
+
+      <div class="review-section">
+        <label>Status</label>
+        <button class="review-btn approve ${status === 'approved' ? 'active' : ''}"
+          onclick="setStatus('${escapeAttr(key)}', 'approved')">✓ Approve</button>
+        <button class="review-btn flag ${status === 'flagged' ? 'active' : ''}"
+          onclick="setStatus('${escapeAttr(key)}', 'flagged')">⚑ Flag</button>
+        ${status ? `<button class="review-btn clear" onclick="setStatus('${escapeAttr(key)}', null)">✕ Clear</button>` : ''}
+      </div>
+
+      <div style="margin-bottom:24px">
+        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-3);margin-bottom:6px">Note</div>
+        <textarea class="note-input" placeholder="Optional note…"
+          oninput="setNote('${escapeAttr(key)}', this.value)"
+        >${escapeHtml(note)}</textarea>
+      </div>
+
+      <hr class="divider">
+
+      <div class="meta-section">
+        ${description ? `
+          <div class="meta-block" style="grid-column:1/-1">
+            <div class="meta-label">Description</div>
+            <div class="description-text">${escapeHtml(description)}</div>
+          </div>` : ''}
+
+        ${fitment ? `
+          <div class="meta-block">
+            <div class="meta-label">Fitment</div>
+            <div class="meta-value">${escapeHtml(fitment)}</div>
+          </div>` : ''}
+
+        ${attrs.length > 0 ? `
+          <div class="meta-block" style="grid-column:1/-1">
+            <div class="meta-label">Attributes</div>
+            <div class="attrs-list">
+              ${attrs.map(([k, v]) => `
+                <span class="attr-chip">
+                  <span class="ak">${escapeHtml(k)}</span>
+                  <span class="av">${escapeHtml(String(v))}</span>
+                </span>
+              `).join('')}
+            </div>
+          </div>` : ''}
+
+        ${features.length > 0 ? `
+          <div class="meta-block" style="grid-column:1/-1">
+            <div class="meta-label">Features &amp; Benefits</div>
+            <ul class="features-list">
+              ${features.map(f => `<li>${escapeHtml(f)}</li>`).join('')}
+            </ul>
+          </div>` : ''}
+      </div>
+    </div>
+  `;
+}
+
+// ── SELECTIONS ────────────────────────────────────────────────────────────
+
+function setStatus(key, status) {
+  const current = bridge.getSelection(key) || {};
+  if (status === null) {
+    bridge.select(key, null);
+  } else {
+    bridge.select(key, { ...current, status });
+  }
+  updatePill();
+  applyFilters();
+  // Re-render detail without losing scroll position
+  const panel = document.getElementById('detail-panel');
+  if (panel.style.display !== 'none') {
+    const item = allItems.find(it => (it['Part Number'] || '') === key);
+    panel.innerHTML = renderDetail(item);
+  }
+}
+
+function setNote(key, note) {
+  const current = bridge.getSelection(key) || {};
+  bridge.select(key, { ...current, note: note || null });
+}
+
+function updatePill() {
+  const pill = document.getElementById('progress-pill');
+  const approved = allItems.filter(it => bridge.getSelection(it['Part Number'])?.status === 'approved').length;
+  const flagged  = allItems.filter(it => bridge.getSelection(it['Part Number'])?.status === 'flagged').length;
+  pill.textContent = `${approved} approved · ${flagged} flagged · ${allItems.length} total`;
+  pill.style.display = '';
+}
+
+// ── SAVE / DONE ───────────────────────────────────────────────────────────
+
+async function onSaveClick() {
+  const btn = document.getElementById('btn-save');
+  btn.disabled = true;
+  try { await bridge.saveNow(); }
+  finally { btn.disabled = false; }
+}
+
+async function onDoneClick() {
+  const btn = document.getElementById('btn-done');
+  btn.disabled = true;
+  try { await bridge.signalDone(); }
+  catch { btn.disabled = false; }
+}
+
+// ── UTILS ─────────────────────────────────────────────────────────────────
+
+function escapeHtml(str) {
+  return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function escapeAttr(str) {
+  return String(str ?? '').replace(/'/g,"&#39;").replace(/"/g,'&quot;');
+}
+
+boot();
+</script>
+</body>
+</html>

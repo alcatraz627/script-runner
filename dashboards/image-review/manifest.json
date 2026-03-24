@@ -1,0 +1,20 @@
+{
+  "name": "Image Review",
+  "description": "Review and approve product images. Flag items with missing or incorrect images for follow-up.",
+  "version": "1.0.0",
+  "author": "agent",
+
+  "keyField": "Part Number",
+
+  "pipeline": {
+    "dataStep": "normalize",
+    "stepId": "image-review"
+  },
+
+  "ui": {
+    "itemLabel": "product",
+    "itemLabelPlural": "products",
+    "selectionLabel": "Review Status",
+    "doneLabel": "Approve & Continue Pipeline"
+  }
+}
