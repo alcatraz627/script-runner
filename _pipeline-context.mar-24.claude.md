@@ -143,14 +143,16 @@ Re-ran the full pipeline. Poster download job (`jegs-ebay-final-1774305334055`) 
 | `image-selector/fix-junk-attrs.js` | Strip known eBay junk attribute keys from normalize.json + raw.json |
 | `image-selector/fix-boilerplate-descriptions.js` | Rewrite eBay boilerplate descriptions via Haiku; `--regen` flag re-processes by saved part numbers |
 | `image-selector/fix-placeholder-images.js` | Clear known blocked/stock image URLs from raw.json Main Image field |
+| `transforms/filter-items.js` | Pipeline transform: excludes rows by eBay Item URL exclusion list or deduplication mode |
 
 ## Current State
 
-- **Pipeline**: COMPLETED. Steps 1–3 (split-desc → corrections → normalize) re-run on 2026-03-24 after all data fixes. Normalize.json is authoritative.
-- **Data quality (post Mar-24 full audit)**: 602 items — 0 junk attrs, 0 fitment attrs in Small/Full, 0 zero-attr items, 0 boilerplate descriptions, 0 eBay breadcrumb Part Types.
-- **Image gaps**: 92 items have empty Images (cleared blocked stock URLs). Needs product photo backfill via upsert-images.js + re-run of poster download for affected items only.
-- **Poster download**: Attributes capped at 5 per item in `pipeline/poster-downloader.js`. Last full poster run: 2026-03-23 (602 PNGs). Posters for the 92 image-gap items need regeneration after backfill.
-- **Known remaining**: 555-81573 / 555-50084 have identical descriptions (SSR Star Wheel 15"×8", same eBay source). Manual differentiation needed.
+- **Pipeline**: COMPLETED. Final run: split-desc → corrections → filter → normalize. Output: **440 items** (162 excluded due to duplicate eBay URLs).
+- **Data quality**: 440 items — 0 junk attrs, 0 fitment attrs in Small/Full, 0 zero-attr items, 0 boilerplate descriptions, 0 eBay breadcrumb Part Types, 0 contaminated descriptions.
+- **Image gaps**: 24 items (of the 440) have empty Images. Needs manual backfill via `upsert-images.js` + re-run of `download-posters` step for those 24 only.
+- **Poster download**: Last full poster run was on 602 items (2026-03-23). Current output is 440 items — posters for excluded/image-gap items are stale or missing. Regeneration needed after image backfill.
+- **Excluded items (162)**: Parked — scraper data is corrupted (multiple SKUs mapped to same eBay listing URL). Needs re-scrape of correct eBay listings to fix permanently. Managed via `filter` step `excludeUrls` config in run.config.js.
+- **555-10377**: Description compliant (531c) but content is thin (3 FABs, sparse product info). Low priority.
 
 ### Mar-24 Post-Audit Fixes Applied
 
@@ -165,6 +167,17 @@ Re-ran the full pipeline. Poster download job (`jegs-ebay-final-1774305334055`) 
 | Stripped 23 fitment attrs (Side, Transmission Type, Engine Type, Lug Pattern) from Attributes Small/Full | 46 entries removed from normalize.json, 23 from raw.json |
 | Added 4 attributes each to 555-81500-6 and 555-79600 (previously 0 attrs) | Manually authored from description; both files updated |
 | Re-ran steps 1–3 (split-desc → corrections → normalize) to produce clean authoritative normalize.json | All raw.json fixes now fully reflected in normalize output |
+
+### Mar-24 Session-2 Fixes Applied
+
+| Fix | Scope |
+|-----|-------|
+| Discovered 28 duplicate eBay Item URLs — scraper mapped 162 items to wrong listings | Root cause: eBay scraper reused the same listing URL for many unrelated SKUs. Largest group: 67 items mapped to `itm/117008784933` (SSR Star Wheel 681276) |
+| Created `transforms/filter-items.js` — excludes rows by eBay Item URL list | New reusable transform: config-driven URL exclusion + optional dedup mode |
+| Added `filter` step to run.config.js between `corrections` and `normalize` | Excludes all 28 duplicate URL groups (162 items); pipeline now produces 440 items |
+| Identified 4 items with fully contaminated content (Star Wheel description/attrs on wrong products) | 555-81244 (Truck Bed Lift), 555-81573 (Plasma Cutting Table), 555-50084 (Bug Catcher Scoop), 555-681437 (SSR Spike 15×10) |
+| Regenerated description, FAB, and attrs for the 4 contaminated items via Haiku + manual trim | All 4 now have correct product-specific content in normalize.json + raw.json |
+| Re-ran full pipeline steps split-desc → corrections → filter → normalize | Final normalize.json: 440 items, 0 junk attrs, 0 contaminated descriptions, 0 zero-attr items |
 
 ---
 
