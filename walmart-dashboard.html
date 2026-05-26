@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Walmart Enhancement — 10 Random Products</title>
+<style>
+  :root {
+    --bg: #0e0e10; --surface: #18181b; --surface2: #27272a;
+    --border: #3f3f46; --text: #e4e4e7; --muted: #71717a;
+    --accent: #3b82f6; --green: #22c55e; --yellow: #eab308;
+    --radius: 10px; --font: 'Inter', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 14px; line-height: 1.5; }
+  .top-bar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 14px 24px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 10; }
+  .top-bar h1 { font-size: 15px; font-weight: 600; color: var(--text); }
+  .top-bar .subtitle { font-size: 12px; color: var(--muted); }
+  .seed-info { margin-left: auto; font-size: 11px; color: var(--muted); font-family: monospace; }
+  .feed { max-width: 1000px; margin: 0 auto; padding: 24px 16px; display: flex; flex-direction: column; gap: 20px; }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); display: flex; gap: 0; overflow: hidden; }
+  .card:hover { border-color: var(--accent); }
+
+  .card-left { width: 180px; min-width: 180px; display: flex; flex-direction: column; background: var(--surface2); }
+  .img-wrap { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 160px; }
+  .img-wrap img { width: 100%; height: 180px; object-fit: contain; padding: 8px; }
+  .no-img { color: var(--muted); font-size: 12px; text-align: center; padding: 16px; }
+  .meta { padding: 8px 10px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); }
+  .row-num { font-size: 11px; color: var(--muted); font-family: monospace; }
+  .token-chip { font-size: 10px; padding: 2px 6px; border-radius: 4px; background: #1d4ed8; color: #bfdbfe; font-family: monospace; }
+  .token-chip.zero { background: var(--surface2); color: var(--muted); }
+
+  .card-body { flex: 1; padding: 16px 20px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+  .brand-type { display: flex; align-items: center; gap: 6px; }
+  .brand { font-weight: 600; color: var(--accent); font-size: 13px; }
+  .sep { color: var(--muted); }
+  .type { color: var(--muted); font-size: 13px; }
+  .pn { font-family: monospace; font-size: 12px; background: var(--surface2); border: 1px solid var(--border); padding: 2px 8px; border-radius: 4px; white-space: nowrap; }
+
+  .title-enhanced { font-size: 14px; font-weight: 600; line-height: 1.4; }
+  .title-orig { font-size: 11px; color: var(--muted); font-style: italic; }
+  .desc { font-size: 13px; color: #a1a1aa; line-height: 1.6; }
+
+  .section h3 { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 6px; }
+  .fab-list { padding-left: 18px; display: flex; flex-direction: column; gap: 4px; }
+  .fab-list li { font-size: 12.5px; color: #d4d4d8; }
+
+  .badge-wrap { display: flex; flex-wrap: wrap; gap: 5px; }
+  .badge { display: inline-flex; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; font-size: 11px; }
+  .badge-key { background: var(--surface2); color: var(--muted); padding: 2px 6px; }
+  .badge-val { background: var(--bg); color: var(--text); padding: 2px 7px; }
+
+  .fit-list { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+  .fit-list li { font-size: 11.5px; color: #a1a1aa; }
+  .fit-list li::before { content: "→ "; color: var(--muted); }
+  .fit-list .more { color: var(--muted); font-style: italic; }
+  .fit-list .more::before { content: ""; }
+
+  @media (max-width: 640px) {
+    .card { flex-direction: column; }
+    .card-left { width: 100%; min-width: unset; flex-direction: row; }
+    .img-wrap { min-height: 120px; }
+  }
+</style>
+</head>
+<body>
+<div class="top-bar">
+  <div>
+    <h1>Walmart Enhancement — 10 Random Products</h1>
+    <div class="subtitle">export_Walmart Scrape Organized v3 3 30 26 (Enhancement) · 1,252 total rows</div>
+  </div>
+  <div class="seed-info">seed: 1774868920699</div>
+</div>
+<div class="feed">
+
+<article class="card" data-row="110">
+  <div class="card-left">
+    <div class="img-wrap"><img src="https://i5.walmartimages.com/seo/Bike-Master-781312-Performance-Conventional-BT7B-BS-Battery_082d9506-4b6e-4521-98b8-f0a210d28cd6.30ba101cbe0a08c641d2a094f36eda8e.jpeg" onerror="this.closest('.img-wrap').innerHTML='<div class=no-img>No Image</div>'" loading="lazy"/></div>
+    <div class="meta">
+      <span class="row-num">#110</span>
+      <span class="token-chip">10.3k tokens</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <header class="card-header">
+      <div class="brand-type"><span class="brand">BKM</span><span class="sep">·</span><span class="type">Vehicle Battery</span></div>
+      <div class="pn">781312</div>
+    </header>
+
+    <h2 class="title-enhanced">BKM Vehicle Battery, 12V 5.50Ah 70CCA VRLA, 781312</h2>
+    <p class="title-orig">Original: BikeMaster 781312 Bt7B-Bs Battery Aftermarket High Performance Racing Part</p>
+
+    <p class="desc">The BKM Vehicle Battery powers your ATV or motorcycle with dependable 12V starting energy. This BT7B-BS VRLA, spill-proof, maintenance-free design uses pre-measured acid tubes for quick activation, then a permanent top seal to stop leaks—no refilling. With 5.50Ah capacity and 70 CCA, top-post terminals, and a compact 150 x 65 x 92mm case, it suppor…</p>
+
+    <section class="section">
+      <h3>Features &amp; Benefits</h3>
+      <ol class="fab-list"><li>12V 5.50Ah VRLA, BT7B-BS: Reliable starting power for ATVs and bikes, with stable output and strong reserve capacity.</li><li>70 CCA cold-crank rating: Confident starts in cool weather, delivering quick ignition response when you need it most.</li><li>Sealed spill-proof top-post design: Mount with peace of mind, no leaks, no refills, and cleaner installs on tight chassis.</li><li>150×65×92 mm compact case: Precise fit for many Can-Am and motorcycle trays, easing swaps while keeping weight low.</li><li>Free 2–4 day delivery + 60-day returns: Fast arrival, risk-free fit check, and seller-paid return shipping for easy buying.</li></ol>
+    </section>
+
+    <section class="section attrs"><h3>Attributes</h3><div class="badge-wrap"><span class="badge"><span class="badge-key">shipping</span><span class="badge-val">Free 2-4 day delivery</span></span><span class="badge"><span class="badge-key">return</span><span class="badge-val">60 days returns. Seller pays for return shipping.</span></span><span class="badge"><span class="badge-key">part_sub_category</span><span class="badge-val">Batteries</span></span><span class="badge"><span class="badge-key">part_category</span><span class="badge-val">Batteries, Starting & Charging</span></span><span class="badge"><span class="badge-key">oe_oem_part_number</span><span class="badge-val">781312</span></span><span class="badge"><span class="badge-key">mpn</span><span class="badge-val">781312</span></span><span class="badge"><span class="badge-key">manufacturer_warranty</span><span class="badge-val">Lifetime</span></span><span class="badge"><span class="badge-key">fitment_type</span><span class="badge-val">Performance</span></span><span class="badge"><span class="badge-key">condition</span><span class="badge-val">New</span></span><span class="badge"><span class="badge-key">vehicle_type</span><span class="badge-val">All-Terrain Vehicle</span></span><span class="badge"><span class="badge-key">vehicle_make</span><span class="badge-val">Can-Am</span></span><span class="badge"><span class="badge-key">vehicle_fitment_type</span><span class="badge-val">Specific</span></span></div></section>
+
+    
+  </div>
+</article>
+
+<article class="card" data-row="279">
+  <div class="card-left">
+    <div class="img-wrap"><img src="https://i.ebayimg.com/images/g/wUYAAeSwx4po9wi6/s-l1600.jpg" onerror="this.closest('.img-wrap').innerHTML='<div class=no-img>No Image</div>'" loading="lazy"/></div>
+    <div class="meta">
+      <span class="row-num">#279</span>
+      <span class="token-chip">68.1k tokens</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <header class="card-header">
+      <div class="brand-type"><span class="brand">ACDelco</span><span class="sep">·</span><span class="type">Engine Variable Valve Timing (VVT) Solenoid</span></div>
+      <div class="pn">12653140</div>
+    </header>
+
+    <h2 class="title-enhanced">ACDelco Engine Variable Valve Timing (VVT) Solenoid, GM Original Equipment Series, Painted Finish, UPC 808709736196, 12653140</h2>
+    <p class="title-orig">Original: ACDelco 12653140 Engine Variable Valve Timing (VVT) Adjuster Magnet</p>
+
+    <p class="desc">The ACDelco Engine Variable Valve Timing (VVT) Solenoid directs engine oil to the camshaft phaser magnet, advancing or retarding cam timing so valve events stay precise. Manufactured to GM Original Equipment specifications for a true direct-fit replacement, it helps correct rough idle, hesitation, and inconsistent power by keeping the VVT system ac…</p>
+
+    <section class="section">
+      <h3>Features &amp; Benefits</h3>
+      <ol class="fab-list"><li>OE-spec VVT adjuster magnet: Restores precise cam phaser control for smoother idle, strong response, and OEM-level timing accuracy.</li><li>Direct GM fitment 12653140: Installs like factory on many Chevy/GMC/Cadillac/Hummer V8s, reducing guesswork and downtime.</li><li>ACDelco GM Original Equipment: Delivers durability and service life you expect from GM, helping maintain peak efficiency and power.</li><li>Engine camshaft position interrupter: Helps the VVT system keep intake/exhaust timing optimized, supporting clean running and steady MPG.</li><li>24-month unlimited-mile warranty: Backed by ACDelco limited coverage plus free shipping and 90-day returns for added confidence.</li></ol>
+    </section>
+
+    <section class="section attrs"><h3>Attributes</h3><div class="badge-wrap"><span class="badge"><span class="badge-key">weight</span><span class="badge-val">0.7000</span></span><span class="badge"><span class="badge-key">type</span><span class="badge-val">Engine Variable Valve Timing (VVT) Adjuster Magnet</span></span><span class="badge"><span class="badge-key">mpn</span><span class="badge-val">12653140</span></span><span class="badge"><span class="badge-key">part</span><span class="badge-val">Variable Timing Solenoid</span></span><span class="badge"><span class="badge-key">part_number</span><span class="badge-val">AC12653140</span></span><span class="badge"><span class="badge-key">sery</span><span class="badge-val">GM Original Equipment Series</span></span><span class="badge"><span class="badge-key">quantity_sold</span><span class="badge-val">Sold Individually</span></span><span class="badge"><span class="badge-key">country_of_origin</span><span class="badge-val">United States</span></span><span class="badge"><span class="badge-key">condition</span><span class="badge-val">New</span></span><span class="badge"><span class="badge-key">availability</span><span class="badge-val">10 available</span></span><span class="badge"><span class="badge-key">vehicle_model</span><span class="badge-val">12653140</span></span><span class="badge"><span class="badge-key">vehicle_make</span><span class="badge-val">GM</span></span></div></section>
+
+    <section class="section fitment"><h3>Fitment (652 vehicles)</h3><ul class="fit-list"><li>2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014 Cadillac Escalade Base 6.2L 8cyl</li><li>2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014 Cadillac Escalade ESV Base 6.2L 8cyl</li><li>2007, 2008, 2009, 2010, 2011, 2012, 2013 Cadillac Escalade EXT Base 6.2L 8cyl</li><li>2007, 2008, 2009, 2010, 2011, 2012, 2013 Chevrolet Avalanche Base 5.3L 8cyl</li><li>Chevrolet Camaro</li><li class="more">+647 more…</li></ul></section>
+  </div>
+</article>
+
+<article class="card" data-row="564">
+  <div class="card-left">
+    <div class="img-wrap"><img src="https://i.ebayimg.com/images/g/kgoAAOSwqapoEyqT/s-l1600.jpg" onerror="this.closest('.img-wrap').innerHTML='<div class=no-img>No Image</div>'" loading="lazy"/></div>
+    <div class="meta">
+      <span class="row-num">#564</span>
+      <span class="token-chip">5.9k tokens</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <header class="card-header">
+      <div class="brand-type"><span class="brand">Holley</span><span class="sep">·</span><span class="type">Fuel Injection Throttle Body</span></div>
+      <div class="pn">112506</div>
+    </header>
+
+    <h2 class="title-enhanced">Holley Fuel Injection Throttle Body, 2x52mm Venturi, Billet Aluminum, Cable Actuation, 112506</h2>
+    <p class="title-orig">Original: Fuel Injection Throttle Body Holley 112-506</p>
+
+    <p class="desc">The Holley Fuel Injection Throttle Body replaces the factory unit to control airflow into the intake for proper EFI fueling response. This 2 x 52.00 mm, cable-actuated MPI throttle body is CNC-machined from 6061 billet aluminum with a protective clearcoat finish, includes the gasket, and bolts to stock manifolds on 1989–1992 5.7L TPI Camaro/Firebir…</p>
+
+    <section class="section">
+      <h3>Features &amp; Benefits</h3>
+      <ol class="fab-list"><li>2x 52 mm venturi bores: Increased airflow helps the 5.70L TPI breathe easier for stronger throttle response and power.</li><li>6061 billet CNC body, clearcoat: Rigid, corrosion-resistant build maintains smooth operation under heat and vibration.</li><li>Cable-driven MPI replacement: Direct bolt-on for 1989–1992 Camaro/Firebird 5.70L TPI, keeping factory drivability.</li><li>Stock-style vacuum ports & linkage: Simplifies hookups and emissions provisions, supporting 50-state legal functionality.</li><li>Gasket included; sensors not included: Reuse stock TPS/IAC for easier install while keeping service parts flexible and affordable.</li></ol>
+    </section>
+
+    <section class="section attrs"><h3>Attributes</h3><div class="badge-wrap"><span class="badge"><span class="badge-key">hardware_included</span><span class="badge-val">No</span></span><span class="badge"><span class="badge-key">gasket_included</span><span class="badge-val">Yes</span></span><span class="badge"><span class="badge-key">availability</span><span class="badge-val">Not Available</span></span><span class="badge"><span class="badge-key">iac_motor_included</span><span class="badge-val">No</span></span><span class="badge"><span class="badge-key">injector_included</span><span class="badge-val">No</span></span><span class="badge"><span class="badge-key">line</span><span class="badge-val">Holley High-Flow EFI Throttle Bodies</span></span><span class="badge"><span class="badge-key">mpn</span><span class="badge-val">112-506</span></span><span class="badge"><span class="badge-key">sub_type</span><span class="badge-val">Fuel Injection Throttle Body</span></span><span class="badge"><span class="badge-key">part_type</span><span class="badge-val">Fuel Injection System and Related Components</span></span><span class="badge"><span class="badge-key">note</span><span class="badge-val">Description--Fuel Injection Throttle Body</span></span><span class="badge"><span class="badge-key">ebay_id_epid</span><span class="badge-val">76936813</span></span><span class="badge"><span class="badge-key">availability</span><span class="badge-val">CURRENTLY SOLD OUT</span></span></div></section>
+
+    
+  </div>
+</article>
+
+<article class="card" data-row="703">
+  <div class="card-left">
+    <div class="img-wrap"><div class="no-img">No Image</div></div>
+    <div class="meta">
+      <span class="row-num">#703</span>
+      <span class="token-chip">11.4k tokens</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <header class="card-header">
+      <div class="brand-type"><span class="brand">Michelin</span><span class="sep">·</span><span class="type">Spare Tire</span></div>
+      <div class="pn">30147</div>
+    </header>
+
+    <h2 class="title-enhanced">Michelin Spare Tire, 245/50r18 Winter Radial, Load Index 104 Xl, 10.5/32in Tread Depth, 30147</h2>
+    <p class="title-orig">Original: Michelin X-Ice Xi3 Tires 245/50-18</p>
+
+    <p class="desc">The Michelin Spare Tire restores safe mobility when winter roads turn slick, keeping you moving with confident control. Built as a 245/50R18 radial with 10.50/32 in. tread depth, it uses a cold-flexible silica compound plus Cross Z sipes, Micro-Pumps, and sharp block edges to bite into snow and ice. XL Load Index 104 supports up to 1,984 lbs, with …</p>
+
+    <section class="section">
+      <h3>Features &amp; Benefits</h3>
+      <ol class="fab-list"><li>FleX-Ice silica compound: Stays pliable in deep cold yet stable in milder temps, helping winter grip without fast wear.</li><li>Cross Z sipes: Boosts steering precision and feedback on cleared roads while adding extra biting edges for snow traction.</li><li>Micro-Pumps water evacuation: Pulls thin water film off ice to improve contact, aiding shorter stops and reducing slip.</li><li>MaxTouch Construction: Spreads braking and cornering forces evenly to extend tread life and maintain consistent winter control.</li><li>3PMSF severe-snow rated tread: Meets tough snow standards for confident starts and stops in harsh conditions, season-long.</li></ol>
+    </section>
+
+    <section class="section attrs"><h3>Attributes</h3><div class="badge-wrap"><span class="badge"><span class="badge-key">wheel_diameter</span><span class="badge-val">18 in.</span></span><span class="badge"><span class="badge-key">weight</span><span class="badge-val">27.160 lbs.</span></span><span class="badge"><span class="badge-key">tread_depth</span><span class="badge-val">10.5/32 in.</span></span><span class="badge"><span class="badge-key">tire_weather_usage</span><span class="badge-val">Winter</span></span><span class="badge"><span class="badge-key">tire_size</span><span class="badge-val">245/50-18</span></span><span class="badge"><span class="badge-key">tire_diameter</span><span class="badge-val">27.68 in.</span></span><span class="badge"><span class="badge-key">tire_construction</span><span class="badge-val">Radial</span></span><span class="badge"><span class="badge-key">summit_racing_part_number</span><span class="badge-val">MHL-30147</span></span><span class="badge"><span class="badge-key">sidewall_style</span><span class="badge-val">Blackwall</span></span><span class="badge"><span class="badge-key">section_width</span><span class="badge-val">9.65 in.</span></span><span class="badge"><span class="badge-key">quantity</span><span class="badge-val">Sold individually.</span></span><span class="badge"><span class="badge-key">part_type</span><span class="badge-val">Tires</span></span></div></section>
+
+    
+  </div>
+</article>
+
+<article class="card" data-row="743">
+  <div class="card-left">
+    <div class="img-wrap"><img src="https://cld.partsimg.com/image/upload/d_noimage.jpg/images/mibrt24_1.jpg" onerror="this.closest('.img-wrap').innerHTML='<div class=no-img>No Image</div>'" loading="lazy"/></div>
+    <div class="meta">
+      <span class="row-num">#743</span>
+      <span class="token-chip">12.9k tokens</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <header class="card-header">
+      <div class="brand-type"><span class="brand">Motorcraft</span><span class="sep">·</span><span class="type">Brake Hydraulic Line</span></div>
+      <div class="pn">BRT-24</div>
+    </header>
+
+    <h2 class="title-enhanced">Motorcraft Brake Hydraulic Line, Steel Material, Front At Master Cylinder, 2-Year/Unlimited-Mile Warranty, BRT-24</h2>
+    <p class="title-orig">Original: Motorcraft® 2019 Ford E-450 Super Duty - Front, At Master Cylinder Brake Line, GAS, Stripped Chassis - Incomplete, With Double Rear Wheels, Secondary, OE Replacement Series</p>
+
+    <p class="desc">The Motorcraft Brake Hydraulic Line BRT-24 carries brake fluid from the master cylinder to the front hydraulic circuit, helping maintain firm pedal feel and controlled, confident stops. This OE-style steel tube assembly is preformed for exact routing on select Ford E-350/E-450 Super Duty chassis, with factory-type ends that align to original ports …</p>
+
+    <section class="section">
+      <h3>Features &amp; Benefits</h3>
+      <ol class="fab-list"><li>Direct-fit OE replacement: Restores factory routing at the front master cylinder for secure installation and consistent braking feel.</li><li>Steel brake line material: Built to resist corrosion and fatigue, helping maintain safe hydraulic pressure in tough duty cycles.</li><li>Motorcraft engineering: Delivers precise fluid transmission for confident pedal response on Ford E-350/E-450 commercial applications.</li><li>2-year/unlimited-mile warranty: Coverage honored at Ford dealers worldwide, adding peace of mind for fleet and personal use.</li><li>Limited availability—Only 1 remaining: Order now to lock in OE-spec part 8C2Z-2234-N and minimize downtime.</li></ol>
+    </section>
+
+    <section class="section attrs"><h3>Attributes</h3><div class="badge-wrap"><span class="badge"><span class="badge-key">brake_line_material</span><span class="badge-val">Steel</span></span><span class="badge"><span class="badge-key">warranty_information</span><span class="badge-val">24 months/unlimited miles</span></span><span class="badge"><span class="badge-key">mpn</span><span class="badge-val">BRT24</span></span><span class="badge"><span class="badge-key">availability</span><span class="badge-val">Only 1 Remaining</span></span><span class="badge"><span class="badge-key">alternate_inventory_number</span><span class="badge-val">8C2Z2234N</span></span><span class="badge"><span class="badge-key">warranty</span><span class="badge-val">2-year or unlimited-mile Motorcraft limited warranty</span></span><span class="badge"><span class="badge-key">sery</span><span class="badge-val">OE Replacement Series</span></span><span class="badge"><span class="badge-key">quantity_sold</span><span class="badge-val">Sold Individually</span></span><span class="badge"><span class="badge-key">part_number</span><span class="badge-val">MIBRT24</span></span><span class="badge"><span class="badge-key">part</span><span class="badge-val">Brake Line</span></span><span class="badge"><span class="badge-key">mpn</span><span class="badge-val">BRT-24</span></span><span class="badge"><span class="badge-key">location</span><span class="badge-val">Front, At Master Cylinder</span></span></div></section>
+
+    <section class="section fitment"><h3>Fitment (20 vehicles)</h3><ul class="fit-list"><li>2019 Ford E-450 Super Duty Base 6.8L 10cyl</li><li>Ford E-350 Super Duty</li><li>2015 Ford E-350 Super Duty Base 6.8L 10cyl</li><li>2015 Ford E-450 Super Duty Base 6.8L 10cyl</li><li>2016 Ford E-350 Super Duty Base 6.8L 10cyl</li><li class="more">+15 more…</li></ul></section>
+  </div>
+</article>
+
+<article class="card" data-row="781">
+  <div class="card-left">
+    <div class="img-wrap"><img src="https://i5.walmartimages.com/seo/Motorcraft-Serpentine-Belt-JK4-546_4ed7f4b7-7a90-45f4-81eb-fcabde10bac3.65aaad938add4844426f0d1317a4afb0.jpeg" onerror="this.closest('.img-wrap').innerHTML='<div class=no-img>No Image</div>'" loading="lazy"/></div>
+    <div class="meta">
+      <span class="row-num">#781</span>
+      <span class="token-chip">17.6k tokens</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <header class="card-header">
+      <div class="brand-type"><span class="brand">Motorcraft</span><span class="sep">·</span><span class="type">Serpentine Belt</span></div>
+      <div class="pn">JK4546</div>
+    </header>
+
+    <h2 class="title-enhanced">Motorcraft Serpentine Belt, Direct Fit Polyester Cord Quiet Laminated Design, JK4546</h2>
+    <p class="title-orig">Original: Motorcraft Serpentine Belt JK4-546</p>
+
+    <p class="desc">The Motorcraft Serpentine Belt JK4546 transfers engine power to drive key accessories—alternator, A/C compressor, and power steering—through the main accessory drive. Built to Ford engineering specs, it uses durable polyester cords to resist stretching and reduce slip. Multi-layer laminated construction with die-cut edges helps minimize noise and e…</p>
+
+    <section class="section">
+      <h3>Features &amp; Benefits</h3>
+      <ol class="fab-list"><li>OE-approved direct-fit belt: Motorcraft JK4546 matches Ford specs for quick install, fewer comebacks, and factory-correct routing.</li><li>Polyester cord reinforcement: Resists stretch to cut slip, stabilizing accessory drive performance in short-adjust systems.</li><li>Multi-layer laminated construction: Boosts durability and quiet running, helping prevent squeal and extending belt service life.</li><li>Molded cogged flex design: Bends easily around small pulleys while preserving strength for smooth, low-noise operation.</li><li>2-year/unlimited-mile warranty: Nationwide Ford/Lincoln support adds confidence, with limited labor coverage for U.S. customers.</li></ol>
+    </section>
+
+    <section class="section attrs"><h3>Attributes</h3><div class="badge-wrap"><span class="badge"><span class="badge-key">engine_version</span><span class="badge-val">2.0L Ford EcoBoost Inline Four</span></span><span class="badge"><span class="badge-key">country_of_origin</span><span class="badge-val">United States</span></span><span class="badge"><span class="badge-key">condition</span><span class="badge-val">New</span></span><span class="badge"><span class="badge-key">vehicle_make</span><span class="badge-val">Ford</span></span><span class="badge"><span class="badge-key">part_number</span><span class="badge-val">48573621</span></span><span class="badge"><span class="badge-key">model</span><span class="badge-val">JK4546</span></span><span class="badge"><span class="badge-key">material</span><span class="badge-val">Polyester</span></span><span class="badge"><span class="badge-key">availability</span><span class="badge-val">Out of stock</span></span><span class="badge"><span class="badge-key">fit</span><span class="badge-val">Direct Fit</span></span><span class="badge"><span class="badge-key">location</span><span class="badge-val">Accessory Drive, Main Drive</span></span><span class="badge"><span class="badge-key">automotive_replacement_belt_type</span><span class="badge-val">Serpentine Belt</span></span><span class="badge"><span class="badge-key">summit_racing_part_number</span><span class="badge-val">MOF-JK4546A</span></span></div></section>
+
+    <section class="section fitment"><h3>Fitment (218 vehicles)</h3><ul class="fit-list"><li>2013 Ford Escape SE 2.0L 4cyl</li><li>2013 Ford Escape SEL 2.0L 4cyl</li><li>2013 Ford Escape Titanium 2.0L 4cyl</li><li>2013 Ford Explorer Base 2.0L 4cyl</li><li>2013 Ford Explorer Limited 2.0L 4cyl</li><li class="more">+213 more…</li></ul></section>
+  </div>
+</article>
+
+<article class="card" data-row="782">
+  <div class="card-left">
+    <div class="img-wrap"><img src="https://i5.walmartimages.com/seo/Motorcraft-YS-310-Drive-Belt-Idler-Pulley-Fits-select-2000-2002-FORD-FOCUS-1998-2000-FORD-CONTOUR_d99588ae-0ea6-4808-9f3b-4b08e8849cef.55f09110a5099ee07735b726c7e87b7d.jpeg" onerror="this.closest('.img-wrap').innerHTML='<div class=no-img>No Image</div>'" loading="lazy"/></div>
+    <div class="meta">
+      <span class="row-num">#782</span>
+      <span class="token-chip">15.7k tokens</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <header class="card-header">
+      <div class="brand-type"><span class="brand">Motorcraft</span><span class="sep">·</span><span class="type">Accessory Drive Belt Idler Pulley</span></div>
+      <div class="pn">YS-310</div>
+    </header>
+
+    <h2 class="title-enhanced">Motorcraft Accessory Drive Belt Idler Pulley, 70.00mm Outside Diameter, 21.36mm Max Belt Width, Smooth Plastic Pulley, YS-310</h2>
+    <p class="title-orig">Original: Motorcraft YS-310 Drive Belt Idler Pulley Fits select: 2000-2002 FORD FOCUS, 1998-2000 FORD CONTOUR</p>
+
+    <p class="desc">The Motorcraft Accessory Drive Belt Idler Pulley guides the serpentine belt smoothly to maintain proper routing and steady accessory drive power. This direct-fit, smooth backside idler uses a black thermoplastic pulley (2.76 in / 70.00 mm OD) for quiet, consistent belt tracking. Hardware, spacer, retainer, and dust shield are included for a complet…</p>
+
+    <section class="section">
+      <h3>Features &amp; Benefits</h3>
+      <ol class="fab-list"><li>70 mm smooth idler pulley: Guides the serpentine belt smoothly for steady accessory drive performance and quieter operation over time.</li><li>Direct-fit OE replacement: Restores factory belt routing and alignment for select 1998–2004 Ford, Mercury, and Mazda platforms.</li><li>Hardware, spacer, retainer included: Simplifies install and reduces guesswork, helping prevent belt walk and premature wear.</li><li>Thermoplastic black finish: Lightweight, corrosion-resistant pulley body designed for long service life in daily driving conditions.</li><li>24-month/unlimited-mile warranty: Backed by Motorcraft to help protect your repair investment with durable OEM-quality reliability.</li></ol>
+    </section>
+
+    <section class="section attrs"><h3>Attributes</h3><div class="badge-wrap"><span class="badge"><span class="badge-key">country_of_origin</span><span class="badge-val">United States</span></span><span class="badge"><span class="badge-key">condition</span><span class="badge-val">New</span></span><span class="badge"><span class="badge-key">vehicle_year</span><span class="badge-val">1998, 1999, 2000, 2001, 2002, 2003, 2004</span></span><span class="badge"><span class="badge-key">vehicle_model</span><span class="badge-val">MTCYS310</span></span><span class="badge"><span class="badge-key">vehicle_make</span><span class="badge-val">Ford</span></span><span class="badge"><span class="badge-key">vehicle_fitment_type</span><span class="badge-val">Specific</span></span><span class="badge"><span class="badge-key">part_number</span><span class="badge-val">48081688</span></span><span class="badge"><span class="badge-key">model</span><span class="badge-val">YS310</span></span><span class="badge"><span class="badge-key">automotive_part_division</span><span class="badge-val">OEM Replacement</span></span><span class="badge"><span class="badge-key">remanufactured</span><span class="badge-val">No</span></span><span class="badge"><span class="badge-key">quantity</span><span class="badge-val">Sold individually.</span></span><span class="badge"><span class="badge-key">pulley_style</span><span class="badge-val">Smooth</span></span></div></section>
+
+    <section class="section fitment"><h3>Fitment (73 vehicles)</h3><ul class="fit-list"><li>1998 Ford Contour Base 2.0L 4cyl</li><li>1998 Ford Contour GL 2.0L 4cyl</li><li>1998 Ford Contour LX 2.0L 4cyl</li><li>1998 Ford Contour SE 2.0L 4cyl</li><li>1998 Ford Contour GL 2.5L 6cyl</li><li class="more">+68 more…</li></ul></section>
+  </div>
+</article>
+
+<article class="card" data-row="876">
+  <div class="card-left">
+    <div class="img-wrap"><img src="https://i.ebayimg.com/images/g/Lg8AAeSwC-tpolg2/s-l1600.jpg" onerror="this.closest('.img-wrap').innerHTML='<div class=no-img>No Image</div>'" loading="lazy"/></div>
+    <div class="meta">
+      <span class="row-num">#876</span>
+      <span class="token-chip">10.6k tokens</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <header class="card-header">
+      <div class="brand-type"><span class="brand">Purolator</span><span class="sep">·</span><span class="type">Engine Oil Filter</span></div>
+      <div class="pn">L15839</div>
+    </header>
+
+    <h2 class="title-enhanced">Purolator Engine Oil Filter, 25.00 Micron Cellulose Media, Anti-Drainback Valve, 4.17in Height, L15839</h2>
+    <p class="title-orig">Original: Engine Oil Filter-VIN: B, FI, Turbo Purolator L15839</p>
+
+    <p class="desc">The Purolator Engine Oil Filter L15839 keeps oil flowing clean by capturing dirt, soot, and road grit before they can wear internal engine surfaces. This direct-fit cartridge filter uses high-density cellulose media rated at 25.00 microns, includes an anti-drainback valve to hold oil in the gallery for faster startup lubrication, and seals with a h…</p>
+
+    <section class="section">
+      <h3>Features &amp; Benefits</h3>
+      <ol class="fab-list"><li>High-density multi-fiber media: Traps dirt, soot, and grit to maintain smooth flow, helping protect engines for up to 5,000 miles.</li><li>Anti-drainback valve: Prevents oil drainback at shutdown for faster pressure on startup, reducing wear and dry-start rattle.</li><li>PTFE-treated gasket included: Heat-resistant seal helps stop leaks under harsh temps, delivering confident, clean service intervals.</li><li>Direct-fit cartridge, metal-free design: Simplifies installs and makes recycling easier, reducing waste versus many spin-on filters.</li><li>25.00 micron cellulose media: Screens fine contaminants to help reduce sludge, supporting performance and efficiency in daily driving.</li></ol>
+    </section>
+
+    <section class="section attrs"><h3>Attributes</h3><div class="badge-wrap"><span class="badge"><span class="badge-key">sub_type</span><span class="badge-val">Engine Oil Filter Kit</span></span><span class="badge"><span class="badge-key">note</span><span class="badge-val">Description--Engine Oil Filter</span></span><span class="badge"><span class="badge-key">mpn</span><span class="badge-val">L15839</span></span><span class="badge"><span class="badge-key">ebay_id_epid</span><span class="badge-val">76893545</span></span><span class="badge"><span class="badge-key">condition</span><span class="badge-val">New</span></span><span class="badge"><span class="badge-key">california_prop_65_warning</span><span class="badge-val">Cancer and Reproductive Harm.</span></span><span class="badge"><span class="badge-key">vehicle_year</span><span class="badge-val">2011</span></span><span class="badge"><span class="badge-key">vehicle_model</span><span class="badge-val">CRUZE</span></span><span class="badge"><span class="badge-key">vehicle_make</span><span class="badge-val">Chevrolet</span></span><span class="badge"><span class="badge-key">vehicle_fitment_type</span><span class="badge-val">Specific</span></span><span class="badge"><span class="badge-key">part_type</span><span class="badge-val">Filters</span></span><span class="badge"><span class="badge-key">part_number</span><span class="badge-val">864237473</span></span></div></section>
+
+    <section class="section fitment"><h3>Fitment (15 vehicles)</h3><ul class="fit-list"><li>2016, 2017, 2018, 2019 Buick Cascada Base 1.6L 4cyl</li><li>Buick Encore</li><li>2009, 2010, 2011 Chevrolet Aveo Base 1.6L 4cyl</li><li>Chevrolet Aveo5</li><li>Chevrolet Colorado</li><li class="more">+10 more…</li></ul></section>
+  </div>
+</article>
+
+<article class="card" data-row="1086">
+  <div class="card-left">
+    <div class="img-wrap"><div class="no-img">No Image</div></div>
+    <div class="meta">
+      <span class="row-num">#1086</span>
+      <span class="token-chip">7.2k tokens</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <header class="card-header">
+      <div class="brand-type"><span class="brand">Scrubblade</span><span class="sep">·</span><span class="type">Windshield Wiper Blade Adapter</span></div>
+      <div class="pn">SBA002</div>
+    </header>
+
+    <h2 class="title-enhanced">Scrubblade Windshield Wiper Blade Adapter, Heavy-Duty Pin-Type Split-Window Fit, Reinforced Metal Brackets, Locking Nut, SBA002</h2>
+    <p class="title-orig">Original: SCRUBBLADE SBA002 Heavy Duty Wiper Adapters 2pk</p>
+
+    <p class="desc">The Scrubblade Windshield Wiper Blade Adapter lets you mount Scrubblade heavy-duty wiper blades to pin-type wiper arms on split-window and heavy equipment applications. Built with reinforced metal brackets, each adapter snaps onto Scrubblade Heavy-Duty/Platinum wipers and secures to the arm with a nut-and-bolt plus a preventative locking nut to hel…</p>
+
+    <section class="section">
+      <h3>Features &amp; Benefits</h3>
+      <ol class="fab-list"><li>Reinforced metal bracket(s): Heavy-duty metal strength keeps adapters rigid under vibration and weather, maintaining secure wiper contact.</li><li>Preventative locking nut: Helps prevent loosening, loss, or theft on fleets; fastens pin arms firmly for dependable operation.</li><li>Snap-on to Scrubblade H.D. wipers: Quick, tool-light install reduces downtime and ensures a tight, rattle-free connection every run.</li><li>Pin-type wiper arm compatibility: Fits front loaders, Waste Management trucks, RVs, and 18-wheelers with pin arms for broad coverage.</li><li>Set of 2 adapters (0.10 lb): Outfit both split-window positions with one kit; lightweight parts won’t strain arms during long routes.</li></ol>
+    </section>
+
+    <section class="section attrs"><h3>Attributes</h3><div class="badge-wrap"><span class="badge"><span class="badge-key">line</span><span class="badge-val">Scrubblade Wiper Blade Components & Accessories</span></span><span class="badge"><span class="badge-key">feature_4</span><span class="badge-val">Reinforced metal bracket(s) and easily snap on SCRUBBLADE HEAVY-DUTY Wipers</span></span><span class="badge"><span class="badge-key">feature_3</span><span class="badge-val">Designed for use with front loaders such as Waste Management vehicles or any 18 wheeler with pin type wiper arms</span></span><span class="badge"><span class="badge-key">feature_2</span><span class="badge-val">Necessary for H.D. split-window pin type applications</span></span><span class="badge"><span class="badge-key">feature_1</span><span class="badge-val">Includes preventative locking nut to guard against loss</span></span><span class="badge"><span class="badge-key">part_number</span><span class="badge-val">sba002</span></span><span class="badge"><span class="badge-key">mpn</span><span class="badge-val">SBA002</span></span><span class="badge"><span class="badge-key">condition</span><span class="badge-val">new</span></span><span class="badge"><span class="badge-key">availability</span><span class="badge-val">In Stock</span></span><span class="badge"><span class="badge-key">currency</span><span class="badge-val">USD</span></span><span class="badge"><span class="badge-key">package_depth</span><span class="badge-val">1.00</span></span><span class="badge"><span class="badge-key">package_height</span><span class="badge-val">6.50</span></span></div></section>
+
+    <section class="section fitment"><h3>Fitment (1 vehicles)</h3><ul class="fit-list"><li>Compatible with front loaders, including Waste Management vehicles, and any 18-wheeler equipped with pin-type wiper arms.</li></ul></section>
+  </div>
+</article>
+
+<article class="card" data-row="1199">
+  <div class="card-left">
+    <div class="img-wrap"><img src="https://static.summitracing.com/global/images/prod/xlarge/umw-us7104_hj_xl.jpg" onerror="this.closest('.img-wrap').innerHTML='<div class=no-img>No Image</div>'" loading="lazy"/></div>
+    <div class="meta">
+      <span class="row-num">#1199</span>
+      <span class="token-chip">6.1k tokens</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <header class="card-header">
+      <div class="brand-type"><span class="brand">US Motor Works</span><span class="sep">·</span><span class="type">Engine Water Pump</span></div>
+      <div class="pn">US7104</div>
+    </header>
+
+    <h2 class="title-enhanced">US Motor Works Engine Water Pump, Aluminum Construction, Metal Impeller, Direct Fit, US7104</h2>
+    <p class="title-orig">Original: US Motor Works US7104 US Motor Works Mechanical Water Pumps | Summit Racing</p>
+
+    <p class="desc">The US Motor Works Engine Water Pump circulates coolant through the engine and radiator to regulate temperature and help prevent overheating. Built with an aluminum housing and CNC-machined mounting surfaces for precise sealing, it uses a chemical-resistant metal impeller to handle higher torque and heat. Case-hardened bearings and quality seals su…</p>
+
+    <section class="section">
+      <h3>Features &amp; Benefits</h3>
+      <ol class="fab-list"><li>Aluminum housing, natural finish: Lightweight durability resists corrosion for long service life and steady cooling performance.</li><li>Metal impeller, chemical-resistant: Handles more torque and higher heat than plastic for reliable circulation on 1.60L.</li><li>CNC-machined mounting surfaces: Precise sealing helps prevent leaks and maintains correct gasket crush over time.</li><li>Case-hardened bearings & premium seals: Built for specified radial/axial loads to reduce noise and extend pump life.</li><li>Direct-fit US7104 (MD008431/42155): 100% new OE-spec replacement for 1979-80 Colt/Champ/Colt 1.6L installs fast.</li></ol>
+    </section>
+
+    <section class="section attrs"><h3>Attributes</h3><div class="badge-wrap"><span class="badge"><span class="badge-key">part_type</span><span class="badge-val">Water Pump</span></span><span class="badge"><span class="badge-key">part_interchange_number</span><span class="badge-val">MD008431, 42155</span></span><span class="badge"><span class="badge-key">part_fitment</span><span class="badge-val">Direct Fit</span></span><span class="badge"><span class="badge-key">part_category</span><span class="badge-val">Replacement Parts</span></span><span class="badge"><span class="badge-key">mpn</span><span class="badge-val">US7104</span></span></div></section>
+
+    <section class="section fitment"><h3>Fitment (8 vehicles)</h3><ul class="fit-list"><li>1979 Dodge Colt Base 1.6L 4cyl</li><li>1979 Dodge Colt Custom 1.6L 4cyl</li><li>1979 Plymouth Champ Custom 1.6L 4cyl</li><li>1979 Plymouth Colt Base 1.6L 4cyl</li><li>1980 Dodge Colt Base 1.6L 4cyl</li><li class="more">+3 more…</li></ul></section>
+  </div>
+</article>
+</div>
+</body>
+</html>
