@@ -1,169 +1,106 @@
-# Versable Scripts — eBay Product Pipeline
+<div align="center">
+  <img src="assets/cover.svg" alt="Versable scripts cover" width="128">
+</div>
 
-Reusable pipeline for importing, transforming, and previewing eBay product data from Excel exports.
+<h1 align="center">Versable Scripts</h1>
 
-## Directory Structure
+<p align="center">
+  Working scripts for turning supplier product workbooks into clean, enhanced data.
+</p>
 
-```
-scripts/
-├── pipeline/          # Core framework
-│   ├── io.js          # Universal xlsx/csv/json reader + writer
-│   ├── run.js         # Pipeline orchestrator (runs a run.config.js)
-│   └── preview.js     # Serve any pipeline JSON in the preview dashboard
-│
-├── transforms/        # Reusable transform steps
-│   ├── jegs-normalize.js     # Normalize raw JEGS eBay export
-│   └── clean-attributes.js   # LLM-powered attribute value cleaner
-│
-├── runs/              # One folder per data batch
-│   ├── jegs-mar-07/   # Mar 07 JEGS batch (normalize only)
-│   │   ├── run.config.js
-│   │   ├── raw/       # Input xlsx files
-│   │   ├── data/      # Intermediate step outputs (raw.json, normalize.json, final.json)
-│   │   ├── output/    # Final xlsx export
-│   │   └── posters/   # Downloaded poster PNGs
-│   │
-│   └── jegs-mar-17/   # Mar 17 JEGS batch (normalize + LLM clean)
-│       ├── run.config.js
-│       ├── raw/
-│       ├── data/
-│       ├── output/
-│       └── posters/
-│
-├── preview-dashboard/ # Static dashboard UI (served by pipeline/preview.js)
-├── parse-excel/       # Python xlsx → JSON converter (legacy input tool)
-└── archive/           # Old one-off scripts (kept for reference)
-```
+<p align="center">
+  <img src="https://img.shields.io/badge/node-23.x-3fb950" alt="Node 23.x">
+  <img src="https://img.shields.io/badge/runtime-CommonJS-58a6ff" alt="CommonJS">
+  <img src="https://img.shields.io/badge/ui-SvelteKit%202-ff3e00" alt="SvelteKit 2">
+  <img src="https://img.shields.io/badge/excel-exceljs%20%2B%20xlsx-217346" alt="exceljs + xlsx">
+  <img src="https://img.shields.io/badge/status-archival%20%2F%20working-8b949e" alt="archival">
+</p>
 
 ---
 
-## Running a Pipeline
+## About
 
-### Full run (import + all steps + export)
+This is a working directory, not a product. It holds the pipeline engine, the transforms, and the one-off scripts behind several supplier data jobs: JEGS eBay, the cc30 runs, the Walmart loadsheets, and the AEP catalog. Most of it was written to solve one dataset and kept because the next dataset rhymes.
+
+Two things make it worth reading rather than restarting. The `pipeline/` engine handles the boring parts of any config-driven, resumable, step-by-step transform. And several expensive lessons about Excel are written down instead of being rediscovered.
+
+**If you are here for a new workbook task, read [`docs/EXCEL-PLAYBOOK.md`](docs/EXCEL-PLAYBOOK.md) first.** It covers which library to reach for, the order of operations that works, the traps this repo has actually hit, and what the enhancement-product upload path requires of a sheet.
+
+## Quick start
 
 ```bash
-node pipeline/run.js runs/jegs-mar-07
+npm install
+./start-dev.sh          # backend on 3460, dashboard on 5173
+cd ui && npm run check  # type check
 ```
 
-### Resume from a specific step (skips re-import)
+## Running a pipeline
+
+Each run is a folder under `runs/` with a `run.config.js` naming its input, its step sequence, and its outputs. Steps are idempotent: re-running skips work whose output already exists.
 
 ```bash
+node pipeline/run.js runs/jegs-mar-07                        # full run
 node pipeline/run.js runs/jegs-mar-17 --from clean-attributes
-```
-
-### Run only one step
-
-```bash
 node pipeline/run.js runs/jegs-mar-17 --step normalize
+node pipeline/run.js runs/jegs-mar-17 --limit 3              # sample first, always
 ```
 
-### Preview the output in the dashboard
+Data flows `raw.json` → `step1.json` → `step2.json` → `final.json` inside the run's `data/`. A transform is `{ meta, run(items, config, ctx) }`, and its JSDoc header is parsed by the server for UI metadata.
 
-```bash
-node pipeline/run.js runs/jegs-mar-17 --preview
-# or directly:
-node pipeline/preview.js --data runs/jegs-mar-17/data/final.json --port 3457
+## One-off workbook projects
+
+A job that is not a pipeline run gets its own top-level folder in the same shape:
+
+```
+<project>/
+├── input/    output/    data/
+├── docs/     PLAN.md and whatever the job needed written down
+└── scripts/  01-…, 02-… numbered steps; _-prefixed exploratory probes
 ```
 
-### Dry run (print steps, no execution)
+[`aep-catalog-v9/`](aep-catalog-v9/) is the worked example to copy: probe the workbook, analyse the joins, build, validate against the source, then check the result loads in the target system. Its [`README`](aep-catalog-v9/README.md) and [`PLAN`](aep-catalog-v9/docs/PLAN.md) show the shape. `walmart-q2-phase1/` and `walmart-vf/` are earlier ones.
 
-```bash
-node pipeline/run.js runs/jegs-mar-07 --dry
-```
+## Layout
 
-### Limit rows (for testing)
+| Path | What lives there |
+| --- | --- |
+| `pipeline/` | the engine: `engine.js`, `run.js`, `io.js`, `manifest.js`, `job-queue.js`, `logger.js` |
+| `transforms/` | 21 pipeline steps: normalize, enhance-content, extract-attributes, the cc30 family |
+| `runs/<run-id>/` | per-run config, data, logs, posters |
+| `ui/` | SvelteKit dashboard for running and inspecting pipelines |
+| `server.js` | single-file Express backend on 3460, in-memory queue, 2 concurrent jobs |
+| `dashboards/` | standalone review dashboards, served as plugins |
+| `aep-catalog-v9/` | AEP catalog flattening, the current worked example |
+| `walmart-q2-phase1/`, `walmart-vf/` | earlier one-off projects |
+| `parse-excel/` | legacy Python xlsx converter |
+| `archive/` | superseded one-offs, kept for reference |
 
-```bash
-node pipeline/run.js runs/jegs-mar-07 --limit 10
-node pipeline/run.js runs/jegs-mar-07 --slice 0,49
-```
+## Documentation
 
----
+| Document | What it covers |
+| --- | --- |
+| [`docs/EXCEL-PLAYBOOK.md`](docs/EXCEL-PLAYBOOK.md) | **Start here for a workbook task.** Tooling, order of operations, the traps, the enhancement-product ingest contract, how to verify without fooling yourself |
+| [`CLAUDE.md`](CLAUDE.md) | project conventions and the critical rules an agent must follow here |
+| [`SYSTEM-DESIGN.md`](SYSTEM-DESIGN.md) | pipeline architecture |
+| [`TECH-STACK.md`](TECH-STACK.md) | what is used and why |
+| [`DEPLOY.md`](DEPLOY.md), [`DEPLOYMENT-STRATEGY.md`](DEPLOYMENT-STRATEGY.md) | deployment |
+| [`aep-catalog-v9/docs/PLAN.md`](aep-catalog-v9/docs/PLAN.md) | a worked example of measuring a workbook before transforming it |
+| [`_cc30-runbook.md`](_cc30-runbook.md) | the cc30 run, start to finish |
+| [`jegs-final-rerun-plan.md`](jegs-final-rerun-plan.md) | the JEGS final rerun |
+| [`sse-event-race-condition.md`](sse-event-race-condition.md) | a server-sent-events bug worth not repeating |
+| [`.claude/skills/runtime-notes.md`](.claude/skills/runtime-notes.md) | per-session findings from earlier work |
 
-## Run Config Format (`run.config.js`)
+## The rules that keep biting
 
-```js
-module.exports = {
-  name: 'My Run',
-  input: { file: './raw/data.xlsx', sheet: 'Sheet1' },
-  steps: [
-    { id: 'normalize', fn: 'jegs-normalize', config: { brand: 'JEGS' } },
-    { id: 'clean-attributes', fn: 'clean-attributes', config: { mode: 'sdk' } },
-  ],
-  output: './output/final.xlsx',
-  preview: {
-    port: 3457,
-    fields: { sku: 'Part Number', title: 'Title', image: 'Images', specs: 'Attributes Full' },
-  },
-};
-```
+Fuller versions live in [`CLAUDE.md`](CLAUDE.md) and the playbook, but these four cause the most damage:
 
-Each step's `fn` maps to `transforms/<fn>.js`. The step outputs are saved as `data/<step-id>.json`.
+1. **Sample 2 or 3 rows and print every field with its type** before any full run.
+2. **Read exports back off disk.** A successful write is not a correct file.
+3. **32,767 characters per cell.** Assert it rather than assuming.
+4. **A checker that shares helpers with the builder is not a checker.** It recomputes the expected answer with the same bug. Rebuild the expectation from the raw grid, and mutation-test the checker.
 
----
+## Known issues
 
-## Transforms
-
-### `jegs-normalize`
-Normalizes raw JEGS eBay export rows. Handles two attribute formats:
-- **JSON array:** `[{"name":"Voltage","value":"12","uom":"volt"}]`
-- **Semicolon-separated:** `"Voltage: 12 volt; Amperage: 15 amp"`
-
-Config: `{ brand: 'JEGS' }` — substitutes `{{brand}}` in title templates.
-
-### `clean-attributes`
-LLM-powered cleaner. Trims marketing copy bleed from attribute values, drops part-number-as-spec artifacts, removes truncated values.
-
-Config:
-- `mode: 'sdk'` — uses `ANTHROPIC_API_KEY` (set env var)
-- `mode: 'agent'` — use with `--agent-slices <n>` flag for manual sub-agent batches
-- `batchSize: 20` — items per API call (sdk mode)
-- `model: 'claude-haiku-4-5-20251001'`
-
----
-
-## IO Utility (`pipeline/io.js`)
-
-Handles reading and writing xlsx, csv, and json files uniformly.
-
-```bash
-# Convert xlsx to json
-node pipeline/io.js --from data.xlsx --to out.json --sheet "Sheet1"
-
-# Convert json to xlsx
-node pipeline/io.js --from data.json --to out.xlsx
-
-# List sheets
-node pipeline/io.js --from data.xlsx --list-sheets
-
-# Limit rows
-node pipeline/io.js --from data.xlsx --to out.json --limit 50 --slice 0,49
-```
-
----
-
-## Preview Dashboard
-
-The dashboard (`preview-dashboard/`) auto-detects field names and supports:
-- Grid / Table / Compare / Export views
-- Search with spec chip click-to-filter
-- "Show everything" toggle for non-primary fields
-- Row/card selection for compare mode
-
-Field auto-detection order (first match wins):
-- `sku`: Part Number, SKU, id
-- `title`: Title, name, Product Name
-- `image`: Images, Main Image, Image URL
-- `desc`: Description, description
-- `cat`: Part Type, Category
-- `specs`: Attributes Full, Attributes Small, item_specifics
-
-Override with `--fields '{"sku":"SKU","title":"Product Name"}'`.
-
----
-
-## Notes
-
-- `data/raw.json` = imported sheet, `data/final.json` = last step output (always kept in sync)
-- NaN values from xlsx are replaced with `null` automatically
-- The `parse-excel/` Python tool is a legacy import path; prefer `pipeline/io.js` (Node.js, no venv)
+- Poster download can hang: the server generates the image and logs "Image ready", but the response never reaches the client on real payloads.
+- 119 items lose images when Main Image is None; the fallback to pipe-separated images is not wired everywhere.
+- `ui/src/routes/runs/` has empty directories where four page files were deleted, while `+layout.svelte` and `api.ts` still link to `/runs`. Unfinished, not intended.

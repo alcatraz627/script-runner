@@ -33,7 +33,7 @@
   outputs                                                                         
   • **Idempotent steps:** re-running skips if raw.json exists                     
   • **Data flow:** raw.json → step1.json → step2.json → final.json                
-  • **CLI flags:** --step, --fromStep, --limit, --slice                           
+  • **CLI flags:** --step, --from, --limit, --slice                           
   • **Transform signature:** { meta, run(items, config, ctx) }                    
   • **JSDoc headers:** parsed by server for UI metadata                           
                                                                                   
