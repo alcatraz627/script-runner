@@ -85,15 +85,52 @@
 		return `/api/runs/${runId}/data/${fileId}/download?format=${format}`;
 	}
 
+	/** Check if a value is a complex type (object/array-of-objects) that should render as code */
+	function isComplexValue(value: unknown): boolean {
+		if (value === null || value === undefined) return false;
+		if (Array.isArray(value)) {
+			return value.length > 0 && typeof value[0] === 'object' && value[0] !== null;
+		}
+		return typeof value === 'object';
+	}
+
 	function formatCell(value: unknown): string {
 		if (value === null || value === undefined) return '';
 		if (Array.isArray(value)) {
 			if (value.length === 0) return '';
-			if (Array.isArray(value[0])) return value.map((v) => v.join(': ')).join(', ');
+			if (Array.isArray(value[0])) return value.map((v: unknown[]) => v.join(': ')).join(', ');
+			if (typeof value[0] === 'object' && value[0] !== null) return JSON.stringify(value, null, 2);
 			return value.join(', ');
 		}
-		if (typeof value === 'object') return JSON.stringify(value);
+		if (typeof value === 'object') return JSON.stringify(value, null, 2);
 		return String(value);
+	}
+
+	/** Compact single-line preview for code cells in the table */
+	function formatCellCompact(value: unknown): string {
+		if (value === null || value === undefined) return '';
+		if (Array.isArray(value)) {
+			if (value.length === 0) return '[]';
+			if (Array.isArray(value[0])) return value.map((v: unknown[]) => v.join(': ')).join(', ');
+			if (typeof value[0] === 'object' && value[0] !== null) {
+				return `[${value.length} items]`;
+			}
+			return value.join(', ');
+		}
+		if (typeof value === 'object') {
+			const keys = Object.keys(value as Record<string, unknown>);
+			if (keys.length === 0) return '{}';
+			return `{${keys.join(', ')}}`;
+		}
+		return String(value);
+	}
+
+	let copiedCell: string | null = $state(null);
+	async function copyCell(value: unknown) {
+		const text = formatCell(value);
+		await navigator.clipboard.writeText(text);
+		copiedCell = text;
+		setTimeout(() => { copiedCell = null; }, 1500);
 	}
 
 	function isImageUrl(value: unknown): boolean {
@@ -216,7 +253,7 @@
 							<tr class="hover:bg-[var(--color-bg-surface-hover)]">
 								<td class="px-3 py-2 text-xs text-[var(--color-text-muted)] font-mono">{offset + i + 1}</td>
 								{#each page.columns as col (col)}
-									<td class="px-3 py-2 text-[var(--color-text-primary)] max-w-xs truncate" title={formatCell(row[col])}>
+									<td class="px-3 py-2 text-[var(--color-text-primary)] max-w-xs" title={formatCell(row[col])}>
 										{#if imageCols.has(col) && isImageUrl(row[col])}
 											<a href={String(row[col])} target="_blank" rel="noopener noreferrer" class="inline-block">
 												<img
@@ -235,8 +272,25 @@
 													loading="lazy"
 												/>
 											</a>
+										{:else if isComplexValue(row[col])}
+											<div class="group relative">
+												<code class="text-[10px] leading-tight font-mono text-[var(--color-text-secondary)] bg-[var(--color-bg-inset)] px-1.5 py-0.5 rounded border border-[var(--color-border-light)] inline-block max-w-[200px] truncate">
+													{formatCellCompact(row[col])}
+												</code>
+												<button
+													onclick={() => copyCell(row[col])}
+													class="ml-1 opacity-0 group-hover:opacity-100 transition-opacity text-[10px] text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] cursor-pointer"
+													title="Copy JSON"
+												>
+													{copiedCell === formatCell(row[col]) ? '✓' : '⧉'}
+												</button>
+												<!-- Hover popover with full formatted JSON -->
+												<div class="hidden group-hover:block absolute z-50 right-0 top-full mt-1 max-h-[50vh] w-max overflow-auto bg-[var(--color-bg-surface)] border border-[var(--color-border)] rounded-lg shadow-xl p-3" style="max-width: min(80vw, 900px);">
+													<pre class="text-[11px] leading-snug font-mono text-[var(--color-text-primary)] whitespace-pre-wrap break-words">{formatCell(row[col])}</pre>
+												</div>
+											</div>
 										{:else}
-											{formatCell(row[col])}
+											<span class="truncate block">{formatCell(row[col])}</span>
 										{/if}
 									</td>
 								{/each}

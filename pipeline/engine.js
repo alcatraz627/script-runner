@@ -276,6 +276,7 @@ async function execute({ runDir, step: onlyStep, fromStep, limit, slice, onEvent
       if (!fs.existsSync(transformPath)) {
         throw new Error(`Transform not found: transforms/${step.fn}.js`);
       }
+      delete require.cache[require.resolve(transformPath)];
       const transform = require(transformPath);
       const fn = typeof transform === 'function' ? transform : transform.run;
 

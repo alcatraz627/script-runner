@@ -9,7 +9,7 @@ export const APP = {
 	pollInterval: 5000,
 	pageSize: 50,
 	maxPreviewRows: 30,
-	buildTag: 'silver-crane-5',
+	buildTag: 'amber-hawk-5',
 } as const;
 
 export interface NavItem {

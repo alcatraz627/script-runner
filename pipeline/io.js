@@ -50,15 +50,40 @@ function readFile(filePath, opts = {}) {
 }
 
 // ── Flatten array-valued fields into strings for spreadsheet export ──────────
+// Excel cell limit: 32,767 characters. Truncate with marker if exceeded.
+const EXCEL_CELL_LIMIT = 32000; // leave margin for safety
+
+function truncateCell(str) {
+  if (typeof str === 'string' && str.length > EXCEL_CELL_LIMIT) {
+    return str.substring(0, EXCEL_CELL_LIMIT) + '… [TRUNCATED]';
+  }
+  return str;
+}
+
 function flattenArrayFields(rows) {
   return rows.map(row => {
     const out = {};
     for (const [k, v] of Object.entries(row)) {
-      if (!Array.isArray(v)) { out[k] = v; continue; }
-      if (v.length > 0 && Array.isArray(v[0])) {
-        out[k] = v.map(pair => pair.join(': ')).join('\n');
+      if (v == null) { out[k] = v; continue; }
+      if (Array.isArray(v)) {
+        if (v.length === 0) { out[k] = ''; continue; }
+        let str;
+        if (Array.isArray(v[0])) {
+          // Array of pairs: [[k,v], ...] → "k: v\nk: v"
+          str = v.map(pair => pair.join(': ')).join('\n');
+        } else if (typeof v[0] === 'object' && v[0] !== null) {
+          // Array of objects → JSON string
+          str = JSON.stringify(v);
+        } else {
+          // Array of primitives → newline-joined
+          str = v.join('\n');
+        }
+        out[k] = truncateCell(str);
+      } else if (typeof v === 'object') {
+        // Plain object → JSON string
+        out[k] = truncateCell(JSON.stringify(v));
       } else {
-        out[k] = v.join('\n');
+        out[k] = v;
       }
     }
     return out;

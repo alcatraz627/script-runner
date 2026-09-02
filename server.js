@@ -1,8 +1,19 @@
 #!/usr/bin/env node
 /**
  * server.js — Express API server for the Pipeline Management UI
- * Port: 3460
+ * Port: 5033
  */
+
+// Load .env before anything else so API keys are available to transforms
+(function loadEnv() {
+  const fs = require('fs'), path = require('path');
+  const envPath = path.resolve(__dirname, '.env');
+  if (!fs.existsSync(envPath)) return;
+  fs.readFileSync(envPath, 'utf8').split('\n').forEach(line => {
+    const m = line.match(/^\s*([^#=\s]+)\s*=\s*(.*)\s*$/);
+    if (m && !process.env[m[1]]) process.env[m[1]] = m[2].replace(/^['"]|['"]$/g, '');
+  });
+})();
 
 const express  = require('express');
 const multer   = require('multer');
@@ -17,7 +28,7 @@ const manifest = require('./pipeline/manifest');
 const queue    = require('./pipeline/job-queue');
 
 const app  = express();
-const PORT = process.env.PORT || 3460;
+const PORT = process.env.PORT || 5033;
 
 const RUNS_DIR       = path.resolve(__dirname, 'runs');
 const TRANSFORMS_DIR = path.resolve(__dirname, 'transforms');
@@ -1557,7 +1568,7 @@ app.post('/api/datasets/:id/selections', (req, res) => {
 
 // Dev redirect: send browser requests to Vite dev server (port 5173)
 // Falls through to static build serving if Vite isn't running
-const VITE_DEV_PORT = 5173;
+const VITE_DEV_PORT = 3033;
 const uiBuildDir = path.join(__dirname, 'ui', 'build');
 const hasUIBuild = fs.existsSync(path.join(uiBuildDir, 'index.html'));
 
