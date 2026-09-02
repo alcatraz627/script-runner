@@ -54,3 +54,19 @@ walmart-*/data/
 walmart-*/input/
 walmart-*/output/
 _*.claude.md
+
+# Generated reports and data dumps at repo root — regenerate from the scripts
+# that produce them. Anchored with / so nested dashboards keep their html.
+/*.html
+/alias-audit-report.md
+/image-gaps.json
+/no-image-items.json
+/cc30-*.json
+/preview-dashboard-selections/
+
+# Session-local agent logs (rules/git.md)
+.claude/wal.jsonl
+.claude/wal.jsonl.lock
+
+# aep-catalog-v9 build artifacts — reproduced by build-aep-flat-sheet.js
+aep-catalog-v9/output/
