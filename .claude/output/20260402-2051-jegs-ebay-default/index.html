@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JEGS eBay Product Data Pipeline — Full Project History</title>
+<meta property="og:title" content="JEGS eBay Product Data Pipeline — Full Project History">
+<meta property="og:description" content="All work on the JEGS eBay→Walmart product data pipeline · Mar 2026–Apr 2026">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JEGS eBay Product Data Pipeline — Full Project History">
+<meta name="twitter:description" content="All work on the JEGS eBay→Walmart product data pipeline · Mar 2026–Apr 2026">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { darkMode: "class", corePlugins: { preflight: false } };</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700&family=Source+Sans+3:ital,wght@0,400;0,600&family=Merriweather:ital,wght@0,400;0,700&family=Roboto:wght@400;500;700&family=Open+Sans:wght@400;600;700&family=Nunito:wght@400;600;700&family=DM+Sans:wght@400;500;700&family=Work+Sans:wght@400;500;700&family=Lora:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="fixed inset-x-0 top-0 z-50 flex flex-wrap items-center gap-x-3 gap-y-1 px-5 py-1
+               bg-[var(--surface)] border-b border-[var(--border)]"
+        style="min-height:var(--header-h)">
+
+  <span class="hdr-badge" title="Generated report">Report</span>
+
+  <div class="flex-1 min-w-0 flex flex-col" title="JEGS eBay Product Data Pipeline — Full Project History — All work on the JEGS eBay→Walmart product data pipeline · Mar 2026–Apr 2026">
+    <div class="hdr-title">JEGS eBay Product Data Pipeline — Full Project History</div>
+    <div class="hdr-subtitle">All work on the JEGS eBay→Walmart product data pipeline · Mar 2026–Apr 2026</div>
+  </div>
+
+  <div class="search-wrap" title="Search report content (⌘K)">
+    <span class="search-icon">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+    </span>
+    <input type="text" id="search" placeholder="Search… (⌘K)" autocomplete="off" spellcheck="false">
+    <span id="search-count"></span>
+  </div>
+
+  <div class="flex items-center gap-1 shrink-0 toolbar flex-wrap">
+    <div class="font-picker">
+      <button id="font-btn" class="tool-btn" title="Change font family">
+        Aa <span class="font-label btn-label">System</span>
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div id="font-menu" class="font-menu">
+        <div class="font-group-label">Sans-serif</div>
+        <button class="font-opt" data-font="system">System UI <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="inter">Inter <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="roboto">Roboto <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="opensans">Open Sans <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="source">Source Sans <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="nunito">Nunito <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="dmsans">DM Sans <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="worksans">Work Sans <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="helvetica">Helvetica Neue <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="verdana">Verdana <span class="font-preview">Aa</span></button>
+        <div class="font-group-label">Serif</div>
+        <button class="font-opt" data-font="georgia">Georgia <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="lora">Lora <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="merriweather">Merriweather <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="playfair">Playfair Display <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="palatino">Palatino <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="crimson">Crimson Pro <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="garamond">EB Garamond <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="libre">Libre Baskerville <span class="font-preview">Aa</span></button>
+        <div class="font-group-label">Modern</div>
+        <button class="font-opt" data-font="jakarta">Plus Jakarta Sans <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="spacegrotesk">Space Grotesk <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="ibmplex">IBM Plex Sans <span class="font-preview">Aa</span></button>
+        <div class="font-group-label">Monospace</div>
+        <button class="font-opt" data-font="mono">JetBrains Mono <span class="font-preview">Aa</span></button>
+        <button class="font-opt" data-font="ibmplexmono">IBM Plex Mono <span class="font-preview">Aa</span></button>
+      </div>
+    </div>
+    <button id="theme-btn" class="tool-btn" title="Toggle light/dark theme"></button>
+    <div class="color-picker">
+      <button id="color-btn" class="tool-btn" title="Change accent color">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/>
+          <circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/>
+          <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
+        </svg>
+        <span class="btn-label">Color</span>
+      </button>
+      <div id="color-menu" class="color-menu">
+        <div class="font-group-label">Accent Color</div>
+        <div class="color-swatches">
+          <button class="color-swatch" data-accent="indigo"  style="--swatch:#6366f1" title="Indigo"></button>
+          <button class="color-swatch" data-accent="violet"  style="--swatch:#8b5cf6" title="Violet"></button>
+          <button class="color-swatch" data-accent="purple"  style="--swatch:#a855f7" title="Purple"></button>
+          <button class="color-swatch" data-accent="fuchsia" style="--swatch:#d946ef" title="Fuchsia"></button>
+          <button class="color-swatch" data-accent="pink"    style="--swatch:#ec4899" title="Pink"></button>
+          <button class="color-swatch" data-accent="rose"    style="--swatch:#f43f5e" title="Rose"></button>
+          <button class="color-swatch" data-accent="red"     style="--swatch:#ef4444" title="Red"></button>
+          <button class="color-swatch" data-accent="orange"  style="--swatch:#f97316" title="Orange"></button>
+          <button class="color-swatch" data-accent="amber"   style="--swatch:#f59e0b" title="Amber"></button>
+          <button class="color-swatch" data-accent="yellow"  style="--swatch:#eab308" title="Yellow"></button>
+          <button class="color-swatch" data-accent="lime"    style="--swatch:#84cc16" title="Lime"></button>
+          <button class="color-swatch" data-accent="emerald" style="--swatch:#10b981" title="Emerald"></button>
+          <button class="color-swatch" data-accent="teal"    style="--swatch:#14b8a6" title="Teal"></button>
+          <button class="color-swatch" data-accent="cyan"    style="--swatch:#06b6d4" title="Cyan"></button>
+          <button class="color-swatch" data-accent="sky"     style="--swatch:#0ea5e9" title="Sky"></button>
+          <button class="color-swatch" data-accent="blue"    style="--swatch:#3b82f6" title="Blue"></button>
+        </div>
+      </div>
+    </div>
+    <button id="print-btn" class="tool-btn" title="Print report">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <polyline points="6 9 6 2 18 2 18 9"/>
+        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+        <rect x="6" y="14" width="12" height="8"/>
+      </svg>
+      <span class="btn-label">Print</span>
+    </button>
+    <div class="width-picker" title="Content width">
+      <button class="width-btn" data-width="sm" title="Small (640px)">SM</button>
+      <button class="width-btn active" data-width="md" title="Medium (960px)">MD</button>
+      <button class="width-btn" data-width="lg" title="Large (1200px)">LG</button>
+      <button class="width-btn" data-width="xl" title="Full width">XL</button>
+    </div>
+  </div>
+
+  <span class="hdr-gen" title="Generated 2026-04-02 · 8 sections · 3 code blocks · 17 tables">Generated 2026-04-02 · 8 sections · 3 code blocks · 17 tables</span>
+</header>
+
+<!-- Layout -->
+<div class="flex" style="margin-top:var(--header-h);min-height:calc(100vh - var(--header-h))">
+
+  <nav class="sidebar shrink-0 bg-[var(--surface)] border-r border-[var(--border)]"
+       style="position:sticky;top:var(--header-h);height:calc(100vh - var(--header-h));overflow-y:auto;padding:12px 0 24px;width:var(--sidebar-w)">
+    <ul><li class="nav-group">Sections</li><li class="nav-section nav-h2"><a href="#project-overview">1. Project Overview</a><ul><li class="nav-section nav-h3"><a href="#what-is-this">What is this?</a></li><li class="nav-section nav-h3"><a href="#tech-stack">Tech Stack</a></li><li class="nav-section nav-h3"><a href="#goal-top-level">Goal (top-level)</a></li></ul></li><li class="nav-section nav-h2"><a href="#project-timeline">2. Project Timeline</a><ul><li class="nav-section nav-h3"><a href="#phase-0">Phase 0 — Initial Setup</a></li><li class="nav-section nav-h3"><a href="#phase-1">Phase 1 — First Full Pipeline Run</a></li><li class="nav-section nav-h3"><a href="#phase-2">Phase 2 — Stock Image Crisis</a></li><li class="nav-section nav-h3"><a href="#phase-3">Phase 3 — Normalize Audit</a></li><li class="nav-section nav-h3"><a href="#phase-4">Phase 4 — Duplicate URL Discovery</a></li><li class="nav-section nav-h3"><a href="#phase-5">Phase 5 — CC30 Pipeline</a></li><li class="nav-section nav-h3"><a href="#phase-6">Phase 6 — VCDB Fitment Explorer</a></li><li class="nav-section nav-h3"><a href="#phase-7">Phase 7 — Walmart Loadsheet Pipeline</a></li><li class="nav-section nav-h3"><a href="#phase-8">Phase 8 — Unicode Normalization + v6</a></li></ul></li><li class="nav-section nav-h2"><a href="#data-cleaning-deep-dive">3. Data Cleaning Deep Dive</a><ul><li class="nav-section nav-h3"><a href="#attribute-pipeline">3.1 Attribute Pipeline</a></li><li class="nav-section nav-h3"><a href="#image-cleaning">3.2 Image Cleaning</a></li><li class="nav-section nav-h3"><a href="#description-cleaning">3.3 Description Cleaning</a></li><li class="nav-section nav-h3"><a href="#walmart-text-cleaning">3.4 Walmart Text Cleaning</a></li></ul></li><li class="nav-section nav-h2"><a href="#human-in-the-loop">4. Human-in-the-Loop Requirements</a></li><li class="nav-section nav-h2"><a href="#scripts-built">5. Scripts Built</a><ul><li class="nav-section nav-h3"><a href="#image-selector-scripts">Image Selector / Data Preparation</a></li><li class="nav-section nav-h3"><a href="#pipeline-transforms">Pipeline Transforms</a></li><li class="nav-section nav-h3"><a href="#walmart-tools">Walmart Loadsheet Tools</a></li><li class="nav-section nav-h3"><a href="#vcdb-tools">VCDB / Fitment Tools</a></li></ul></li><li class="nav-section nav-h2"><a href="#key-problems-solutions">6. Key Problems &amp; Solutions</a></li><li class="nav-section nav-h2"><a href="#outputs-versions">7. Outputs &amp; Versions</a></li><li class="nav-section nav-h2"><a href="#architecture-patterns">8. Architecture Patterns</a></li></ul>
+  </nav>
+
+  <main class="content grow min-w-0" style="padding:48px 64px;max-width:960px">
+    <section data-section-id="project-overview">
+  <h2 id="project-overview">1. Project Overview</h2>
+<h3 id="what-is-this">What is this?</h3><p>The Versable Scripts project transforms raw JEGS eBay Excel exports into enhanced, normalized product data suitable for retail submission. The pipeline produces:</p><ul><li>Clean product descriptions & features (LLM-generated via Claude Haiku)</li><li>Extracted and reviewed item attributes</li><li>Selected main product images</li><li>Generated eBay poster images (via a Next.js ImageResponse API)</li><li>Walmart Supplier Center loadsheets (94-column format)</li></ul>
+<h3 id="tech-stack">Tech Stack</h3><div class="table-wrap"><table><thead><tr><th>Layer</th><th>Stack</th></tr></thead><tbody><tr><td>Backend</td><td>Node.js 23 (CommonJS), Express 5, port 3460</td></tr><tr><td>Frontend</td><td>SvelteKit 2 + Svelte 5 + Tailwind 4, port 5173</td></tr><tr><td>AI</td><td>@anthropic-ai/sdk — Claude Haiku, batches of 20</td></tr><tr><td>Data</td><td>exceljs/xlsx, puppeteer</td></tr><tr><td>Pipeline</td><td>engine.js config-driven, idempotent steps, in-memory job queue</td></tr></tbody></table></div>
+<h3 id="goal-top-level">Goal (top-level)</h3><p>Produce 1,252 Walmart-ready product listings from raw eBay scraped data, with accurate Part Types, descriptions, attributes, clean images for each SKU, and unicode-clean, spec-compliant output Excel.</p>
+</section>
+<section data-section-id="project-timeline">
+  <h2 id="project-timeline">2. Project Timeline — Phase by Phase</h2>
+<h3 id="phase-0">Phase 0 — Initial Setup (pre-Mar 20)</h3><p>The first pipeline run (<code>jegs-ebay-mar-20-03</code>, 590 items) produced a clean dataset via the Versable platform: good descriptions, features & benefits, reviewed attributes, correct Part Types. This became the <strong>gold standard reference</strong> for all subsequent work.</p><p><strong>Git init commit:</strong> <code>4eae213 feat: init</code></p>
+<h3 id="phase-1">Phase 1 — First Full Pipeline Run &amp; Attribute Extraction (Mar 21)</h3><p><strong>Trigger:</strong> New Excel file (<code>JEGS_eBay_Scraped_Data_final_input.xlsx</code>, 602 items) replaced the Mar 15 export. Had updated image lists but degraded data quality — junk scraped descriptions, mostly empty attributes, no clean Part Types.</p><p><strong>Goals:</strong> Onboard 602 new items while preserving quality of the prior 590-item run. Fill the attribute gap (547 items had empty <code>Item Specifics (JSON)</code>). Select best product images per SKU.</p><div class="table-wrap"><table><thead><tr><th>Task</th><th>Script</th><th>Outcome</th></tr></thead><tbody><tr><td>Sideload descriptions from old run</td><td>sideload-descriptions.js</td><td>586/602 got clean text; 16 flagged _needs_description</td></tr><tr><td>Build image review dataset</td><td>prepare-image-dataset.js</td><td>Transformed raw.json to image-selector dashboard format</td></tr><tr><td>LLM attribute extraction</td><td>extract-attributes.js</td><td>Claude Haiku extracted attrs for 547 items with empty Item Specifics</td></tr><tr><td>Attribute quality review</td><td>review-all-attributes.js</td><td>Quality-flagged concatenated nonsense, too-long values, eBay metadata</td></tr><tr><td>Combined review dashboard</td><td>generate-combined-dashboard.js</td><td>Self-contained HTML: image selection + attribute approve/reject + feedback notes</td></tr><tr><td>Persistence server</td><td>review-server.js</td><td>Port 3459, saved user selections to changes.json</td></tr><tr><td>Attribute bulk cleanup</td><td>cleanup-attrs.js</td><td>Capitalize first letter, strip non-ASCII, standardize units (in., lb., V, etc.)</td></tr><tr><td>Transplant back to raw</td><td>transplant-attributes.js + transplant-selections.js</td><td>Approved attrs + selected images written to raw.json</td></tr></tbody></table></div><p><strong>Human-in-the-loop (HIL):</strong> User reviewed all 602 items in the combined dashboard: approved/rejected individual attributes, edited values inline, selected main product images, and approved bulk attribute cleanup plan.</p><h4 id="parallel-downloads-engine">Parallel Downloads Engine (Mar 21)</h4><p>Both <code>pipeline/download-posters.js</code> and <code>transforms/download-posters.js</code> had ~80% identical code. Extracted to shared <code>pipeline/poster-downloader.js</code> with <code>downloadAll()</code>, <code>buildPayload()</code>, <code>sanitize()</code>.</p><ul><li>Semaphore concurrency model (active counter + tryDispatch loop)</li><li>Adaptive throttling: 3 consecutive failures halve concurrency; 10 successes at reduced level double it (capped)</li><li>Retry queue drains in passes after main queue completes</li><li>Failures file enhanced with per-SKU error details for diagnostics</li></ul>
+<h3 id="phase-2">Phase 2 — Data Quality Audit &amp; Stock Image Crisis (Mar 21-22)</h3><p><strong>Discovery:</strong> User noticed 7 SKUs all showed the same images in the dashboard. Investigation found 28 shared eBay listing URLs mapped to 162 different SKUs. The scraper had captured seller storefront gallery photos.</p><p><strong>Multi-layered fix:</strong></p><ol><li><strong>Static blacklist</strong> — Known stock image URLs in <code>BLOCKED_BASES</code> set</li><li><strong>Extension-agnostic matching</strong> — <code>stripExt()</code> strips <code>.webp</code>/<code>.jpg</code> before URL comparison</li><li><strong>Frequency-based auto-detection</strong> — Any image URL appearing in 4+ SKUs auto-classified as stock photo</li><li><strong>Two-layer filtering</strong> — Stock images stripped in both <code>prepare-image-dataset.js</code> (data time) and <code>generate-combined-dashboard.js</code> (display time)</li></ol><p><strong>User reaction:</strong> Those 7 SKUs genuinely had <em>only</em> stock photos — no real product images in the source data.</p><p><strong>Attempted workarounds:</strong> jegs.com scraping — 403 Forbidden; Google Images API — no reliable programmatic access; eBay search — impractical.</p><p><strong>Resolution:</strong> Created <code>upsert-images.js</code> + <code>BACKFILL-IMAGES.md</code> for future manual backfill. 127 items accepted as a known image gap.</p>
+<h3 id="phase-3">Phase 3 — Normalize Audit + Post-Processing Fixes (Mar 24, Session 1)</h3><p>After the pipeline ran, a comprehensive audit (<code>audit-normalize.js</code>) uncovered several data quality issues that slipped through.</p><h4 id="junk-attrs">A. Junk Attributes in Excel-Sourced Items</h4><p><strong>Problem:</strong> 68 items had eBay junk attributes (ePID, MPN, Sub Type, Notes, Type, Dimensions). Root cause: Excel-sourced <code>Item Specifics (JSON)</code> attrs were never routed through the review dashboard.</p><p><strong>Fix:</strong> <code>fix-junk-attrs.js</code> stripped <code>REMOVE_KEYS</code> from Attributes Small/Full in normalize.json and Item Specifics in raw.json. 322 attr entries removed from normalize.json; 161 from raw.json.</p><h4 id="boilerplate-descriptions">B. Boilerplate Descriptions (16 New SKUs)</h4><p><strong>Problem:</strong> 16 new SKUs had Claude Haiku descriptions under 500 chars. Root cause: Prompt said "Max ~500 chars" — Haiku treated this as a hard cap.</p><p><strong>Fix:</strong> Changed prompt to "MINIMUM 500 characters" + "STRICTLY between X and Y". Created <code>fix-boilerplate-descriptions.js</code> with <code>--regen</code> flag. All 16 now 656-996 chars.</p><p><strong>Lesson added to CLAUDE.md:</strong> Use floor + range constraints for LLM content generation.</p><h4 id="blocked-image-urls">C. Blocked/Stock Image URLs in Main Image Field</h4><p><strong>Problem:</strong> 92 items had the placeholder stock URL in raw.json <code>Main Image</code>. Root cause: <code>transplant-selections.js</code> only writes explicit user picks — never clears pre-existing values.</p><p><strong>Fix:</strong> <code>fix-placeholder-images.js</code> clears blocked URLs from raw.json. Also patched <code>jegs-export-normalize.js</code> to reject blocked URLs in the <code>extractFirstImage</code> fallback.</p><h4 id="part-type-mismatch">D. Part Type Field Mismatch (Silent Bug)</h4><p><strong>Problem:</strong> After any normalize re-run, Part Types reverted to eBay breadcrumbs ("eBay Motors > Parts & Accessories > ...").</p><p><strong>Root cause:</strong> <code>sideload-part-types.js</code> wrote <code>row['Part Type']</code> to raw.json but <code>jegs-export-normalize.js</code> read <code>row['Category Hierarchy']</code> — two different fields.</p><p><strong>Fix:</strong> Transform now uses <code>row['Part Type'] || row['Category Hierarchy']</code> — sideloaded value takes priority.</p><h4 id="residual-fitment">E. Residual Fitment Attributes</h4><p><strong>Problem:</strong> 23 fitment attrs (Side, Transmission Type, Engine Type, Lug Pattern) still present after review. Root cause: Excel-sourced Item Specifics missed the dashboard fitment-cleanup step.</p><p><strong>Fix:</strong> Stripped fitment attrs directly from normalize.json + raw.json: 46 entries removed from normalize, 23 from raw.json.</p><h4 id="zero-attr-items">F. Zero-Attribute Items</h4><p><strong>Problem:</strong> 555-81500-6 and 555-79600 had 0 attributes — Item Specifics was empty and LLM extraction was not triggered.</p><p><strong>Fix:</strong> Manually authored 4 attributes each from description content; written to both normalize.json and raw.json.</p>
+<h3 id="phase-4">Phase 4 — Duplicate URL Discovery &amp; Filter Transform (Mar 24, Session 2)</h3><p><strong>Discovery:</strong> 28 eBay Item URLs were mapped to 162 different SKUs. Largest group: 67 items mapped to a single SSR Star Wheel listing. The scraper had reused the same listing URL for many unrelated SKUs.</p><p><strong>4 contaminated items</strong> had Star Wheel content on wrong products: 555-81244 (Truck Bed Lift), 555-81573 (Plasma Cutting Table), 555-50084 (Bug Catcher Scoop), 555-681437 (SSR Spike 15x10).</p><p><strong>Fix — new transform <code>transforms/filter-items.js</code>:</strong> Config-driven URL exclusion list in <code>run.config.js</code>. Optional dedup mode. Added <code>filter</code> step between <code>corrections</code> and <code>normalize</code>. Pipeline now produces <strong>440 items</strong> (down from 602).</p><h4 id="manual-step-system">Pipeline Engine — Manual Step System</h4><p>Built a full <code>type: "manual"</code> step system to enable human approval checkpoints mid-pipeline:</p><ul><li><code>pipeline/engine.js</code>: waitForApproval param, step-awaiting event, suspends execution via Promise</li><li><code>pipeline/job-queue.js</code>: awaiting status, approve(jobId, stepId) method, Promise resolver</li><li><code>server.js</code>: POST /api/runs/:id/approve, dashboard static serving, per-run selection files</li><li><code>dashboards/dashboard-bridge.js</code>: shared JS client for all dashboard plugins (UMD, auto-save, signalDone)</li><li><code>dashboards/_template/</code>: agent-customizable dashboard template + manifest schema</li><li>UI: /dashboards page, approve/open-dashboard buttons on awaiting steps</li></ul>
+<h3 id="phase-5">Phase 5 — CC30 Flat-Attribute Pipeline (Mar 26)</h3><p>A new, separate pipeline for a different data format: flat-attribute Excel (24K rows, one row per product x attribute key — 556 products).</p><div class="table-wrap"><table><thead><tr><th>Step</th><th>Transform</th><th>Description</th></tr></thead><tbody><tr><td>1</td><td>cc30-group-attributes</td><td>Group 24K flat rows by Input Row field -> 556 products; rename columns</td></tr><tr><td>2</td><td>cc30-extract-columns</td><td>Extract Part Type (3-level fallback), Image URL, fitment, fit_type</td></tr><tr><td>3</td><td>cc30-filter-attributes</td><td>Blacklist excludes extracted/metadata/feature/fitment/regulatory keys -> final_attributes[]</td></tr></tbody></table></div><p><strong>Critical bug found and fixed:</strong> <code>flattenArrayFields</code> in <code>io.js</code> called <code>.join('\n')</code> on arrays of objects producing <code>[object Object]</code> in Excel cells. Same bug in DataTable <code>formatCell()</code>. Both fixed with type checks before serialization.</p><div class="table-wrap"><table><thead><tr><th>Data Gap</th><th>Count</th></tr></thead><tbody><tr><td>Missing Part Type (no substitute in attributes)</td><td>49/556</td></tr><tr><td>Missing Image (no image_url in source data)</td><td>140/556</td></tr><tr><td>Inconsistent fit_type values (Direct-Fit vs Direct Fit)</td><td>many rows</td></tr></tbody></table></div>
+<h3 id="phase-6">Phase 6 — VCDB Fitment Explorer (Mar 28, One-off)</h3><p>A standalone task: sample and visualize VCDB fitment data from a 134K-row Excel file (28 columns: url, productbrand, mpn, MakeName, ModelName, Years, SubModelName, engine specs, match_status, raw_fitment).</p><div class="table-wrap"><table><thead><tr><th>Script</th><th>Purpose</th><th>Output</th></tr></thead><tbody><tr><td>sample-vcdb-fitment.js</td><td>Two-pass streaming ExcelJS WorkbookReader</td><td>fitment-sample.md — hierarchical Make->Model->Year->Engine markdown</td></tr><tr><td>generate-vcdb-table.js</td><td>Streams Excel -> self-contained HTML table</td><td>vcdb-table.html — search, sort, filters, pagination, CSV export, dark mode, notes per row</td></tr></tbody></table></div><ul><li>ExcelJS WorkbookReader ws.id is a <strong>string</strong> in streaming mode — use == not === when comparing to numbers</li><li>All sheets must have row handlers in streaming mode or reader stalls</li><li>Regex literals with backslash-slash inside template literals get corrupted — use new RegExp() for patterns containing forward slashes</li><li>position: sticky + overflow: auto on ancestor breaks sticky — fix with full-page flex layout</li></ul>
+<h3 id="phase-7">Phase 7 — Walmart Loadsheet Pipeline (Mar 30, Session 1)</h3><p><strong>Input:</strong> New source data — Walmart enhancement Excel (1,252 rows, 3,029 unique attribute keys across all rows).</p><h4 id="attribute-key-explosion">Attribute Key Explosion Problem</h4><p>3,029 unique attribute keys across 1,252 rows (2.4x ratio). eBay multi-seller flat attributes have extreme key proliferation (e.g., "Tire Width", "TireWidth", "tire_width", "width_tire" all meaning the same thing).</p><p><strong>Solution:</strong> Ran <code>alias-audit-walmart-attrs.js</code> to find semantically equivalent variants. Identified 24 alias groups. Used a <code>KEY_ALIASES</code> map in <code>fill-walmart-loadsheet.js</code> to normalize before column mapping.</p><h4 id="column-mapping">Column Mapping (94 Columns)</h4><div class="table-wrap"><table><thead><tr><th>Category</th><th>Columns</th><th>Source</th></tr></thead><tbody><tr><td>Required fields</td><td>Name, Brand, Type, Condition, Multipack, SKU</td><td>Direct from data</td></tr><tr><td>Packaging dims</td><td>Length, Width, Height, Weight (cols 34-41)</td><td>package_depth/height/width numeric pairs</td></tr><tr><td>Net content</td><td>Cols 28/29/52</td><td>parseNetContent() — '1.00 quart' -> (1, 'qt')</td></tr><tr><td>Electronics indicator</td><td>Col 77</td><td>Title/Part Type regex inference — writes 'Yes' only</td></tr><tr><td>Fulfillment lag</td><td>Col 80</td><td>anticipated_ship_out_time -> lead_time fallback chain</td></tr><tr><td>Assembled dims</td><td>Col 46</td><td>Composite: '{depth} x {height} x {width} in'</td></tr></tbody></table></div>
+<h3 id="phase-8">Phase 8 — Unicode Normalization + v5/v6 (Mar 30-31)</h3><p><code>text-audit-10rows.js</code> ran across all 1,252 rows and found significant typographic character contamination from LLM-generated output:</p><div class="table-wrap"><table><thead><tr><th>Character</th><th>Unicode</th><th>Count</th><th>Action</th></tr></thead><tbody><tr><td>en dash (U+2013)</td><td>U+2013</td><td>468x</td><td>Replace -> -</td></tr><tr><td>smart single quote (U+2019)</td><td>U+2019</td><td>277x</td><td>Replace -> '</td></tr><tr><td>non-breaking hyphen (U+2011)</td><td>U+2011</td><td>223x</td><td>HIGH: in model names like CR-Z -> -</td></tr><tr><td>em dash (U+2014)</td><td>U+2014</td><td>133x</td><td>Replace -> ' - '</td></tr><tr><td>smart double quotes (U+201C/D)</td><td>U+201C/D</td><td>14x</td><td>Replace -> "</td></tr><tr><td>non-breaking space (U+00A0)</td><td>U+00A0</td><td>many</td><td>Replace -> regular space</td></tr></tbody></table></div><p><strong>Fix:</strong> Added <code>normalizeText()</code> to <code>fill-walmart-loadsheet.js</code> applied at the single cell-write boundary. Generated v5.xlsx (1,252 rows, unicode clean).</p><h4 id="v6-fixes">v6 Fixes (Mar 31)</h4><ol><li><strong>Dimensions (col 46) mostly empty</strong> — dimension key exists in only 12 rows; real data in package_depth/height/width (209-211 rows). Fixed composite builder. Result: 173 rows filled (was ~12).</li><li><strong>'Car' in Vehicle Category</strong> — Confirmed from data; only 124/1,252 rows have vehicle_type; 105 say Car. Not hardcoded.</li><li><strong>Remove all fitment columns</strong> — Removed cols 30, 31, 45, 63, 64, 65, 66 (Vehicle Category, Fitment Type, Compatible Cars, Make, Model, Mount Location, Year). Removed parseFitment() call.</li></ol><p>Generated <code>walmart-loadsheet-filled-v6.xlsx</code> — <strong>final output</strong>. 10-row spot check passed. Full field coverage: required fields 99.9-100%; image gap 259 rows (pre-existing); shipping weight gap 1,078 rows (treated as optional).</p>
+</section>
+<section data-section-id="data-cleaning-deep-dive">
+  <h2 id="data-cleaning-deep-dive">3. Data Cleaning Deep Dive</h2>
+<h3 id="attribute-pipeline">3.1 Attribute Pipeline</h3><p>The attribute data went through <strong>4 stages of cleaning</strong>:</p><ol><li><strong>Source Excel</strong> (Item Specifics JSON, 55 items) — raw eBay metadata, contains junk keys</li><li><strong>LLM Extraction via Claude Haiku</strong> (547 items with empty attrs) — structured [[name, value]] arrays</li><li><strong>Human Review Dashboard</strong> (approve/reject/edit per attr per item) — interactive HTML served at port 3459</li><li><strong>Bulk Cleanup:</strong> junk removal + fitment removal + value standardization via cleanup-attrs.js</li><li><strong>Transplant to raw.json -> normalize.json</strong></li><li><strong>Post-audit fixes:</strong> junk attrs from Excel items, zero-attr items, fitment residuals</li></ol><div class="table-wrap"><table><thead><tr><th>Transform</th><th>Example</th></tr></thead><tbody><tr><td>Capitalize first letter</td><td>black -> Black</td></tr><tr><td>Strip non-ASCII</td><td>Aluminum (corrupted) -> Aluminum</td></tr><tr><td>Unit standardization</td><td>inches -> in., pounds -> lb., volts -> V</td></tr><tr><td>Remove eBay metadata</td><td>ePID, MPN, Prop 65, Sub Type, Notes, Country of Origin</td></tr><tr><td>Remove fitment attrs</td><td>Side, Transmission Type, Engine Type, Lug Pattern, Axle Type</td></tr></tbody></table></div><div class="code-wrap">
+  <div class="code-header">
+    <span class="code-lang">js</span>
+    <span class="code-line-count">5 lines</span>
+    <div class="code-actions">
+      <button class="code-expand" aria-label="Expand">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/>
+          <line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
+        </svg> Expand
+      </button>
+      <button class="copy-btn">Copy</button>
+    </div>
+  </div>
+  <pre><code><span class="kw">const</span> BLOCKED_ATTR_KEYS = <span class="kw">new</span> Set([
+  <span class="st">'Part Type'</span>, <span class="st">'Part Number'</span>, <span class="st">'Brand'</span>, <span class="st">'Part Category'</span>, <span class="st">'Part Fitment'</span>,
+  <span class="st">'Product Line'</span>, <span class="st">'Package Depth'</span>, <span class="st">'Package Height'</span>, <span class="st">'Package Width'</span>,
+  <span class="st">'Shipping Weight'</span>, <span class="st">'California Prop 65 Warning'</span>, <span class="st">'Compliance'</span>
+]);</code></pre>
+</div>
+<h3 id="image-cleaning">3.2 Image Cleaning</h3><div class="code-wrap">
+  <div class="code-header">
+    <span class="code-lang">text</span>
+    <span class="code-line-count">6 lines</span>
+    <div class="code-actions">
+      <button class="code-expand" aria-label="Expand">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/>
+          <line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
+        </svg> Expand
+      </button>
+      <button class="copy-btn">Copy</button>
+    </div>
+  </div>
+  <pre><code>Stock image detection (multi-layer):
+1. Static blocklist (BLOCKED_BASES) — known storefront gallery URLs
+2. Extension-agnostic matching — stripExt() before URL comparison
+3. Frequency audit — any URL in 4+ different SKUs -&gt; stock photo
+4. Applied at both data-time (prepare-image-dataset.js)
+   and display-time (generate-combined-dashboard.js)</code></pre>
+</div><div class="table-wrap"><table><thead><tr><th>Gap</th><th>Count</th><th>Status</th></tr></thead><tbody><tr><td>Items with only stock photos (no real images)</td><td>127</td><td>Accepted; upsert-images.js created for backfill</td></tr><tr><td>Items excluded due to duplicate eBay URLs</td><td>162</td><td>Parked; need re-scrape of correct eBay listings</td></tr><tr><td>Items in final pipeline with empty Images</td><td>259</td><td>Pre-existing; rows won't go live on Walmart without images</td></tr></tbody></table></div>
+<h3 id="description-cleaning">3.3 Description Cleaning</h3><p><strong>Boilerplate detection and regeneration:</strong> 16 new SKUs had descriptions that were either eBay-scraped HTML boilerplate or too short (< 500 chars). Regeneration used strict prompt constraints: "MINIMUM 500 characters" + "STRICTLY between 500 and 600 characters". <code>--regen</code> flag re-processes only failed items by saved part numbers.</p><p><strong>Content contamination:</strong> 4 items (Truck Bed Lift, Plasma Table, Bug Catcher, SSR Spike) had Star Wheel product content from a contaminated eBay listing URL. Each required full LLM regeneration of description + FAB + attributes, plus manual trim.</p>
+<h3 id="walmart-text-cleaning">3.4 Walmart-Specific Text Cleaning</h3><div class="code-wrap">
+  <div class="code-header">
+    <span class="code-lang">js</span>
+    <span class="code-line-count">9 lines</span>
+    <div class="code-actions">
+      <button class="code-expand" aria-label="Expand">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/>
+          <line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
+        </svg> Expand
+      </button>
+      <button class="copy-btn">Copy</button>
+    </div>
+  </div>
+  <pre><code><span class="kw">function</span> normalizeText(str) {
+  <span class="kw">return</span> str
+    .replace(/\u2011/g, <span class="st">'-'</span>)    <span class="cm">// non-breaking hyphen</span>
+    .replace(/\u2013/g, <span class="st">'-'</span>)    <span class="cm">// en dash</span>
+    .replace(/\u2014/g, <span class="st">' - '</span>)  <span class="cm">// em dash</span>
+    .replace(/\u2019/g, &quot;<span class="st">'&quot;)    _3_
+    .replace(/[\u201C\u201D]/g, '</span>&quot;<span class="st">') _4_
+    .replace(/\u00A0/g, '</span> ');   <span class="cm">// non-breaking space</span>
+}</code></pre>
+</div><p><strong>Why this matters:</strong> U+2011 (non-breaking hyphen) is visually identical to <code>-</code> but silently breaks vehicle model string matching in Walmart's ingestion. LLM output reliably produces 400-700+ typographic characters per run. Applying normalization at the single cell-write boundary means all future columns get it automatically.</p>
+</section>
+<section data-section-id="human-in-the-loop">
+  <h2 id="human-in-the-loop">4. Human-in-the-Loop Requirements</h2>
+<div class="table-wrap"><table><thead><tr><th>Stage</th><th>What the human did</th><th>Tool</th></tr></thead><tbody><tr><td>Attribute review</td><td>Approved/rejected individual attributes; edited inline; added feedback notes per item</td><td>Combined review dashboard (port 3459)</td></tr><tr><td>Image selection</td><td>Clicked to select main product image from gallery per SKU</td><td>Image selector dashboard</td></tr><tr><td>Discard list approval</td><td>Reviewed 7 exclude groups + 21 dedupe groups before filter step was locked in</td><td>Manual review of _discard-list.md</td></tr><tr><td>Bulk attribute cleanup</td><td>Approved agent's plan before executing removal of eBay metadata + fitment fields</td><td>Approval via conversation</td></tr><tr><td>Contaminated item confirmation</td><td>Confirmed which 4 items needed full content regeneration</td><td>Manual review</td></tr><tr><td>Walmart column questions</td><td>Answered: Is 'Car' hardcoded? Is Selling Price required? Which fitment cols to remove?</td><td>Conversation</td></tr><tr><td>Submission decision</td><td>Decide whether to submit v6.xlsx to Walmart Supplier Center</td><td>Pending</td></tr></tbody></table></div>
+</section>
+<section data-section-id="scripts-built">
+  <h2 id="scripts-built">5. Scripts Built — Complete Index</h2>
+<h3 id="image-selector-scripts">Image Selector / Data Preparation</h3><div class="table-wrap"><table><thead><tr><th>Script</th><th>Purpose</th></tr></thead><tbody><tr><td>sideload-descriptions.js</td><td>Copy clean descriptions from old run to new run</td></tr><tr><td>sideload-part-types.js</td><td>Copy Part Types from old run + title heuristic fallback</td></tr><tr><td>prepare-image-dataset.js</td><td>Transform raw.json to image-selector dashboard format</td></tr><tr><td>review-all-attributes.js</td><td>Collect + quality-flag all items' attributes</td></tr><tr><td>generate-combined-dashboard.js</td><td>Self-contained HTML dashboard (images + attrs + feedback)</td></tr><tr><td>review-server.js</td><td>Persistence backend for dashboard (port 3459)</td></tr><tr><td>cleanup-attrs.js</td><td>Batch clean attribute values (casing, units, non-ASCII)</td></tr><tr><td>upsert-images.js</td><td>Patch image data for specific SKUs</td></tr><tr><td>transplant-selections.js</td><td>Move image selections to raw.json</td></tr><tr><td>transplant-attributes.js</td><td>Move approved attributes to raw.json</td></tr><tr><td>audit-normalize.js</td><td>Comprehensive quality audit of normalize.json</td></tr><tr><td>fix-junk-attrs.js</td><td>Strip known eBay junk attribute keys from normalize.json + raw.json</td></tr><tr><td>fix-boilerplate-descriptions.js</td><td>Rewrite short/boilerplate descriptions via Haiku; --regen flag</td></tr><tr><td>fix-placeholder-images.js</td><td>Clear known blocked/stock image URLs from Main Image field</td></tr></tbody></table></div>
+<h3 id="pipeline-transforms">Pipeline Transforms</h3><div class="table-wrap"><table><thead><tr><th>Script</th><th>Purpose</th></tr></thead><tbody><tr><td>jegs-export-normalize.js</td><td>Main normalize step: maps all fields, extracts images, Part Type fallback chain</td></tr><tr><td>filter-items.js</td><td>Exclude rows by URL list or dedup mode</td></tr><tr><td>download-posters.js</td><td>Generate eBay poster images via API</td></tr><tr><td>extract-attributes.js</td><td>LLM attribute extraction (Claude Haiku, batches of 20)</td></tr><tr><td>clean-attributes.js</td><td>Per-item attribute value cleaning</td></tr><tr><td>split-description-features.js</td><td>Split combined description into desc + features</td></tr><tr><td>data-corrections.js</td><td>Manual corrections overlay</td></tr><tr><td>jegs-scraper.js</td><td>Puppeteer scraper foundation (stubs ready for implementation)</td></tr><tr><td>cc30-group-attributes.js</td><td>CC30: group 24K flat rows -> 556 products</td></tr><tr><td>cc30-extract-columns.js</td><td>CC30: extract Part Type, Image, fitment</td></tr><tr><td>cc30-filter-attributes.js</td><td>CC30: blacklist filter for attribute keys</td></tr></tbody></table></div>
+<h3 id="walmart-tools">Walmart Loadsheet Tools</h3><div class="table-wrap"><table><thead><tr><th>Script</th><th>Purpose</th></tr></thead><tbody><tr><td>fill-walmart-loadsheet.js</td><td>Main script: maps data -> 94-column Walmart template</td></tr><tr><td>sweep-loadsheet.js</td><td>Sweep output for newly fillable columns per version</td></tr><tr><td>alias-audit-walmart-attrs.js</td><td>Find semantically equivalent attribute key variants (24 groups found)</td></tr><tr><td>text-audit-10rows.js</td><td>Full non-ASCII + unit consistency audit across all rows</td></tr><tr><td>spot-check-10rows.js</td><td>10-row side-by-side HTML comparison (source vs loadsheet)</td></tr><tr><td>inspect-walmart-excel.js</td><td>Inspect column structure of Walmart template</td></tr><tr><td>inspect-walmart-loadsheet.js</td><td>Inspect filled loadsheet for coverage</td></tr><tr><td>verify-loadsheet.js</td><td>Verify field coverage + spot-check key columns</td></tr></tbody></table></div>
+<h3 id="vcdb-tools">VCDB / Fitment Tools</h3><div class="table-wrap"><table><thead><tr><th>Script</th><th>Purpose</th></tr></thead><tbody><tr><td>sample-vcdb-fitment.js</td><td>Stream 134K-row Excel -> hierarchical markdown (5 products sampled)</td></tr><tr><td>generate-vcdb-table.js</td><td>Stream -> self-contained interactive HTML table (1,653 rows)</td></tr><tr><td>query-vcdb.js</td><td>Query VCDB SQLite for make/model/year validation</td></tr></tbody></table></div>
+</section>
+<section data-section-id="key-problems-solutions">
+  <h2 id="key-problems-solutions">6. Key Problems &amp; Solutions</h2>
+<div class="table-wrap"><table><thead><tr><th>Problem</th><th>Root Cause</th><th>Solution</th><th>Lesson</th></tr></thead><tbody><tr><td>Junk eBay descriptions in new Excel</td><td>eBay scraper captured HTML boilerplate</td><td>Sideloaded clean text from old run (586/602 matched)</td><td>Always cross-reference prior run data before LLM regeneration</td></tr><tr><td>547 items missing attributes</td><td>Source Excel had empty Item Specifics</td><td>LLM extraction + manual review dashboard</td><td>Attribute coverage audit should be first step of any new run</td></tr><tr><td>Stock/storefront images mixed in</td><td>Shared eBay listings; scraper got gallery photos</td><td>Frequency-based auto-detection (4+ SKU threshold) + static blocklist</td><td>Image dedup frequency audit is essential for scraped data</td></tr><tr><td>Wrong Part Types (eBay breadcrumbs)</td><td>normalize.js mapped Category Hierarchy -> Part Type</td><td>Sideloaded from old run; transform: Part Type || Category Hierarchy</td><td>Sideload field names must match what the transform reads</td></tr><tr><td>[object Object] in Excel cells</td><td>flattenArrayFields called .join on arrays of objects</td><td>Type-check before .join()</td><td>Always 2-row test + read back Excel before full run</td></tr><tr><td>162 items with contaminated content</td><td>28 eBay URLs mapped to 162 different SKUs by scraper</td><td>filter-items.js transform, config-driven exclusion; pipeline -> 440 items</td><td>Frequency audit of eBay Item URL is essential data quality check</td></tr><tr><td>Part Type reverted on normalize re-run</td><td>Sideload wrote Part Type but transform read Category Hierarchy</td><td>Transform: row['Part Type'] || row['Category Hierarchy']</td><td>Sideload field names must match what the transform reads</td></tr><tr><td>Excel-sourced attrs never cleaned</td><td>Review dashboard only processed LLM-extracted attrs</td><td>fix-junk-attrs.js post-processing; now always run after transplant</td><td>All attribute sources must go through the same cleanup pipeline</td></tr><tr><td>Haiku descriptions too short</td><td>Prompt said Max ~500 chars — Haiku treated as hard cap</td><td>Changed to MINIMUM 500 characters + STRICTLY between X and Y</td><td>Use floor + range constraints for LLM content generation</td></tr><tr><td>92 blocked URLs survived in Main Image</td><td>transplant-selections.js only writes explicit picks</td><td>fix-placeholder-images.js + blocked URL check in normalize fallback</td><td>Transplant should clear blocked URLs, not just write new ones</td></tr><tr><td>Unicode chars failing retail ingestion</td><td>LLM output produces typographic chars (smart quotes, en/em dashes, U+2011)</td><td>normalizeText() applied at cell-write boundary</td><td>Always plan normalization pass when LLM output feeds retail pipelines</td></tr><tr><td>Dimensions col mostly empty</td><td>dimension key exists in only 12 rows; real data in package_depth/height/width</td><td>Composite builder from package dimensions -> 173 rows filled</td><td>Always verify key coverage before building fallback chains</td></tr><tr><td>cp command hung 30 min</td><td>Interactive overwrite prompt without -f flag</td><td>TaskStop; always use cp -f</td><td>Add -f flag to all non-interactive copy commands</td></tr></tbody></table></div>
+</section>
+<section data-section-id="outputs-versions">
+  <h2 id="outputs-versions">7. Outputs &amp; Versions</h2>
+<div class="table-wrap"><table><thead><tr><th>File</th><th>Version</th><th>Rows</th><th>Notes</th></tr></thead><tbody><tr><td>walmart-loadsheet-filled-v3.xlsx</td><td>v3</td><td>1,252</td><td>First full loadsheet; alias consolidation applied</td></tr><tr><td>walmart-loadsheet-filled-v4.xlsx</td><td>v4</td><td>1,252</td><td>+cols 28/29/52 (fluid vol), col 77 (electronics), col 80 (lag time)</td></tr><tr><td>walmart-loadsheet-filled-v5.xlsx</td><td>v5</td><td>1,252</td><td>+Unicode normalization (1,100+ typographic chars fixed)</td></tr><tr><td>walmart-loadsheet-filled-v6.xlsx</td><td>v6 FINAL</td><td>1,252</td><td>+Dimensions composite, fitment cols removed</td></tr><tr><td>attribute-mapping-report.html</td><td>—</td><td>94 cols</td><td>Dark-mode column reference; fill rates, source keys, aliases</td></tr><tr><td>spot-check-10rows.html</td><td>—</td><td>10 rows</td><td>Side-by-side source vs loadsheet</td></tr><tr><td>vcdb-table.html</td><td>—</td><td>1,653 rows</td><td>Interactive VCDB fitment explorer</td></tr><tr><td>fitment-sample.md</td><td>—</td><td>5 products</td><td>Hierarchical VCDB fitment markdown</td></tr></tbody></table></div>
+</section>
+<section data-section-id="architecture-patterns">
+  <h2 id="architecture-patterns">8. Architecture Patterns That Emerged</h2>
+<div class="table-wrap"><table><thead><tr><th>Pattern</th><th>Description</th></tr></thead><tbody><tr><td>Config-Driven Pipeline</td><td>Each run has run.config.js defining input, step sequence, step-level config. Steps are idempotent. Module cache cleared before loading configs/transforms.</td></tr><tr><td>Sideload Pattern</td><td>When new data file has degraded quality, sideload clean data from prior run by building Map<SKU, field> and overwriting matching rows. Transform must read sideloaded field name, not original source field.</td></tr><tr><td>Blacklist > Whitelist for Attrs</td><td>New attribute keys auto-include (safer for unknown data). Whitelist would silently drop unexpected keys.</td></tr><tr><td>Review Dashboard as HIL Gate</td><td>Manual steps suspend pipeline engine, display branded dashboard, wait for user approval via DashboardBridge.signalDone(). Keeps human decisions in data flow without blocking server.</td></tr><tr><td>Asset-Per-Version with Sweep Tool</td><td>Run sweep script against each version to find newly fillable columns. Document fill rates. Increment version only when meaningful improvement achieved.</td></tr><tr><td>Frequency Audit for Data Quality</td><td>Counting occurrence frequencies of IDs/URLs/image hashes exposes contamination that field-level checks miss (duplicate eBay URLs, stock image reuse).</td></tr></tbody></table></div>
+</section>
+    <div id="no-results">No sections match your search — try different terms.</div>
+  </main>
+
+</div>
+
+<!-- Code preview dialog -->
+<dialog id="code-dialog">
+  <div class="dlg-header">
+    <span class="dlg-lang"></span>
+    <span class="dlg-title"></span>
+    <div class="dlg-actions">
+      <span class="dlg-lines"></span>
+      <button class="dlg-copy">Copy</button>
+      <button class="dlg-close" aria-label="Close">✕</button>
+    </div>
+  </div>
+  <div class="dlg-body"></div>
+</dialog>
+
+<script src="./report.js" defer></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  if (typeof renderMathInElement !== "undefined") {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false },
+        { left: "\\(", right: "\\)", display: false },
+        { left: "\\[", right: "\\]", display: true }
+      ],
+      throwOnError: false
+    });
+  }
+});
+</script>
+</body>
+</html>
