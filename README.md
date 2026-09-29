@@ -1,8 +1,8 @@
-<div align="center">
-  <img src="assets/cover.svg" alt="Versable scripts cover" width="128">
-</div>
+<p align="center">
+  <img src=".github/readme/banner.svg" alt="Versable Scripts banner: supplier workbooks to clean data" width="100%">
+</p>
 
-<h1 align="center">Versable Scripts</h1>
+<h1 align="center"><img src=".github/readme/favicon.svg" alt="" width="32" height="32"> Versable Scripts</h1>
 
 <p align="center">
   Working scripts for turning supplier product workbooks into clean, enhanced data.
@@ -17,6 +17,13 @@
 </p>
 
 ---
+
+<details>
+<summary>Riddle answer</summary>
+
+An idempotent pipeline step: re-running a run folder skips any step whose output is already on disk.
+
+</details>
 
 ## About
 
